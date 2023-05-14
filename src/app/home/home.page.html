@@ -14,7 +14,101 @@
   </ion-header>
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <div class="top">
+      <div class="metronome">
+        <div class="metronome-bullet">
+          <h1 id="metronome-label">{{beatCounter + 1}}</h1>
+          <h3 id="action">{{currentAction}}</h3>
+        </div>
+      </div>
+      <div class="trumpet">
+        <img id="trumpet-position" [src]="trumpetPosition">
+      </div>
+    </div>
+
+    <!--MIDDLE-->
+    <div class="middle">
+      <div class="score">
+        <img id="score-image" [src]="scoreImage">
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="controls">
+
+        <!--TEMPO-->
+        <div class="tempo-wrapper">
+          <div class="title-section-wrapper">Tempo:</div>
+          <div class="up-tempo">
+            <button id="up-tempo" [attr.disabled]="isPlaying ? '' : null" (click)="upTempo()">
+              <fa-icon [icon]="faCircleChevronUp"></fa-icon>
+            </button>
+          </div>
+          <div class="tempo">
+            <h1>
+              &#9833;=
+              <span id="tempo">{{tempo}} bpm</span>
+            </h1>
+
+          </div>
+          <div class="down-tempo">
+            <button id="down-tempo" [attr.disabled]="isPlaying ? '' : null" (click)="downTempo()">
+              <fa-icon [icon]="faCircleChevronDown"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <!--LOW NOTE-->
+        <div class="low-note-wrapper">
+          <div class="title-section-wrapper">Lowest note:</div>
+          <div class="up-low-note">
+            <!--<button id="up-low-note" onclick="upLowNote()">⬆️</button>-->
+            <button id="up-low-note" [attr.disabled]="isPlaying ? '' : null" (click)="upLowNote()">
+              <fa-icon [icon]="faCircleChevronUp"></fa-icon>
+            </button>
+          </div>
+          <div class="low-note">
+            <img id="low-note" [src]="getNoteImg(lowNote)">
+
+          </div>
+          <div class="down-low-note">
+            <!--<button id="down-low-note" onclick="downLowNote()">⬇️</button>-->
+            <button id="down-low-note" [attr.disabled]="isPlaying ? '' : null" (click)="downLowNote()">
+              <fa-icon [icon]="faCircleChevronDown"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="high-note-wrapper">
+          <div class="title-section-wrapper">Highest note:</div>
+          <div class="up-high-note">
+            <!--<button id="up-high-note" onclick="upHighNote()">⬆️</button>-->
+            <button id="up-high-note" [attr.disabled]="isPlaying ? '' : null" (click)="upHighNote()">
+              <fa-icon [icon]="faCircleChevronUp"></fa-icon>
+            </button>
+          </div>
+          <div class="high-note">
+            <img id="high-note" [src]="getNoteImg(highNote)">
+
+          </div>
+          <div class="down-high-note">
+            <!--<button id="down-high-note" onclick="downHighNote()">⬇️</button>-->
+            <button id="down-high-note" [attr.disabled]="isPlaying ? '' : null" (click)="downHighNote()">
+              <fa-icon [icon]="faCircleChevronDown"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+      <div class="start-stop">
+        <button class="start-btn" id="start-stop" (click)="startStop()">
+          {{isPlaying ? 'Stop':'Start'}}
+        </button>
+      </div>
+    </div>
+
   </div>
 </ion-content>
