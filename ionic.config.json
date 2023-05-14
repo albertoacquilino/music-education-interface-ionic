@@ -1,0 +1,7 @@
+{
+  "name": "music-education-interface-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
