@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Music Education Interface
+      <img src="assets/images/mei-logo.png" alt="logo" style="max-height: 80px;">
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,7 +11,7 @@
     <div class="top">
       <div class="metronome">
         <div class="metronome-bullet">
-          <h1 id="metronome-label">{{beatCounter}}</h1>
+          <h1 id="metronome-label">{{ beatCounter >= 0 ? (beatCounter + 1): '-'}}</h1>
           <h3 id="action">{{currentAction}}</h3>
         </div>
       </div>
@@ -54,19 +54,14 @@
             <img id="high-note" [src]="getNoteImg(highNote)">
           </div>
         </div>
-
-
-
-
-
-      </div>
-      <div class="start-stop">
-        <button class="start-btn" id="start-stop" (click)="startStop()">
-          {{isPlaying ? 'Stop':'Start'}}
-        </button>
       </div>
     </div>
 
   </div>
 </ion-content>
 
+<ion-footer>
+  <ion-button (click)="startStop()" expand="block">
+    {{isPlaying ? 'Stop':'Start'}}
+  </ion-button>
+</ion-footer>

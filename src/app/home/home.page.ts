@@ -18,9 +18,6 @@ import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS } f
   imports: [IonicModule, FontAwesomeModule],
 })
 export class HomePage {
-  @ViewChild(IonModal) modal!: IonModal;
-  modalOptions!: string[]
-
   audioContext = new AudioContext();
   faCircleChevronDown = faCircleChevronDown;
   faCircleChevronUp = faCircleChevronUp;
@@ -30,8 +27,8 @@ export class HomePage {
   lowNote = 13;
 
   timer: any;
-  beatCounter = 0;
-  measureCounter = 0;
+  beatCounter = -1;
+  measureCounter = -1;
   currentNote: number = 0;
 
   isPlaying = false;
@@ -41,6 +38,12 @@ export class HomePage {
   currentAction = 'rest';
   trumpetPosition = "assets/images/trumpet_positions/pos_1.png"
   scoreImage = "assets/images/score_images/G2.svg";
+  cycle = 0;
+
+  constructor(private _picker: PickerController) {
+    this.preloadSounds();
+  }
+
 
   preloadSounds() {
     for (let sound of BEAT_SOUNDS) {
@@ -85,10 +88,6 @@ export class HomePage {
     this.scoreImage = `assets/images/score_images/${scoreNote}.svg`
   }
 
-  updateMetronome(counter: number) {
-    const metronomeElement = document.getElementById("metronome-label");
-  }
-
   nextNote() {
     const next = Math.round(Math.random() * (this.highNote - this.lowNote)) + this.lowNote;
     return next;
@@ -98,42 +97,39 @@ export class HomePage {
     BEAT_SOUNDS[beatCounter].play();
   }
 
-  updateView() {
-    this.updateMetronome(this.beatCounter);
-    if (this.measureCounter == 0 && this.beatCounter == 0) {
-      this.updateScore(this.currentNote);
-      this.updateTrumpetPosition(this.currentNote);
-    }
+
+  
+  intervalHandler() {
+    this.beatCounter = (this.beatCounter + 1) % 4;
     if (this.beatCounter == 0) {
-      const el = document.getElementById("action");
+      this.measureCounter = (this.measureCounter + 1) % 3;
+      if (this.measureCounter == 0) {
+        this.cycle += 1;
+        if (this.cycle == 4) {
+          this.stop();
+        }
+      }
+    }
+
+    this.playMetronome(this.beatCounter);
+
+    if (this.beatCounter == 0){
+      if (this.measureCounter == 1) {
+        this.playTrumpetSound(this.currentNote)
+      }
+  
+      if (this.measureCounter == 0) {
+        this.currentNote = this.nextNote();
+        this.updateScore(this.currentNote);
+        this.updateTrumpetPosition(this.currentNote);
+      }
+
       switch (this.measureCounter) {
         case 0: this.currentAction = "Rest"; break;
         case 1: this.currentAction = "Listen"; break;
         case 2: this.currentAction = "Play"; break;
       }
     }
-  }
-
-  playSounds() {
-    this.playMetronome(this.beatCounter);
-
-    if (this.measureCounter == 1 && this.beatCounter == 0) {
-      this.playTrumpetSound(this.currentNote)
-    }
-  }
-
-  intervalHandler() {
-    if (this.beatCounter == 0 && this.measureCounter == 0) {
-      this.currentNote = this.nextNote();
-    }
-    this.updateView();
-    this.playSounds();
-    this.beatCounter = (this.beatCounter + 1) % 4;
-
-    if (this.beatCounter == 0) {
-      this.measureCounter = (this.measureCounter + 1) % 3;
-    }
-
   }
 
   startStop() {
@@ -146,29 +142,24 @@ export class HomePage {
 
   start() {
     this.isPlaying = true;
+    this.cycle = 0;
     this.timer = setInterval(() => this.intervalHandler(), 60000 / this.tempo);
-
   }
 
   stop() {
+    this.cycle = 0;
+    this.beatCounter = -1;
+    this.measureCounter = -1;
     this.isPlaying = false;
     clearInterval(this.timer);
     this.beatCounter = 0;
     this.measureCounter = 0;
-
-    this.updateView();
   }
 
 
   getNoteImg(note: number) {
     return `assets/images/notes_images/_${NOTES[note][0]}.png`;
   }
-
-
-  constructor(private _picker: PickerController) {
-    this.preloadSounds();
-  }
-
 
 
   async openPicker(which: 'highNote' | 'lowNote' | 'tempo') {
