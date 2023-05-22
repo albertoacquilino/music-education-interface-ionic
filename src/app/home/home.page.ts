@@ -1,91 +1,13 @@
-import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonModal, IonicModule, PickerController } from '@ionic/angular';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { Howl } from 'howler';
 
-const MAXNOTE = 30;
-const MINNOTE = 0;
-const MAXTEMPO = 180;
-const MINTEMPO = 40;
-const BEAT_SOUNDS = [
-  new Howl({ src: ['assets/sounds/tick_strong.wav'] }),
-  new Howl({ src: ['assets/sounds/tick_weak.wav'] }),
-  new Howl({ src: ['assets/sounds/tick_weak.wav'] }),
-  new Howl({ src: ['assets/sounds/tick_weak.wav'] })
-]
+import { range } from 'lodash';
+import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS } from './constants';
 
-const NOTES = [
-  ['F1s', 'G1f'],
-  ['G1'],
-  ['G1s', 'A1f'],
-  ['A1'],
-  ['B1f', 'A1s'],
-  ['B1'],
-  ['C2'],
-  ['C2s', 'D2f'],
-  ['D2'],
-  ['E2f', 'D2s'],
-  ['E2'],
-  ['F2'],
-  ['F2s', 'G2f'],
-  ['G2'],
-  ['G2s', 'A2f'],
-  ['A2'],
-  ['B2f', 'A2s'],
-  ['B2'],
-  ['C3'],
-  ['C3s', 'D3f'],
-  ['D3'],
-  ['E3f', 'D3s'],
-  ['E3'],
-  ['F3'],
-  ['F3s', 'G3f'],
-  ['G3'],
-  ['G3s', 'A3f'],
-  ['A3'],
-  ['B3f', 'A3s'],
-  ['B3'],
-  ['C4'],
-];
-
-const POSITIONS = [
-  'pos_7',
-  'pos_6',
-  'pos_5',
-  'pos_4',
-  'pos_3',
-  'pos_2',
-  'pos_1',
-
-  'pos_7a',
-  'pos_6a',
-  'pos_5',
-  'pos_4',
-  'pos_3',
-  'pos_2',
-  'pos_1',
-
-  'pos_5',
-  'pos_4',
-  'pos_3',
-  'pos_2',
-  'pos_1',
-  'pos_4',
-  'pos_3',
-  'pos_2',
-  'pos_1',
-
-  'pos_3',
-  'pos_2',
-  'pos_1',
-
-  'pos_5',
-  'pos_4',
-  'pos_3',
-  'pos_2',
-  'pos_1',
-];
 
 
 @Component({
@@ -96,6 +18,9 @@ const POSITIONS = [
   imports: [IonicModule, FontAwesomeModule],
 })
 export class HomePage {
+  @ViewChild(IonModal) modal!: IonModal;
+  modalOptions!: string[]
+
   audioContext = new AudioContext();
   faCircleChevronDown = faCircleChevronDown;
   faCircleChevronUp = faCircleChevronUp;
@@ -234,89 +159,87 @@ export class HomePage {
     this.updateView();
   }
 
-  upTempo() {
-    this.tempo = Math.min(this.tempo + 5, MAXTEMPO);
-  }
-
-  downTempo() {
-    this.tempo = Math.max(this.tempo - 5, MINTEMPO);
-  }
-
-  upHighNote() {
-    this.highNote = Math.min(this.highNote + 1, MAXNOTE);
-  }
-  downHighNote() {
-    this.highNote = Math.max(this.highNote - 1, this.lowNote);
-  }
-
-  upLowNote() {
-    this.lowNote = Math.min(this.lowNote + 1, this.highNote);
-  }
-  downLowNote() {
-    this.lowNote = Math.max(this.lowNote - 1, MINNOTE);
-  }
 
   getNoteImg(note: number) {
     return `assets/images/notes_images/_${NOTES[note][0]}.png`;
   }
 
-  updateControls() {
-    // let upTempoButton = document.getElementById('up-tempo');
-    // let downTempoButton = document.getElementById('down-tempo');
-    // let upHighNoteButton = document.getElementById('up-high-note');
-    // let downHighNoteButton = document.getElementById('down-high-note');
-    // let upLowNoteButton = document.getElementById('up-low-note');
-    // let downLowNoteButton = document.getElementById('down-low-note');
 
-    // let controls = [
-    //   upTempoButton, downTempoButton, upHighNoteButton, downHighNoteButton, upLowNoteButton, downLowNoteButton
-    // ];
-
-    // if (!this.isPlaying) {
-    //   startStopButton.textContent = "Start";
-    //   for (let control in controls) {
-    //     controls[control].removeAttribute('disabled');
-    //   }
-    // } else {
-    //   for (let control in controls) {
-    //     controls[control].setAttribute('disabled', undefined);
-    //   }
-    //   startStopButton.textContent = "Stop";
-    // }
-
-
-
-    // document.getElementById("high-note")
-    //   .src = ;
-    // document.getElementById("low-note")
-    //   .src = `assets/images/notes_images/_${NOTES[lowNote][0]}.png`;
-
-    // document.getElementById("tempo")
-    //   .textContent = `${tempo} bpm`;
-
-
+  constructor(private _picker: PickerController) {
+    this.preloadSounds();
   }
 
 
 
+  async openPicker(which: 'highNote' | 'lowNote' | 'tempo') {
+    // create list of options to be selected
+    let options: { value: number, text: string }[];
+    
+    let selectedIndex = 0;
+    let selectedValue: number;
+    
 
-  // function setup() {
-  //   startStopButton = document.getElementById('start-stop');
-  //   updateControls();
-  // }
+    switch (which) {
+      case 'highNote': {
+        selectedValue = this.highNote;
+        options = NOTES.map((v, index) => ({
+          value: index,
+          text: v[0]
+        })).slice(Math.max(0, this.lowNote));
 
-  // document.addEventListener("DOMContentLoaded", () => {
-  //   setup();
-  // });
+        break;
+      }
+      case 'lowNote': {
+        selectedValue = this.lowNote;
+        options = NOTES.map((v, index) => ({
+          value: index,
+          text: v[0]
+        })).slice(0, this.highNote+1);
+
+        break;
+      }
+      case 'tempo': {
+        selectedValue = this.tempo;
+        options = range(MINTEMPO, MAXTEMPO+1, 5).map(v => ({
+          value: v,
+          text: `${v} bpm`
+        }))
+        break;
+      }
+    }
 
 
+    selectedIndex = options.findIndex(v => v.value == selectedValue);
 
+    const picker = await this._picker.create({
+      columns: [
+        {
+          name: which,
+          options: options,
+          selectedIndex: selectedIndex
+        },
+      ],
+      
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          handler: (value) => {
+            switch (which) {
+              case 'highNote': this.highNote = value[which].value; break;
+              case 'lowNote': this.lowNote = value[which].value; break;
+              case 'tempo': this.tempo = value[which].value; break;
+              default: break;
+            }
+          }
+        },
+      ],
+    });
 
-
-
-
-  constructor() {
-    this.preloadSounds();
+    await picker.present();
 
   }
 }
