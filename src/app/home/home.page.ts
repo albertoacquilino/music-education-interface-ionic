@@ -6,8 +6,8 @@ import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-
 import { Howl } from 'howler';
 
 import { range } from 'lodash';
-import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS } from './constants';
-
+import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS } from '../constants';
+import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS } f
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, FontAwesomeModule],
+  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent],
 })
 export class HomePage {
   audioContext = new AudioContext();
@@ -40,10 +40,25 @@ export class HomePage {
   scoreImage = "assets/images/score_images/G2.svg";
   cycle = 0;
 
+  noteImages = NOTES.map(note => `assets/images/notes_images/_${note[0]}.svg`);
+
   constructor(private _picker: PickerController) {
     this.preloadSounds();
   }
 
+  changeLowNote(index: number){
+    this.lowNote = index;
+    if(this.lowNote > this.highNote){
+      this.highNote = this.lowNote;
+    }
+  }
+
+  changeHighNote(index: number){
+    this.highNote = index;
+    if(this.highNote < this.lowNote){
+      this.lowNote = this.highNote;
+    }
+  }
 
   preloadSounds() {
     for (let sound of BEAT_SOUNDS) {
@@ -232,5 +247,9 @@ export class HomePage {
 
     await picker.present();
 
+  }
+
+  async canDismiss(data?: any, role?: string) {
+    return role !== 'gesture';
   }
 }

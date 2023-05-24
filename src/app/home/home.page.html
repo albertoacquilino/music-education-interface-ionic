@@ -43,22 +43,37 @@
         <!--LOW NOTE-->
         <div class="low-note-wrapper">
           <div class="title-section-wrapper">Lowest note:</div>
-          <div class="low-note" (click)="openPicker('lowNote')">
-            <img id="low-note" [src]="getNoteImg(lowNote)">
+          <div id="open-modal-low-note" expand="block" class="low-note">
+            <img id="high-note" [src]="getNoteImg(lowNote)">
           </div>
+          <ion-modal trigger="open-modal-low-note" [canDismiss]="canDismiss" [initialBreakpoint]="1" [breakpoints]="[0, 1]"
+            [handle]="false">
+            <ng-template>
+              <scroll-image-component [images]="noteImages" [index]="lowNote" (indexChange)="changeLowNote($event)"></scroll-image-component>
+            </ng-template>
+          </ion-modal>
         </div>
 
         <div class="high-note-wrapper">
           <div class="title-section-wrapper">Highest note:</div>
-          <div class="high-note" (click)="openPicker('highNote')">
+          <!-- <div class="high-note" (click)="openPicker('highNote')">
+            <img id="high-note" [src]="getNoteImg(highNote)">
+          </div> -->
+          <div id="open-modal-high-note" expand="block" class="high-note">
             <img id="high-note" [src]="getNoteImg(highNote)">
           </div>
+          <ion-modal trigger="open-modal-high-note" [canDismiss]="canDismiss" 
+            [initialBreakpoint]="1" [breakpoints]="[0, 1]" [handle]="false">
+            <ng-template>
+              <scroll-image-component [images]="noteImages" [index]="highNote" (indexChange)="changeHighNote($event)"></scroll-image-component>
+            </ng-template>
+          </ion-modal>
+
         </div>
       </div>
     </div>
-
   </div>
-</ion-content>
+  </ion-content>
 
 <ion-footer>
   <ion-button (click)="startStop()" expand="block">
