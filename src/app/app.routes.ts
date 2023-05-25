@@ -7,7 +7,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'scroll-image-page',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {

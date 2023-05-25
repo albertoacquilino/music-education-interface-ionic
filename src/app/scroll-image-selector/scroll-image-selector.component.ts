@@ -5,9 +5,9 @@ import { Haptics } from '@capacitor/haptics';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { CommonModule } from '@angular/common';
-import { range } from 'lodash';
-import { NOTES } from '../constants';
+import { Howl } from 'howler';
 
+const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
 
 
 @Component({
@@ -124,6 +124,7 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
         idx = Math.max(idx, 0);
 
         if(idx !== this.index) {
+            TICK_SOUND.play();
             Haptics.selectionChanged();
         }
         

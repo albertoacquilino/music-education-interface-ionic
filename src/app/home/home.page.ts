@@ -6,7 +6,7 @@ import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-
 import { Howl } from 'howler';
 
 import { range } from 'lodash';
-import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS } from '../constants';
+import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS, MAX_CYCLES } from '../constants';
 import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
 
 
@@ -120,7 +120,7 @@ export class HomePage {
       this.measureCounter = (this.measureCounter + 1) % 3;
       if (this.measureCounter == 0) {
         this.cycle += 1;
-        if (this.cycle == 4) {
+        if (this.cycle == MAX_CYCLES) {
           this.stop();
         }
       }
