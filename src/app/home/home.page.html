@@ -1,82 +1,118 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      <img src="assets/images/mei-logo.png" alt="logo" style="max-height: 80px;">
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-menu contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Options</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-list>
+      <ion-item>
+        <ion-toggle [checked]="showTrumpetHints" (ionChange)="switchTrumpetHints($event)">
+          Show trumpet
+        </ion-toggle>
+</ion-item>
+<ion-item>
+        <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)">
+          <b>&flat; &amp; &sharp;</b>
+        </ion-toggle>
+      </ion-item>
+    </ion-list>
 
-<ion-content [fullscreen]="true">
-  <div id="container">
-    <div class="top">
-      <div class="metronome">
-        <div class="metronome-bullet">
-          <h1 id="metronome-label">{{ beatCounter >= 0 ? (beatCounter + 1): '-'}}</h1>
-          <h3 id="action">{{currentAction}}</h3>
-        </div>
-      </div>
-      <div class="trumpet">
-        <img id="trumpet-position" [src]="trumpetPosition">
-      </div>
-    </div>
+  </ion-content>
+</ion-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+        <img src="assets/images/mei-logo.png" alt="logo" style="max-height: 80px;">
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-    <!--MIDDLE-->
-    <div class="middle">
-      <div class="score">
-        <img id="score-image" [src]="scoreImage">
-      </div>
-    </div>
-    <div class="bottom">
-      <div class="controls">
 
-        <!--TEMPO-->
-        <div class="tempo-wrapper">
-          <div class="title-section-wrapper">Tempo:</div>
-          <div class="tempo" (click)="openPicker('tempo')">
-            <h1>
-              &#9833;=
-              <span id="tempo">{{tempo}} bpm</span>
-            </h1>
+  <ion-content [fullscreen]="true">
+    <div id="container">
+      <div class="top">
+        <div class="metronome">
+          <div class="metronome-bullet">
+            <h1 id="metronome-label">{{ beatCounter >= 0 ? (beatCounter + 1): '-'}}</h1>
+            <h3 id="action">{{currentAction}}</h3>
           </div>
         </div>
+        <ng-container *ngIf="showTrumpetHints">
 
-        <!--LOW NOTE-->
-        <div class="low-note-wrapper">
-          <div class="title-section-wrapper">Lowest note:</div>
-          <div id="open-modal-low-note" expand="block" class="low-note">
-            <img id="high-note" [src]="getNoteImg(lowNote)">
+
+          <div class="trumpet">
+
+            <img id="trumpet-position" [src]="trumpetPosition">
           </div>
-          <ion-modal trigger="open-modal-low-note" [canDismiss]="canDismiss" [initialBreakpoint]="1" [breakpoints]="[0, 1]"
-            [handle]="false">
-            <ng-template>
-              <scroll-image-component [images]="noteImages" [index]="lowNote" (indexChange)="changeLowNote($event)"></scroll-image-component>
-            </ng-template>
-          </ion-modal>
-        </div>
+        </ng-container>
+      </div>
 
-        <div class="high-note-wrapper">
-          <div class="title-section-wrapper">Highest note:</div>
-          <!-- <div class="high-note" (click)="openPicker('highNote')">
+      <!--MIDDLE-->
+      <div class="middle">
+        <div class="score">
+          <img id="score-image" [src]="scoreImage">
+        </div>
+      </div>
+      <div class="bottom">
+        <div class="controls">
+
+          <!--TEMPO-->
+          <div class="tempo-wrapper">
+            <div class="title-section-wrapper">Tempo:</div>
+            <div class="tempo" (click)="openPicker('tempo')">
+              <h1>
+                &#9833;=
+                <span id="tempo">{{tempo}} bpm</span>
+              </h1>
+            </div>
+          </div>
+
+          <!--LOW NOTE-->
+          <div class="low-note-wrapper">
+            <div class="title-section-wrapper">Lowest note:</div>
+            <div id="open-modal-low-note" expand="block" class="low-note">
+              <img id="high-note" [src]="getNoteImg(lowNote)">
+            </div>
+            <ion-modal trigger="open-modal-low-note" [canDismiss]="canDismiss" [initialBreakpoint]="1"
+              [breakpoints]="[0, 1]" [handle]="false">
+              <ng-template>
+                <scroll-image-component [images]="noteImages" [index]="lowNote"
+                  (indexChange)="changeLowNote($event)"></scroll-image-component>
+              </ng-template>
+            </ion-modal>
+          </div>
+
+          <div class="high-note-wrapper">
+            <div class="title-section-wrapper">Highest note:</div>
+            <!-- <div class="high-note" (click)="openPicker('highNote')">
             <img id="high-note" [src]="getNoteImg(highNote)">
           </div> -->
-          <div id="open-modal-high-note" expand="block" class="high-note">
-            <img id="high-note" [src]="getNoteImg(highNote)">
-          </div>
-          <ion-modal trigger="open-modal-high-note" [canDismiss]="canDismiss" 
-            [initialBreakpoint]="1" [breakpoints]="[0, 1]" [handle]="false">
-            <ng-template>
-              <scroll-image-component [images]="noteImages" [index]="highNote" (indexChange)="changeHighNote($event)"></scroll-image-component>
-            </ng-template>
-          </ion-modal>
+            <div id="open-modal-high-note" expand="block" class="high-note">
+              <img id="high-note" [src]="getNoteImg(highNote)">
+            </div>
+            <ion-modal trigger="open-modal-high-note" [canDismiss]="canDismiss" [initialBreakpoint]="1"
+              [breakpoints]="[0, 1]" [handle]="false">
+              <ng-template>
+                <scroll-image-component [images]="noteImages" [index]="highNote"
+                  (indexChange)="changeHighNote($event)"></scroll-image-component>
+              </ng-template>
+            </ion-modal>
 
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </ion-content>
 
-<ion-footer>
-  <ion-button (click)="startStop()" expand="block">
-    {{isPlaying ? 'Stop':'Start'}}
-  </ion-button>
-</ion-footer>
+  <ion-footer>
+    <ion-button (click)="startStop()" expand="block">
+      {{isPlaying ? 'Stop':'Start'}}
+    </ion-button>
+  </ion-footer>
+
+</div>

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonModal, IonicModule, PickerController } from '@ionic/angular';
+import { IonModal, IonicModule, PickerController, ToggleChangeEventDetail } from '@ionic/angular';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,7 @@ import { Howl } from 'howler';
 import { range } from 'lodash';
 import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS, MAX_CYCLES } from '../constants';
 import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -15,9 +16,12 @@ import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-sele
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent],
+  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, CommonModule],
 })
 export class HomePage {
+  showTrumpetHints = true;
+  useFlatsAndSharps = true;
+
   audioContext = new AudioContext();
   faCircleChevronDown = faCircleChevronDown;
   faCircleChevronUp = faCircleChevronUp;
@@ -44,6 +48,16 @@ export class HomePage {
 
   constructor(private _picker: PickerController) {
     this.preloadSounds();
+  }
+
+  switchTrumpetHints(event: any){
+    console.log(event);
+    this.showTrumpetHints = event.detail.checked;
+  }
+
+  switchUseFlatsAndSharps(event: any){
+    console.log(event);
+    this.useFlatsAndSharps = event.detail.checked;
   }
 
   changeLowNote(index: number){
