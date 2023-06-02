@@ -21,7 +21,8 @@ const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
       <div class="scrollable" 
             #scrollContainer 
             (scroll)="onScroll()">
-            <div *ngFor="let image of images" class="scroll-element" [style.height]="scrollElementHeight + 'px'">
+            <div *ngFor="let image of images;" class="scroll-element" [style.height]="scrollElementHeight + 'px'">
+                
             </div>
             <div *ngFor="let i of images" class="scroll-element" [style.height]="scrollElementHeight + 'px'"></div>
       </div>
@@ -89,6 +90,17 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
             this.index = 0;
         }
         this.image = this.images[this.index];
+        this.setScrollPositionFromIndex(this.index);
+    }
+
+    setScrollPositionFromIndex(idx: number) {
+        const position = idx * this.scrollElementHeight;
+        console.log('scroll to', position);
+        setTimeout(() => {
+            this.scrollContainer.nativeElement.scrollTo({ top: position, behavior: 'auto' });    
+        }, 100);
+        
+
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -97,6 +109,7 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
             if (idx !== this.index) {
                 this.index = idx;
                 this.image = this.images[idx];
+                this.setScrollPositionFromIndex(idx);
             }
         }
 
@@ -119,12 +132,14 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
         const element = this.scrollContainer.nativeElement;
         const scrollPosition = element.scrollTop;
 
+        console.log('scroll position', scrollPosition);
+
         let idx = Math.floor(scrollPosition / this.scrollElementHeight);
         idx = Math.min(idx, this.images.length - 1);
         idx = Math.max(idx, 0);
 
         if(idx !== this.index) {
-            TICK_SOUND.play();
+            //TICK_SOUND.play();
             Haptics.selectionChanged();
         }
         
