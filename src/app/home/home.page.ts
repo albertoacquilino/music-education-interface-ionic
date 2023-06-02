@@ -1,14 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonModal, IonicModule, PickerController, ToggleChangeEventDetail } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { IonicModule, PickerController } from '@ionic/angular';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { Howl } from 'howler';
 
-import { range } from 'lodash';
-import { BEAT_SOUNDS, MAXNOTE, MINNOTE, MINTEMPO, MAXTEMPO, NOTES, POSITIONS, MAX_CYCLES } from '../constants';
-import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
 import { CommonModule } from '@angular/common';
+import { range } from 'lodash';
+import { BEAT_SOUNDS, MAXTEMPO, MAX_CYCLES, MINTEMPO, NOTES, POSITIONS } from '../constants';
+import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
 
 
 @Component({
@@ -58,17 +58,39 @@ export class HomePage {
   switchUseFlatsAndSharps(event: any){
     console.log(event);
     this.useFlatsAndSharps = event.detail.checked;
+    if(!this.useFlatsAndSharps){
+      // check that low and high notes are not on accidentals
+      // if they are, move them up by a half step
+      if(NOTES[this.lowNote].length == 2){
+        this.lowNote++;
+      }
+      if(NOTES[this.highNote].length == 2){
+        this.highNote++;
+      }
+    }
   }
 
   changeLowNote(index: number){
     this.lowNote = index;
+    if(!this.useFlatsAndSharps){
+      if(NOTES[this.lowNote].length == 2){
+        this.lowNote++;
+      }
+    }
     if(this.lowNote > this.highNote){
       this.highNote = this.lowNote;
     }
+    
   }
 
   changeHighNote(index: number){
     this.highNote = index;
+    if (!this.useFlatsAndSharps) {
+      if (NOTES[this.highNote].length == 2) {
+        this.highNote++;
+      }
+    }
+
     if(this.highNote < this.lowNote){
       this.lowNote = this.highNote;
     }
@@ -119,6 +141,12 @@ export class HomePage {
 
   nextNote() {
     const next = Math.round(Math.random() * (this.highNote - this.lowNote)) + this.lowNote;
+    if(!this.useFlatsAndSharps){
+      if (NOTES[next].length == 2) {
+        return next + 1;
+      }
+    }
+
     return next;
   }
 
@@ -183,6 +211,9 @@ export class HomePage {
     clearInterval(this.timer);
     this.beatCounter = 0;
     this.measureCounter = 0;
+
+    // stop everything playing in the audio context
+    Howler.stop();
   }
 
 
@@ -191,7 +222,11 @@ export class HomePage {
   }
 
 
-  async openPicker(which: 'highNote' | 'lowNote' | 'tempo') {
+  async openTempoPicker() {
+    if(this.isPlaying){
+      return;
+    }
+    
     // create list of options to be selected
     let options: { value: number, text: string }[];
     
@@ -199,42 +234,17 @@ export class HomePage {
     let selectedValue: number;
     
 
-    switch (which) {
-      case 'highNote': {
-        selectedValue = this.highNote;
-        options = NOTES.map((v, index) => ({
-          value: index,
-          text: v[0]
-        })).slice(Math.max(0, this.lowNote));
-
-        break;
-      }
-      case 'lowNote': {
-        selectedValue = this.lowNote;
-        options = NOTES.map((v, index) => ({
-          value: index,
-          text: v[0]
-        })).slice(0, this.highNote+1);
-
-        break;
-      }
-      case 'tempo': {
-        selectedValue = this.tempo;
-        options = range(MINTEMPO, MAXTEMPO+1, 5).map(v => ({
-          value: v,
-          text: `${v} bpm`
-        }))
-        break;
-      }
-    }
-
+    selectedValue = this.tempo;
+    options = range(MINTEMPO, MAXTEMPO+1, 5).map(v => ({
+      value: v,
+      text: `${v} bpm`
+    }));
 
     selectedIndex = options.findIndex(v => v.value == selectedValue);
-
     const picker = await this._picker.create({
       columns: [
         {
-          name: which,
+          name: 'tempo',
           options: options,
           selectedIndex: selectedIndex
         },
@@ -248,12 +258,7 @@ export class HomePage {
         {
           text: 'Confirm',
           handler: (value) => {
-            switch (which) {
-              case 'highNote': this.highNote = value[which].value; break;
-              case 'lowNote': this.lowNote = value[which].value; break;
-              case 'tempo': this.tempo = value[which].value; break;
-              default: break;
-            }
+              this.tempo = value['tempo'].value;          
           }
         },
       ],
