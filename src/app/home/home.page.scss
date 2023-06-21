@@ -15,7 +15,7 @@ ion-modal {
 
 ion-content{
   --ion-background-color:white;
-  --ion-text-color: black;  
+  --ion-text-color: black;
 }
 
 .top {
@@ -97,7 +97,7 @@ ion-content{
 .bottom {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1.3fr 0.7fr;
+  grid-template-rows: 1fr 1.3fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -170,7 +170,7 @@ ion-content{
 
 .tempo-wrapper, .low-note-wrapper, .high-note-wrapper {
   flex: 1;
-  border-right: 1px solid lightgray;
+  //border-right: 1px solid lightgray;
   padding: 0 8px;
   display: flex;
   flex-direction: column;
@@ -201,6 +201,33 @@ ion-content{
 }
 #high-note {
   width: 100%;
+}
+
+#container {
+  padding: 1em;
+  max-width: 780px;
+}
+
+.toolbar-title-default {
+  height: 60px;
+  display: flex;
+}
+
+.footer-toolbar-padding {
+  padding: 1em;
+
+}
+
+.simulate-input {
+  background-color: #ececec;
+  border: 1px solid lightgrey;
+  border-radius: 6px;
+  padding: 10px 10px;
+  flex-grow: 1;
+}
+
+.logo {
+  height: 50px;
 }
 
 @media screen and (max-width: 420px) {
