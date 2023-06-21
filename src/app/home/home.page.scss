@@ -228,6 +228,13 @@ ion-content{
 
 .logo {
   height: 50px;
+  margin: auto;
+  &.logo-white {
+    display: none;
+  }
+  &.logo-black {
+    display: block;
+  }
 }
 
 @media screen and (max-width: 420px) {
@@ -238,5 +245,16 @@ ion-content{
   .container {
     box-shadow: unset;
     padding: 1em;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    .logo-white {
+      display: block;
+    }
+    .logo-black {
+      display: none;
+    }
   }
 }
