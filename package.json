@@ -33,6 +33,7 @@
     "howler": "^2.2.3",
     "ionicons": "^7.0.0",
     "lodash": "^4.17.21",
+    "pitch-detection-wasm": "file:./pkg",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
@@ -48,6 +49,7 @@
     "@angular/compiler": "^15.0.0",
     "@angular/compiler-cli": "^15.0.0",
     "@angular/language-service": "^15.0.0",
+    "@capacitor/assets": "^2.0.4",
     "@capacitor/cli": "5.0.3",
     "@ionic/angular-toolkit": "^9.0.0",
     "@types/howler": "^2.2.7",

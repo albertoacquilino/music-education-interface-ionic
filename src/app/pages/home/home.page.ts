@@ -7,8 +7,12 @@ import { Howl } from 'howler';
 
 import { CommonModule } from '@angular/common';
 import { range } from 'lodash';
-import { BEAT_SOUNDS, MAXTEMPO, MAX_CYCLES, MINTEMPO, NOTES, POSITIONS } from '../constants';
-import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
+import { MAXTEMPO, MAX_CYCLES, MINTEMPO, NOTES, POSITIONS } from '../../constants';
+import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
+import { AppBeat, BeatService } from '../../services/beat.service';
+import { Observable, tap } from 'rxjs';
+import { SoundsService } from 'src/app/services/sounds.service';
+import { PitchService } from 'src/app/services/pitch.service';
 
 
 @Component({
@@ -30,24 +34,32 @@ export class HomePage {
   highNote = 13;
   lowNote = 13;
 
-  timer: any;
-  beatCounter = -1;
-  measureCounter = -1;
   currentNote: number = 0;
-
-  isPlaying = false;
-  preloadedNotes: Howl[] = [];
+  
   audioNodes = {};
 
   currentAction = 'rest';
   trumpetPosition = "assets/images/trumpet_positions/pos_1.png"
   scoreImage = "assets/images/score_images/G2.svg";
-  cycle = 0;
 
   noteImages = NOTES.map(note => `assets/images/notes_images/_${note[0]}.svg`);
 
-  constructor(private _picker: PickerController) {
-    this.preloadSounds();
+  beat$!: Observable<AppBeat>; 
+  playing$!: Observable<boolean>;
+
+  constructor(
+    private _picker: PickerController, 
+    private _tempo: BeatService, 
+    private _sounds: SoundsService,
+    //private _pitch: PitchService
+    ) {      
+    this.beat$ = this._tempo.tick$.pipe(
+      tap((tempo: AppBeat) => this.intervalHandler(tempo))
+    );
+    this.playing$ = this._tempo.playing$.asObservable();
+
+    // this._pitch.createDetector('autocorrelation', 2048, 512);
+    // this._pitch.test();
   }
 
   switchTrumpetHints(event: any){
@@ -96,43 +108,14 @@ export class HomePage {
     }
   }
 
-  preloadSounds() {
-    for (let sound of BEAT_SOUNDS) {
-      sound.load();
-    }
 
-    for (let i = 0; i < NOTES.length; i++) {
-      const note = NOTES[i];
-      const soundFile = note[0];
-
-      const audio = new Howl({ src: [`assets/sounds/note_sounds/${soundFile}.wav`] });
-      this.preloadedNotes.push(audio);
-    }
-  }
 
 
   updateTrumpetPosition(note: number) {
     const trumpetImg = POSITIONS[note];
     this.trumpetPosition = `assets/images/trumpet_positions/${trumpetImg}.png`;
   }
-
-  playAndFade(audio: Howl, duration: number) {
-    const id1 = audio.play();
-    const fade = Math.max(duration / 10, 100);
-    setTimeout(() => {
-      audio.fade(1, 0, fade, id1);
-    }, duration - fade);
-    setTimeout(() => {
-      audio.stop(id1);
-    }, duration);
-  }
-
-
-  playTrumpetSound(currentNote: number) {
-    const audio = this.preloadedNotes[currentNote];
-    this.playAndFade(audio, 4 * 60000 / this.tempo);
-  }
-
+ 
   updateScore(note: number) {
     const _notes = NOTES[note];
     const scoreNote = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
@@ -146,42 +129,22 @@ export class HomePage {
         return next + 1;
       }
     }
-
     return next;
   }
 
-  playMetronome(beatCounter: number) {
-    BEAT_SOUNDS[beatCounter].play();
-  }
 
 
   
-  intervalHandler() {
-    this.beatCounter = (this.beatCounter + 1) % 4;
-    if (this.beatCounter == 0) {
-      this.measureCounter = (this.measureCounter + 1) % 3;
-      if (this.measureCounter == 0) {
-        this.cycle += 1;
-        if (this.cycle == MAX_CYCLES) {
-          this.stop();
-        }
-      }
-    }
-
-    this.playMetronome(this.beatCounter);
-
-    if (this.beatCounter == 0){
-      if (this.measureCounter == 1) {
-        this.playTrumpetSound(this.currentNote)
-      }
-  
-      if (this.measureCounter == 0) {
+  intervalHandler(tempo: AppBeat) {    
+    if (tempo.beat == 0){  
+      if (tempo.measure == 0) {
         this.currentNote = this.nextNote();
+        this._sounds.currentNote = this.currentNote;
         this.updateScore(this.currentNote);
         this.updateTrumpetPosition(this.currentNote);
       }
 
-      switch (this.measureCounter) {
+      switch (tempo.measure) {
         case 0: this.currentAction = "Rest"; break;
         case 1: this.currentAction = "Listen"; break;
         case 2: this.currentAction = "Play"; break;
@@ -190,7 +153,7 @@ export class HomePage {
   }
 
   startStop() {
-    if (this.isPlaying) {
+    if (this._tempo.playing$.value) {
       this.stop();
     } else {
       this.start();
@@ -198,20 +161,11 @@ export class HomePage {
   }
 
   start() {
-    this.isPlaying = true;
-    this.cycle = 0;
-    this.timer = setInterval(() => this.intervalHandler(), 60000 / this.tempo);
+    this._tempo.start();
   }
 
   stop() {
-    this.cycle = 0;
-    this.beatCounter = -1;
-    this.measureCounter = -1;
-    this.isPlaying = false;
-    clearInterval(this.timer);
-    this.beatCounter = 0;
-    this.measureCounter = 0;
-
+    this._tempo.stop();
     // stop everything playing in the audio context
     Howler.stop();
   }
@@ -221,9 +175,13 @@ export class HomePage {
     return `assets/images/notes_images/_${NOTES[note][0]}.png`;
   }
 
+  isPlaying(): boolean{
+    return this._tempo.playing$.value;
+  }
+
 
   async openTempoPicker() {
-    if(this.isPlaying){
+    if(this._tempo.playing$.value){
       return;
     }
     
@@ -258,7 +216,7 @@ export class HomePage {
         {
           text: 'Confirm',
           handler: (value) => {
-              this.tempo = value['tempo'].value;          
+              this._tempo.setTempo(value['tempo'].value);          
           }
         },
       ],

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { NOTES } from '../constants';
+import { NOTES } from '../../constants';
 import { ScrollImageComponent } from './scroll-image-selector.component';
 
 

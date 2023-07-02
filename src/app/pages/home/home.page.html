@@ -1,3 +1,5 @@
+
+
 <ion-menu contentId="main-content">
   <ion-header>
     <ion-toolbar>
@@ -9,13 +11,13 @@
       <ion-item>
         <!-- disable control when "isPlaying is true"-->
         <ion-toggle [checked]="showTrumpetHints" (ionChange)="switchTrumpetHints($event)"
-          [disabled]="isPlaying">
+          [disabled]="isPlaying()">
 
           Show trumpet
         </ion-toggle>
 </ion-item>
 <ion-item>
-        <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)" [disabled]="isPlaying">
+        <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)" [disabled]="isPlaying()">
           <b>&flat; &amp; &sharp;</b>
         </ion-toggle>
       </ion-item>
@@ -23,7 +25,7 @@
 
   </ion-content>
 </ion-menu>
-<div class="ion-page" id="main-content">
+<div class="ion-page" id="main-content" >
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -42,7 +44,9 @@
       <div class="top">
         <div class="metronome">
           <div class="metronome-bullet">
-            <h1 id="metronome-label">{{ beatCounter >= 0 ? (beatCounter + 1): '&nbsp;'}}</h1>
+            <h1 id="metronome-label" *ngIf="beat$|async as beat">
+              {{ beat.beat >= 0 ? (beat.beat + 1): '&nbsp;'}}
+            </h1>
             <h3 id="action">{{currentAction}}</h3>
           </div>
         </div>
@@ -85,7 +89,7 @@
               <div id="open-modal-low-note" expand="block" class="low-note">
                 <img id="high-note" [src]="getNoteImg(lowNote)">
               </div>
-              <ion-modal *ngIf="!isPlaying" trigger="open-modal-low-note" [canDismiss]="canDismiss" [initialBreakpoint]="1"
+              <ion-modal *ngIf="!isPlaying()" trigger="open-modal-low-note" [canDismiss]="canDismiss" [initialBreakpoint]="1"
                 [breakpoints]="[0, 1]" [handle]="false">
                 <ng-template>
                   <scroll-image-component
@@ -122,9 +126,9 @@
     </div>
   </ion-content>
 
-  <ion-footer>
+  <ion-footer >
     <ion-button (click)="startStop()" expand="block">
-      {{isPlaying ? 'Stop':'Start'}}
+      {{isPlaying() ? 'Stop':'Start'}}
     </ion-button>
   </ion-footer>
 

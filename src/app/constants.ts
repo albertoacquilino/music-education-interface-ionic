@@ -6,12 +6,6 @@ export const MAXNOTE = 30;
 export const MINNOTE = 0;
 export const MAXTEMPO = 180;
 export const MINTEMPO = 40;
-export const BEAT_SOUNDS = [
-    new Howl({ src: ['assets/sounds/tick_strong.wav'] }),
-    new Howl({ src: ['assets/sounds/tick_weak.wav'] }),
-    new Howl({ src: ['assets/sounds/tick_weak.wav'] }),
-    new Howl({ src: ['assets/sounds/tick_weak.wav'] })
-]
 
 export const NOTES = [
     ['F1s', 'G1f'],
