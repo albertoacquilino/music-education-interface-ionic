@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'music-education-interface-ionic',
+  appId: 'com.meiteam.trumpet',
+  appName: 'MEI-Trumpet',
   webDir: 'www',
   server: {
     androidScheme: 'https'
