@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, Subscription, TimeInterval } from 'rxjs';
 import { interval, take } from 'rxjs';
 import { MAXTEMPO, MAX_CYCLES, MINTEMPO } from '../constants';
 
+
 const DEFAULT_TEMPO = 80;
 
 export type AppBeat = { playing: boolean, measure: number, beat: number, cycle: number };
@@ -14,10 +15,10 @@ export class BeatService {
   public tempo$ = new BehaviorSubject<number>(DEFAULT_TEMPO);
   public playing$ = new BehaviorSubject<boolean>(false);
   public tick$ = new EventEmitter<AppBeat>();
-  
+
   private _interval!: Subscription;
 
-  private set _playing(value: boolean){
+  private set _playing(value: boolean) {
     this.playing$.next(value);
   }
 
@@ -30,18 +31,21 @@ export class BeatService {
   private _cycle: number = -1;
 
   constructor() { }
-  
 
-  public setTempo(value: number){
+
+  public setTempo(value: number) {
     if (this._playing) return;
 
-    if(value > MAXTEMPO || value < MINTEMPO) return;
+    if (value > MAXTEMPO || value < MINTEMPO) return;
 
     this.tempo$.next(value);
   }
 
-  public start(){
+
+
+  public start() {
     if (this._playing) return;
+
     if (this._interval) this._interval.unsubscribe();
 
     this._playing = true;
@@ -51,30 +55,30 @@ export class BeatService {
 
     this._interval = interval(60000 / this.tempo$.value)
       .pipe(take(MAX_CYCLES * 4))
-    .subscribe(() => {
-      this._beat = (this._beat + 1) % 4;
-      if (this._beat == 0) {
-        this._measure = (this._measure + 1) % 3;
-        if (this._measure == 0) {
-          this._cycle += 1;
-          if (this._cycle == MAX_CYCLES) {
-            this.stop();
+      .subscribe(() => {
+        this._beat = (this._beat + 1) % 4;
+        if (this._beat == 0) {
+          this._measure = (this._measure + 1) % 3;
+          if (this._measure == 0) {
+            this._cycle += 1;
+            if (this._cycle == MAX_CYCLES) {
+              this.stop();
+            }
           }
         }
-      }
 
-      this.tick$.emit(({
-        playing: true,
-        measure: this._measure,
-        beat: this._beat,
-        cycle: this._cycle
-      }));
-    });
+        this.tick$.emit(({
+          playing: true,
+          measure: this._measure,
+          beat: this._beat,
+          cycle: this._cycle
+        }));
+      });
   }
 
-  public stop(){
-    if(!this._playing) return;
-    
+  public stop() {
+    if (!this._playing) return;
+
     this._playing = false;
 
     if (!this._interval) return;

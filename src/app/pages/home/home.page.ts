@@ -13,6 +13,7 @@ import { AppBeat, BeatService } from '../../services/beat.service';
 import { Observable, tap } from 'rxjs';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { PitchService } from 'src/app/services/pitch.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class HomePage {
     private _picker: PickerController, 
     private _tempo: BeatService, 
     private _sounds: SoundsService,
+    private _firebase: FirebaseService,
     //private _pitch: PitchService
     ) {      
     this.beat$ = this._tempo.tick$.pipe(
@@ -162,12 +164,14 @@ export class HomePage {
 
   start() {
     this._tempo.start();
+    this._firebase.saveStart(this.tempo, this.lowNote, this.highNote, this.useFlatsAndSharps, this.showTrumpetHints)
   }
 
   stop() {
     this._tempo.stop();
     // stop everything playing in the audio context
     Howler.stop();
+    this._firebase.saveStop();
   }
 
 

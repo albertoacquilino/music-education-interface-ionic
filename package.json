@@ -29,6 +29,7 @@
     "@fortawesome/angular-fontawesome": "^0.12.1",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@ionic/angular": "^7.0.0",
+    "firebase": "^10.4.0",
     "font-awesome": "^4.7.0",
     "howler": "^2.2.3",
     "ionicons": "^7.0.0",
