@@ -1,10 +1,8 @@
 // Required for side-effects
-import "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import { DocumentData, DocumentReference, getFirestore, updateDoc } from "firebase/firestore";
-import { collection, addDoc } from "firebase/firestore";
+import "firebase/firestore";
+import { DocumentReference, addDoc, collection, getFirestore, updateDoc } from "firebase/firestore";
 
-import firebase from "firebase/compat/app";
 import { Injectable } from "@angular/core";
 
 
@@ -66,7 +64,10 @@ const firebaseConfig = {
 
         await updateDoc(
             this.currentDoc, 
-            {endTime: this.endTime}
+            {
+                endTime: this.endTime,
+                duration: this.endTime.getTime() - this.startTime.getTime() / 1000
+            }
         );
 
       }

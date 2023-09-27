@@ -3,17 +3,15 @@ import { IonicModule, PickerController } from '@ionic/angular';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { Howl } from 'howler';
 
 import { CommonModule } from '@angular/common';
 import { range } from 'lodash';
-import { MAXTEMPO, MAX_CYCLES, MINTEMPO, NOTES, POSITIONS } from '../../constants';
-import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { AppBeat, BeatService } from '../../services/beat.service';
 import { Observable, tap } from 'rxjs';
-import { SoundsService } from 'src/app/services/sounds.service';
-import { PitchService } from 'src/app/services/pitch.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { SoundsService } from 'src/app/services/sounds.service';
+import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
+import { MAXTEMPO, MINTEMPO, NOTES, POSITIONS } from '../../constants';
+import { AppBeat, BeatService } from '../../services/beat.service';
 
 
 @Component({
