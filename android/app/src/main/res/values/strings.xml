@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">music-education-interface-ionic</string>
-    <string name="title_activity_main">music-education-interface-ionic</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">MEI-Trumpet</string>
+    <string name="title_activity_main">MEI-Trumpet</string>
+    <string name="package_name">com.meiteam.trumpet</string>
+    <string name="custom_url_scheme">com.meiteam.trumpet</string>
 </resources>

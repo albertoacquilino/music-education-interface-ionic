@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.meiteam.trumpet;
 
 import com.getcapacitor.BridgeActivity;
 
