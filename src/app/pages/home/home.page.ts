@@ -12,6 +12,7 @@ import { SoundsService } from 'src/app/services/sounds.service';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
 import { MAXTEMPO, MAXCYCLES, MINTEMPO, NOTES, POSITIONS } from '../../constants';
 import { AppBeat, BeatService } from '../../services/beat.service';
+import { RegistrationService } from 'src/app/services/registration.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { AppBeat, BeatService } from '../../services/beat.service';
   imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, CommonModule],
 })
 export class HomePage {
+  
   showTrumpetHints = true;
   useFlatsAndSharps = true;
 
@@ -51,6 +53,7 @@ export class HomePage {
     private _tempo: BeatService, 
     private _sounds: SoundsService,
     private _firebase: FirebaseService,
+    private _registration: RegistrationService
     //private _pitch: PitchService
     ) {      
     this.beat$ = this._tempo.tick$.pipe(
@@ -226,7 +229,18 @@ export class HomePage {
 
   }
 
+  handleRegistration(){
+    //open a modal asking for the provided password
+
+
+
+  }
+
   async canDismiss(data?: any, role?: string) {
     return role !== 'gesture';
+  }
+
+  async openRegistrationModal() {
+    await this._registration.openModal();
   }
 }
