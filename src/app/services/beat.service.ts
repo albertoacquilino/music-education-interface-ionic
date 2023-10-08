@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, TimeInterval } from 'rxjs';
 import { interval, take } from 'rxjs';
-import { MAXTEMPO, MAX_CYCLES, MINTEMPO } from '../constants';
+import { MAXTEMPO, MAXCYCLES, MINTEMPO } from '../constants';
 
 
 const DEFAULT_TEMPO = 80;
@@ -41,8 +41,6 @@ export class BeatService {
     this.tempo$.next(value);
   }
 
-
-
   public start() {
     if (this._playing) return;
 
@@ -53,15 +51,15 @@ export class BeatService {
     this._beat = -1;
     this._measure = -1;
 
-    this._interval = interval(60000 / this.tempo$.value)
-      .pipe(take(MAX_CYCLES * 4))
+    this._interval = 
+      interval(60000 / this.tempo$.value)
       .subscribe(() => {
         this._beat = (this._beat + 1) % 4;
         if (this._beat == 0) {
           this._measure = (this._measure + 1) % 3;
           if (this._measure == 0) {
             this._cycle += 1;
-            if (this._cycle == MAX_CYCLES) {
+            if (this._cycle == MAXCYCLES) {
               this.stop();
             }
           }

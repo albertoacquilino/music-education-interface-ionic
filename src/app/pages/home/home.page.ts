@@ -10,7 +10,7 @@ import { Observable, tap } from 'rxjs';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { MAXTEMPO, MINTEMPO, NOTES, POSITIONS } from '../../constants';
+import { MAXTEMPO, MAXCYCLES, MINTEMPO, NOTES, POSITIONS } from '../../constants';
 import { AppBeat, BeatService } from '../../services/beat.service';
 
 
@@ -29,7 +29,7 @@ export class HomePage {
   faCircleChevronDown = faCircleChevronDown;
   faCircleChevronUp = faCircleChevronUp;
 
-  tempo = 80;
+  tempo$ = this._tempo.tempo$;
   highNote = 13;
   lowNote = 13;
 
@@ -54,12 +54,10 @@ export class HomePage {
     //private _pitch: PitchService
     ) {      
     this.beat$ = this._tempo.tick$.pipe(
+      tap((tempo: AppBeat) => console.table(tempo)),
       tap((tempo: AppBeat) => this.intervalHandler(tempo))
     );
     this.playing$ = this._tempo.playing$.asObservable();
-
-    // this._pitch.createDetector('autocorrelation', 2048, 512);
-    // this._pitch.test();
   }
 
   switchTrumpetHints(event: any){
@@ -99,7 +97,7 @@ export class HomePage {
     this.highNote = index;
     if (!this.useFlatsAndSharps) {
       if (NOTES[this.highNote].length == 2) {
-        this.highNote++;
+        this.highNote--;
       }
     }
 
@@ -107,9 +105,6 @@ export class HomePage {
       this.lowNote = this.highNote;
     }
   }
-
-
-
 
   updateTrumpetPosition(note: number) {
     const trumpetImg = POSITIONS[note];
@@ -131,9 +126,6 @@ export class HomePage {
     }
     return next;
   }
-
-
-
   
   intervalHandler(tempo: AppBeat) {    
     if (tempo.beat == 0){  
@@ -150,6 +142,11 @@ export class HomePage {
         case 2: this.currentAction = "Play"; break;
       }
     }
+    if (tempo.cycle === MAXCYCLES) {
+      this._firebase.saveStop('finished');
+      console.log('finished');
+    }
+
   }
 
   startStop() {
@@ -162,14 +159,14 @@ export class HomePage {
 
   start() {
     this._tempo.start();
-    this._firebase.saveStart(this.tempo, this.lowNote, this.highNote, this.useFlatsAndSharps, this.showTrumpetHints)
+    this._firebase.saveStart(this.tempo$.value, this.lowNote, this.highNote, this.useFlatsAndSharps, this.showTrumpetHints)
   }
 
   stop() {
     this._tempo.stop();
     // stop everything playing in the audio context
     Howler.stop();
-    this._firebase.saveStop();
+    this._firebase.saveStop('interrupted');
   }
 
 
@@ -180,6 +177,7 @@ export class HomePage {
   isPlaying(): boolean{
     return this._tempo.playing$.value;
   }
+
 
 
   async openTempoPicker() {
@@ -194,7 +192,7 @@ export class HomePage {
     let selectedValue: number;
     
 
-    selectedValue = this.tempo;
+    selectedValue = this.tempo$.value;
     options = range(MINTEMPO, MAXTEMPO+1, 5).map(v => ({
       value: v,
       text: `${v} bpm`

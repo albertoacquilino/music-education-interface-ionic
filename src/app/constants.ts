@@ -1,7 +1,4 @@
-import { Howl } from 'howler';
-
-export const MAX_CYCLES = 12;
-
+export const MAXCYCLES = 4;
 export const MAXNOTE = 30;
 export const MINNOTE = 0;
 export const MAXTEMPO = 180;

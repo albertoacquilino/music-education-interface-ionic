@@ -67,13 +67,14 @@ export class FirebaseService {
     }
   }
 
-  public async saveStop() {
+  public async saveStop(action: 'finished' | 'interrupted') {
     this.endTime = new Date();
 
     await updateDoc(
       this.currentDoc,
       {
         endTime: this.endTime,
+        action,
         duration: (this.endTime.getTime() - this.startTime.getTime()) / 1000
       }
     );

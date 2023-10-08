@@ -76,7 +76,7 @@
               <div class="tempo" (click)="openTempoPicker()" >
                 <h1>
                   &#9833;=
-                  <span id="tempo">{{tempo}} bpm</span>
+                  <span id="tempo">{{tempo$ | async}} bpm</span>
                 </h1>
               </div>
             </div>
@@ -86,11 +86,19 @@
           <div class="low-note-wrapper">
             <div class="simulate-input">
               <div class="title-section-wrapper">Lowest note:</div>
-              <div id="open-modal-low-note" expand="block" class="low-note">
+              <div 
+                id="open-modal-low-note" 
+                expand="block" 
+                class="low-note">
                 <img id="high-note" [src]="getNoteImg(lowNote)">
               </div>
-              <ion-modal *ngIf="!isPlaying()" trigger="open-modal-low-note" [canDismiss]="canDismiss" [initialBreakpoint]="1"
-                [breakpoints]="[0, 1]" [handle]="false">
+              <ion-modal 
+                *ngIf="!isPlaying()" 
+                trigger="open-modal-low-note" 
+                [canDismiss]="canDismiss" 
+                [initialBreakpoint]="1"
+                [breakpoints]="[0, 1]" 
+                [handle]="false">
                 <ng-template>
                   <scroll-image-component
                     [images]="noteImages"
@@ -105,20 +113,27 @@
           <div class="high-note-wrapper">
             <div class="simulate-input">
               <div class="title-section-wrapper">Highest note:</div>
-              <!-- <div class="high-note" (click)="openPicker('highNote')">
-              <img id="high-note" [src]="getNoteImg(highNote)">
-            </div> -->
-              <div id="open-modal-high-note" expand="block" class="high-note">
+              <div 
+                id="open-modal-high-note" 
+                expand="block" 
+                class="high-note">
                 <img id="high-note" [src]="getNoteImg(highNote)">
               </div>
-              <ion-modal *ngIf="!isPlaying" trigger="open-modal-high-note" [canDismiss]="canDismiss" [initialBreakpoint]="1"
-                [breakpoints]="[0, 1]" [handle]="false">
+              <ion-modal 
+                *ngIf="!isPlaying()" 
+                trigger="open-modal-high-note" 
+                [canDismiss]="canDismiss" 
+                [initialBreakpoint]="1"
+                [breakpoints]="[0, 1]" 
+                [handle]="false">
                 <ng-template>
-                  <scroll-image-component [images]="noteImages" [index]="highNote"
-                    (indexChange)="changeHighNote($event)"></scroll-image-component>
+                  <scroll-image-component
+                    [images]="noteImages"
+                    [index]="highNote"
+                    (indexChange)="changeHighNote($event)">
+                  </scroll-image-component>
                 </ng-template>
               </ion-modal>
-
             </div>
           </div>
         </div>
