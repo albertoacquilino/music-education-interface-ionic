@@ -27,6 +27,7 @@
     "@capacitor/ios": "5.0.3",
     "@capacitor/keyboard": "5.0.2",
     "@capacitor/status-bar": "5.0.2",
+    "@capgo/capacitor-mute": "^2.0.13",
     "@fortawesome/angular-fontawesome": "^0.12.1",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@ionic/angular": "^7.0.0",
