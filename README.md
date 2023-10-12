@@ -21,3 +21,8 @@ line 44:
 - source="$(readlink "${source}")"
 + source="$(readlink -f "${source}")"
 ```
+
+
+## update versions ##
+in file `ios/App/App.xcodeproj/project.pbxproj` change CURRENT_PROJECT_VERSION and MARKETING_VERSION
+in file `android/app/build.gradle` change versionCode and versionName
