@@ -11,9 +11,23 @@ export type AppBeat = { playing: boolean, measure: number, beat: number, cycle: 
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Service that handles the beat of a music piece.
+ */
 export class BeatService {
+  /**
+   * The tempo of the beat.
+   */
   public tempo$ = new BehaviorSubject<number>(DEFAULT_TEMPO);
+
+  /**
+   * Whether the beat is currently playing.
+   */
   public playing$ = new BehaviorSubject<boolean>(false);
+
+  /**
+   * Event emitter for each tick of the beat.
+   */
   public tick$ = new EventEmitter<AppBeat>();
 
   private _interval!: Subscription;
@@ -32,7 +46,10 @@ export class BeatService {
 
   constructor() { }
 
-
+  /**
+   * Sets the tempo of the beat.
+   * @param value The new tempo value.
+   */
   public setTempo(value: number) {
     if (this._playing) return;
 
@@ -41,6 +58,9 @@ export class BeatService {
     this.tempo$.next(value);
   }
 
+  /**
+   * Starts the beat.
+   */
   public start() {
     if (this._playing) return;
 
@@ -74,6 +94,9 @@ export class BeatService {
       });
   }
 
+  /**
+   * Stops the beat.
+   */
   public stop() {
     if (!this._playing) return;
 

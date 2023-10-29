@@ -10,6 +10,11 @@ export const BEAT_SOUNDS = [
     new Howl({ src: ['assets/sounds/tick_weak.wav'] })
 ]
 
+/**
+ * Plays an audio file and fades it out after a specified duration.
+ * @param audio - The Howl audio object to play.
+ * @param duration - The duration in milliseconds to play the audio before fading it out.
+ */
 function playAndFade(audio: Howl, duration: number) {
     const id1 = audio.play();
     const fade = Math.max(duration / 10, 100);
@@ -21,7 +26,6 @@ function playAndFade(audio: Howl, duration: number) {
     }, duration);
 }
 
-
 @Injectable({
     providedIn: 'root'
 })
@@ -29,13 +33,18 @@ export class SoundsService {
     private preloadedNotes: Howl[] = [];
     currentNote: number = 0;
 
-    
-
+    /**
+     * Creates an instance of SoundsService.
+     * @param {BeatService} _beat - The BeatService instance.
+     */
     constructor(private _beat: BeatService) {
         this.preloadSounds();
         this._beat.tick$.subscribe((beat) => this.playSounds(beat));
     }
 
+    /**
+     * Preloads all the sounds used in the app.
+     */
     private preloadSounds() {
         for (let sound of BEAT_SOUNDS) {
             sound.load();
@@ -50,16 +59,27 @@ export class SoundsService {
         }
     }
 
+    /**
+     * Plays the trumpet sound for the current note.
+     * @param {number} currentNote - The current note index.
+     */
     playTrumpetSound(currentNote: number) {
         const audio = this.preloadedNotes[currentNote];
         playAndFade(audio, 4 * 60000 / this._beat.tempo$.value);
     }
 
+    /**
+     * Plays the metronome sound for the given beat counter.
+     * @param {number} beatCounter - The beat counter.
+     */
     playMetronome(beatCounter: number) {
         BEAT_SOUNDS[beatCounter].play();
     }
 
-
+    /**
+     * Plays the sounds for the given tempo.
+     * @param {AppBeat} tempo - The tempo object.
+     */
     playSounds(tempo: AppBeat) {
         this.playMetronome(tempo.beat);
 
@@ -69,6 +89,4 @@ export class SoundsService {
             }
         }
     }
-
-
 }
