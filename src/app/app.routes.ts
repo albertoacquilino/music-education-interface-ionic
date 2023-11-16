@@ -7,12 +7,16 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'score',
     pathMatch: 'full',
   },
   {
     path: 'scroll-image-page',
     loadComponent: () => import('./components/scroll-image-selector/scroll-image-test-page')
       .then((m) => m.ScrollImagePage),
+  }, {
+    path: 'score',
+    loadComponent: () => import('./components/score/score.component')
+      .then((m) => m.ScoreComponent),
   }
 ];
