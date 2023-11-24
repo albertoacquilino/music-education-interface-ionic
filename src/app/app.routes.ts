@@ -16,7 +16,7 @@ export const routes: Routes = [
       .then((m) => m.ScrollImagePage),
   }, {
     path: 'score',
-    loadComponent: () => import('./components/score/score.component')
-      .then((m) => m.ScoreComponent),
+    loadComponent: () => import('./pages/score-test.component')
+      .then((m) => m.ScoreComponentTest),
   }
 ];
