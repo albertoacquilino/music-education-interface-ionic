@@ -82,7 +82,9 @@ ion-modal {
 .score {
   grid-area: score;
   text-align: center;
-  img {
+  app-score {
+    min-width: 100px;
+    min-height: 100px;
     max-width: 600px;
   }
 }

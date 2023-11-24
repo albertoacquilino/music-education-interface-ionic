@@ -69,8 +69,8 @@ export class ScoreComponent implements AfterViewInit {
    */
   setSize() {
     const size = {
-      width: this.hostElement.nativeElement.clientWidth,
-      height: this.hostElement.nativeElement.clientHeight
+      width: this.hostElement.nativeElement.getBoundingClientRect().width,
+      height: this.hostElement.nativeElement.getBoundingClientRect().height
     };
 
     this.size$.next(size);
@@ -159,7 +159,9 @@ export class ScoreComponent implements AfterViewInit {
         .draw();
 
       const notesMeasure = measure
-        .map((measure) => new Flow.StaveNote({ keys: measure.notes, duration: measure.duration }));
+        .map((measure) => 
+          new Flow.StaveNote({ keys: measure.notes, duration: measure.duration })
+        );
       // Helper function to justify and draw a 4/4 voice
       Flow.Formatter.FormatAndDraw(this._context, staveMeasure, notesMeasure);
 

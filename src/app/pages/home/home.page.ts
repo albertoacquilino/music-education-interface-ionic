@@ -14,14 +14,15 @@ import { MAXTEMPO, MAXCYCLES, MINTEMPO, NOTES, POSITIONS } from '../../constants
 import { AppBeat, BeatService } from '../../services/beat.service';
 import { RegistrationService } from 'src/app/services/registration.service';
 import { Mute, MutePlugin, MuteResponse } from '@capgo/capacitor-mute';
-
+import { ScoreComponent } from 'src/app/components/score/score.component';
+import { Score } from 'src/app/components/score/score.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, CommonModule],
+  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule],
 })
 /**
  * HomePage class represents the home page of the music education interface.
@@ -77,6 +78,24 @@ export class HomePage {
    * The current note.
    */
   currentNote: number = 0;
+
+  score: Score = {
+    clef: 'treble',
+    dynamic: 'mf',
+    timeSignature: "4/4",
+    keySignature: "C",
+    measures: [
+      [
+        { notes: ['g/4'], duration: 'wr' },
+      ],
+      [
+        { notes: ['g/4'], duration: 'w' },
+      ],
+      [
+        { notes: ['g/4'], duration: 'w' },
+      ]
+    ]
+  }
 
   /**
    * The audio nodes.
@@ -240,13 +259,41 @@ export class HomePage {
 
   /**
    * Updates the score image based on the given note.
-   * @param note - The index of the note to use for updating the score image.
+   * @param noteNumber - The index of the note to use for updating the score image.
    * @returns void
    */
-  updateScore(note: number) {
-    const _notes = NOTES[note];
-    const scoreNote = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
-    this.scoreImage = `assets/images/score_images/${scoreNote}.svg`
+  updateScore(noteNumber: number) {
+    const _notes = NOTES[noteNumber];
+    const scoreImage = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
+    this.scoreImage = `assets/images/score_images/${scoreImage}.svg`
+
+    let scoreNote;
+    const note = scoreImage[0];
+    const octave = scoreImage[1];
+    scoreNote = note + '/' + (Number(octave)+2);
+    if(scoreImage.length == 3){
+      const accidental = scoreImage[2]=='s' ? '#' : 'b';
+      scoreNote = note + accidental + '/' + (Number(octave)+2);
+    }
+    
+
+    this.score = {
+      clef: 'treble',
+      dynamic: 'mf',
+      timeSignature: "4/4",
+      keySignature: "C",
+      measures: [
+        [
+          { notes: ['b/4'], duration: 'wr' },
+        ],
+        [
+          { notes: [scoreNote], duration: 'w' },
+        ],
+        [
+          { notes: [scoreNote], duration: 'w' },
+        ]
+      ]
+    }
   }
 
   /**
