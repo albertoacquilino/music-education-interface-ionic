@@ -16,11 +16,12 @@ export const BEAT_SOUNDS = [
  * @param audio - The Howl audio object to play.
  * @param duration - The duration in milliseconds to play the audio before fading it out.
  */
-function playAndFade(audio: Howl, duration: number) {
+function playAndFade(audio: Howl, duration: number, volume: number = 1.0) {
+    audio.volume(volume);
     const id1 = audio.play();
     const fade = Math.max(duration / 10, 100);
     setTimeout(() => {
-        audio.fade(1, 0, fade, id1);
+        audio.fade(volume, 0, fade, id1);
     }, duration - fade);
     setTimeout(() => {
         audio.stop(id1);
@@ -33,6 +34,7 @@ function playAndFade(audio: Howl, duration: number) {
 export class SoundsService {
     private preloadedNotes: Howl[] = [];
     currentNote: number = 0;
+    volume: number = 1.0;
 
     /**
      * Creates an instance of SoundsService.
@@ -66,7 +68,7 @@ export class SoundsService {
      */
     playTrumpetSound(currentNote: number) {
         const audio = this.preloadedNotes[currentNote];
-        playAndFade(audio, 4 * 60000 / this._beat.tempo$.value);
+        playAndFade(audio, 4 * 60000 / this._beat.tempo$.value, this.volume);
     }
 
     /**
@@ -89,5 +91,13 @@ export class SoundsService {
                 this.playTrumpetSound(this.currentNote)
             }
         }
+    }
+
+    /**
+     * Sets the volume of the sounds.
+     * @param {number} volume - The volume to set.
+     */
+    setVolume(volume: number) {
+        this.volume = volume;
     }
 }

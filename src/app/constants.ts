@@ -75,3 +75,12 @@ export const POSITIONS = [
     'pos_2',
     'pos_1',
 ];
+
+
+export const DYNAMICS = [
+    {label: 'p', volume: 0.25},
+    {label: 'mp', volume: 0.5},
+    {label: 'mf', volume: 0.75},
+    {label: 'f', volume: 1.0},
+    {label: 'ff', volume: 1.3},
+];

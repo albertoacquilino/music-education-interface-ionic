@@ -37,7 +37,7 @@ export function generateNotes(notes: string[], duration: string): StaveNote {
    * @param meiNote - The MEI note to convert.
    * @returns The converted Score object.
    */
-  export function scoreFromNote(meiNote: string): Score{
+  export function scoreFromNote(meiNote: string, dynamic: string|undefined = undefined): Score{
     let scoreNote;
     const note = meiNote[0];
     const octave = meiNote[1];
@@ -47,10 +47,10 @@ export function generateNotes(notes: string[], duration: string): StaveNote {
         scoreNote = note + accidental + '/' + (Number(octave) + 2);
     }
 
-
     const score = {
         clef: 'treble',
-        dynamic: 'mf',
+        dynamic: dynamic,
+        dynamicPosition: 2,
         timeSignature: "4/4",
         keySignature: "C",
         measures: [

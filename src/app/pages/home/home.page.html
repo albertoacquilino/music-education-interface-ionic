@@ -15,10 +15,17 @@
 
           Show trumpet
         </ion-toggle>
-</ion-item>
-<ion-item>
+      </ion-item>
+
+      <ion-item>
         <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)" [disabled]="isPlaying()">
           <b>&flat; &amp; &sharp;</b>
+        </ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-toggle [checked]="useDynamics" (ionChange)="switchUseDynamics($event)" [disabled]="isPlaying()">
+          <b>Dynamics</b>
         </ion-toggle>
       </ion-item>
 

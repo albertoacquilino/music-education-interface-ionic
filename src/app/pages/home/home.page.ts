@@ -15,7 +15,7 @@ import { RegistrationService } from 'src/app/services/registration.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS } from '../../constants';
+import { DYNAMICS, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS } from '../../constants';
 import { BeatService } from '../../services/beat.service';
 import { AppBeat } from 'src/app/models/appbeat.types';
 
@@ -45,6 +45,11 @@ export class HomePage {
    * Indicates whether to use flats and sharps.
    */
   useFlatsAndSharps = true;
+
+  /**
+   * Indicats wheter or not dynamics are enabled.
+   */
+  useDynamics = true;
 
   /**
    * The audio context used for playing sounds.
@@ -81,23 +86,7 @@ export class HomePage {
    */
   currentNote: number = 0;
 
-  score: Score = {
-    clef: 'treble',
-    dynamic: 'mf',
-    timeSignature: "4/4",
-    keySignature: "C",
-    measures: [
-      [
-        { notes: ['g/4'], duration: 'wr' },
-      ],
-      [
-        { notes: ['g/4'], duration: 'w' },
-      ],
-      [
-        { notes: ['g/4'], duration: 'w' },
-      ]
-    ]
-  }
+  score: Score = scoreFromNote(NOTES[this.currentNote][0]);
 
   /**
    * The audio nodes.
@@ -213,6 +202,14 @@ export class HomePage {
     }
   }
 
+  switchUseDynamics(event: any){
+    this.useDynamics = event.detail.checked;
+    if(!this.useDynamics){
+      this.score = scoreFromNote(NOTES[this.currentNote][0]);
+      this._sounds.setVolume(1.0);
+    }
+  }
+
   /**
    * Changes the low note.
    * @param index - The index.
@@ -228,7 +225,6 @@ export class HomePage {
     if (this.lowNote > this.highNote) {
       this.highNote = this.lowNote;
     }
-
   }
 
   /**
@@ -269,7 +265,14 @@ export class HomePage {
     const scoreImage = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
     this.scoreImage = `assets/images/score_images/${scoreImage}.svg`
 
-    this.score = scoreFromNote(scoreImage);
+    
+    if(this.useDynamics){
+      const dynamic = DYNAMICS[Math.floor(Math.random() * 5)]
+      this._sounds.setVolume(dynamic.volume);
+      this.score = scoreFromNote(scoreImage, dynamic.label);
+    } else{
+      this.score = scoreFromNote(scoreImage);
+    }    
   }
 
   /**
