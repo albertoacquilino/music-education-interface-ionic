@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { AppBeat, BeatService } from "./beat.service";
+import { BeatService } from "./beat.service";
+import { AppBeat } from '../models/appbeat.types';
 import { Howl } from "howler";
 import { NOTES } from "../constants";
 

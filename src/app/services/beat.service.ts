@@ -2,11 +2,10 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, TimeInterval } from 'rxjs';
 import { interval, take } from 'rxjs';
 import { MAXTEMPO, MAXCYCLES, MINTEMPO } from '../constants';
+import { AppBeat } from '../models/appbeat.types';
 
 
 const DEFAULT_TEMPO = 80;
-
-export type AppBeat = { playing: boolean, measure: number, beat: number, cycle: number };
 
 @Injectable({
   providedIn: 'root'

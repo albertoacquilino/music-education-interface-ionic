@@ -1,5 +1,6 @@
 import { AfterViewInit, Component } from "@angular/core";
-import { Score, ScoreComponent } from "../components/score/score.component";
+import { ScoreComponent } from "../components/score/score.component";
+import { Score } from '../models/score.types';
 import { CommonModule } from "@angular/common";
 import { Flow } from 'vexflow';
 
@@ -22,9 +23,12 @@ export class ScoreComponentTest implements AfterViewInit {
 
         measures: [
             [
-                { notes: ["g/4"], duration: 'w'}, 
+                { notes: ["b#/3", "d#/4"], duration: 'w' },
+            ],
+            [
+                { notes: ["g#/4"], duration: 'w'}, 
             ],[
-                { notes: ["b/4"], duration: 'w'}, 
+                { notes: ["eb/4"], duration: 'w'}, 
             ]
         ]
     }
@@ -38,7 +42,7 @@ export class ScoreComponentTest implements AfterViewInit {
         keySignature: "C",
         measures: [
             [
-                { notes: ["b/4", 'e/3'], duration: 'q' },
+                { notes: ["b#/4", 'eb/3'], duration: 'q' },
                 { notes: ["c/4"], duration: 'q' },
                 { notes: ["d/4"], duration: 'q' },
                 { notes: ["e/4"], duration: 'q' }
@@ -55,40 +59,6 @@ export class ScoreComponentTest implements AfterViewInit {
 
 
     ngAfterViewInit() {
-        const { Factory, EasyScore, System } = Flow;
-
-        const vf = new Factory({
-            renderer: { elementId: 'test', width: 500, height: 200 },
-        });
-
-        const score = vf.EasyScore();
-        const system = vf.System();
-
-        system
-            .addStave({
-                voices: [
-                    //@ts-ignore
-                    score.voice(score.notes('C#5/q, B4, A4, G#4', { stem: 'up' })),
-                    //@ts-ignore
-                    score.voice(score.notes('C#4/h, C#4', { stem: 'down' })),
-                ],
-            })
-            .addClef('treble')
-            .addTimeSignature('4/4');
-        
-        
-        system.addStave({
-                voices: [
-                    //@ts-ignore
-                    score.voice(score.notes('C#5/q, B4, A4, G#4', { stem: 'up' })),
-                    //@ts-ignore
-                    score.voice(score.notes('C#4/h, C#4', { stem: 'down' })),
-                ],
-            })
-            .addClef('treble')
-            .addTimeSignature('4/4')
-
-        vf.draw();
-    }
+   }
 
 }

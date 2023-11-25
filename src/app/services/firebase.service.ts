@@ -4,6 +4,7 @@ import "firebase/firestore";
 import { Device } from '@capacitor/device';
 import { DocumentReference, addDoc, collection, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 import { Injectable } from "@angular/core";
+import { Activity, StudyGroup } from "../models/firebase.types";
 
 
 const firebaseConfig = {
@@ -15,34 +16,6 @@ const firebaseConfig = {
   appId: "1:874766472837:web:87d898a7b07de47e097bec",
   measurementId: "G-150GS2FPPB"
 };
-
-export type StudyGroup = {
-  name: string,
-  password: string,
-}
-
-export type DeviceInfo = {
-  id: string,
-  model: string,
-  platform: string,
-  osVersion: string,
-}
-
-export type Activity = {
-  tempo: number,
-  lowNote: number,
-  highNote: number,
-  useFlatsAndSharps: boolean,
-  showTrumpetHints: boolean,
-  startTime: Date,
-  endTime?: Date,
-  device: DeviceInfo,
-  action?: 'finished' | 'interrupted',
-  duration?: number,
-  group?: string | null,
-  user?: string | null,
-
-}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
