@@ -4,6 +4,8 @@ export const MINNOTE = 0;
 export const MAXTEMPO = 180;
 export const MINTEMPO = 40;
 
+export const INITIAL_NOTE = 13;
+
 export const NOTES = [
     ['F1s', 'G1f'],
     ['G1'],
@@ -78,9 +80,7 @@ export const POSITIONS = [
 
 
 export const DYNAMICS = [
-    {label: 'p', volume: 0.25},
-    {label: 'mp', volume: 0.5},
+    {label: 'p', volume: 0.5},
     {label: 'mf', volume: 0.75},
-    {label: 'f', volume: 1.0},
-    {label: 'ff', volume: 1.3},
+    {label: 'f', volume: 1.0},    
 ];

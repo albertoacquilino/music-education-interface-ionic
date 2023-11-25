@@ -15,7 +15,7 @@ import { RegistrationService } from 'src/app/services/registration.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { DYNAMICS, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS } from '../../constants';
+import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS } from '../../constants';
 import { BeatService } from '../../services/beat.service';
 import { AppBeat } from 'src/app/models/appbeat.types';
 
@@ -74,19 +74,22 @@ export class HomePage {
   /**
    * The high note.
    */
-  highNote = 13;
+  highNote = INITIAL_NOTE;
 
   /**
    * The low note.
    */
-  lowNote = 13;
+  lowNote = INITIAL_NOTE;
 
   /**
    * The current note.
    */
-  currentNote: number = 0;
+  currentNote: number = INITIAL_NOTE;
 
-  score: Score = scoreFromNote(NOTES[this.currentNote][0]);
+  /**
+   * The score.
+   */
+  score: Score = scoreFromNote(NOTES[this.currentNote][0], DYNAMICS[2].label);
 
   /**
    * The audio nodes.
@@ -267,7 +270,7 @@ export class HomePage {
 
     
     if(this.useDynamics){
-      const dynamic = DYNAMICS[Math.floor(Math.random() * 5)]
+      const dynamic = DYNAMICS[Math.floor(Math.random() * DYNAMICS.length)];
       this._sounds.setVolume(dynamic.volume);
       this.score = scoreFromNote(scoreImage, dynamic.label);
     } else{
