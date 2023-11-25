@@ -5,17 +5,19 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 import { CommonModule } from '@angular/common';
+import { Mute } from '@capgo/capacitor-mute';
 import { range } from 'lodash';
 import { Observable, interval, tap } from 'rxjs';
-import { FirebaseService } from 'src/app/services/firebase.service';
-import { SoundsService } from 'src/app/services/sounds.service';
-import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { MAXTEMPO, MAXCYCLES, MINTEMPO, NOTES, POSITIONS } from '../../constants';
-import { AppBeat, BeatService } from '../../services/beat.service';
-import { RegistrationService } from 'src/app/services/registration.service';
-import { Mute, MutePlugin, MuteResponse } from '@capgo/capacitor-mute';
 import { ScoreComponent } from 'src/app/components/score/score.component';
-import { Score } from 'src/app/components/score/score.component';
+import { Score } from 'src/app/models/score.types';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { RegistrationService } from 'src/app/services/registration.service';
+import { SoundsService } from 'src/app/services/sounds.service';
+import { scoreFromNote } from 'src/app/utils/score.utils';
+import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
+import { MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS } from '../../constants';
+import { BeatService } from '../../services/beat.service';
+import { AppBeat } from 'src/app/models/appbeat.types';
 
 @Component({
   selector: 'app-home',
@@ -267,33 +269,7 @@ export class HomePage {
     const scoreImage = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
     this.scoreImage = `assets/images/score_images/${scoreImage}.svg`
 
-    let scoreNote;
-    const note = scoreImage[0];
-    const octave = scoreImage[1];
-    scoreNote = note + '/' + (Number(octave)+2);
-    if(scoreImage.length == 3){
-      const accidental = scoreImage[2]=='s' ? '#' : 'b';
-      scoreNote = note + accidental + '/' + (Number(octave)+2);
-    }
-    
-
-    this.score = {
-      clef: 'treble',
-      dynamic: 'mf',
-      timeSignature: "4/4",
-      keySignature: "C",
-      measures: [
-        [
-          { notes: ['b/4'], duration: 'wr' },
-        ],
-        [
-          { notes: [scoreNote], duration: 'w' },
-        ],
-        [
-          { notes: [scoreNote], duration: 'w' },
-        ]
-      ]
-    }
+    this.score = scoreFromNote(scoreImage);
   }
 
   /**

@@ -4,43 +4,11 @@ import { filter, tap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Flow } from 'vexflow';
 //@ts-ignore
-import { Renderer, RenderContext } from 'vexflow';
+import { Renderer, RenderContext, StaveNote } from 'vexflow';
+import { generateNotes } from 'src/app/utils/score.utils';
+import { Score } from 'src/app/models/score.types';
 
 
-/**
- * Represents a musical score.
- */
-export type Score = {
-  /**
-   * An array of measures, where each measure contains an array of notes and a duration.
-   */
-  measures: { notes: string[], duration: string }[][];
-  
-  /**
-   * The clef used in the score.
-   */
-  clef?: string;
-  
-  /**
-   * The time signature of the score.
-   */
-  timeSignature?: string;
-  
-  /**
-   * The key signature of the score.
-   */
-  keySignature?: string;
-  
-  /**
-   * The dynamic marking of the score.
-   */
-  dynamic?: string;
-  
-  /**
-   * The position of the dynamic marking in the score.
-   */
-  dynamicPosition?: number;
-}
 
 @Component({
   selector: 'app-score',
@@ -153,18 +121,14 @@ export class ScoreComponent implements AfterViewInit {
         }
       }
 
-
       staveMeasure
         .setContext(this._context)
         .draw();
 
       const notesMeasure = measure
-        .map((measure) => 
-          new Flow.StaveNote({ keys: measure.notes, duration: measure.duration })
-        );
-      // Helper function to justify and draw a 4/4 voice
+        .map((measure) => generateNotes(measure.notes, measure.duration));
+        
       Flow.Formatter.FormatAndDraw(this._context, staveMeasure, notesMeasure);
-
     }
   }
 
