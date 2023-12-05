@@ -18,5 +18,9 @@ export const routes: Routes = [
     path: 'score',
     loadComponent: () => import('./pages/score-test.component')
       .then((m) => m.ScoreComponentTest),
+  }, {
+    path: 'dynamics',
+    loadComponent: () => import('./pages/dynamics-test.component')
+      .then((m) => m.ScoreComponentTest),
   }
 ];

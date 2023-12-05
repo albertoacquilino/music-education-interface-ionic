@@ -80,7 +80,7 @@ export const POSITIONS = [
 
 
 export const DYNAMICS = [
-    {label: 'p', volume: 0.5},
-    {label: 'mf', volume: 0.75},
-    {label: 'f', volume: 1.0},    
+    { label: 'p', volume: 0.15 },
+    { label: 'mf', volume: 0.4 },
+    { label: 'f', volume: 1.0 },
 ];

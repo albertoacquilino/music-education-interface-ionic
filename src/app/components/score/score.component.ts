@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { filter, tap } from 'rxjs/operators';
+import { AfterViewInit, Component, ElementRef, HostListener, Input } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Flow } from 'vexflow';
-//@ts-ignore
-import { Renderer, RenderContext, StaveNote } from 'vexflow';
-import { generateNotes } from 'src/app/utils/score.utils';
+
 import { Score } from 'src/app/models/score.types';
+import { generateNotes } from 'src/app/utils/score.utils';
+//@ts-ignore
+import { RenderContext, Renderer } from 'vexflow';
 
 
 
@@ -81,7 +82,6 @@ export class ScoreComponent implements AfterViewInit {
     }, 100);
   }
 
-
   /**
    * Updates the score with the given Score object.
    * 
@@ -117,7 +117,13 @@ export class ScoreComponent implements AfterViewInit {
           score.dynamicPosition = 1;
         }
         if (score.dynamicPosition === index + 1) {
-          staveMeasure.setText(score.dynamic, Flow.Modifier.Position.BELOW, { shift_y: 30 });
+          const note = staveMeasure.setText(score.dynamic,
+            Flow.Modifier.Position.BELOW, {
+            shift_y: 30,
+            shift_x: (-measureWidth / 2) + 10,
+          });
+
+
         }
       }
 
@@ -127,7 +133,7 @@ export class ScoreComponent implements AfterViewInit {
 
       const notesMeasure = measure
         .map((measure) => generateNotes(measure.notes, measure.duration));
-        
+
       Flow.Formatter.FormatAndDraw(this._context, staveMeasure, notesMeasure);
     }
   }
