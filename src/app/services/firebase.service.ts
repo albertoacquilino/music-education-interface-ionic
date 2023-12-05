@@ -32,7 +32,7 @@ export class FirebaseService {
   group = localStorage.getItem('group') || null;
   user = localStorage.getItem('user') || null;
 
-  constructor() { 
+  constructor() {
     this.uploadSavedActivities();
   }
 
@@ -50,20 +50,22 @@ export class FirebaseService {
     lowNote: number,
     highNote: number,
     useFlatsAndSharps: boolean,
-    showTrumpetHints: boolean,
+    hideTrumpet: boolean,
+    useDynamics: boolean
   ) {
     const startTime = new Date();
     const deviceInfo = await Device.getInfo();
     const deviceId = await Device.getId();
 
-  
+
     this.currentActivity = {
       tempo,
       lowNote,
       highNote,
       useFlatsAndSharps,
-      showTrumpetHints,
+      hideTrumpet,
       startTime,
+      useDynamics,
       device: {
         id: deviceId.identifier,
         model: deviceInfo.model,
@@ -90,10 +92,10 @@ export class FirebaseService {
       duration: (endTime.getTime() - this.currentActivity.startTime.getTime()) / 1000
     };
 
-    this.updateInLocalStorage(this.currentActivity);      
+    this.updateInLocalStorage(this.currentActivity);
 
     // save to Firebase
-    try{
+    try {
       await this.saveActivity(this.currentActivity);
       // remove from local storage
       this.removeFromLocalStorage(this.currentActivity);
@@ -109,11 +111,11 @@ export class FirebaseService {
    * @param {string} user - The name of the user to register.
    * @returns {Promise<StudyGroup|null>} - A Promise that resolves to the StudyGroup object if the registration is successful, or null if the group password is invalid.
    */
-  public async registerToGroup(groupPwd: string, user: string): Promise<StudyGroup|null> {
+  public async registerToGroup(groupPwd: string, user: string): Promise<StudyGroup | null> {
     const querySnapshot = await getDocs(collection(db, "groups"));
     const groups = querySnapshot.docs.map(doc => doc.data());
     const group = groups.find(g => g['password'] === groupPwd);
-    if(!group){
+    if (!group) {
       return null;
     }
     // set group to local storage
@@ -121,14 +123,14 @@ export class FirebaseService {
     localStorage.setItem('user', user);
     this.group = group['name'];
     this.user = user;
-    return group as StudyGroup;   
+    return group as StudyGroup;
   }
 
 
   /**
    * Removes group and user data from local storage and sets group and user properties to null.   
    */
-  clearRegistration(): void{
+  clearRegistration(): void {
     localStorage.removeItem('group');
     localStorage.removeItem('user');
     this.group = null;
@@ -140,7 +142,7 @@ export class FirebaseService {
    * @param activity The activity to be saved.
    * @returns A promise that resolves to the document reference of the saved activity.
    */
-  private async saveActivity(activity: Activity): Promise<DocumentReference>{
+  private async saveActivity(activity: Activity): Promise<DocumentReference> {
     const docId = await addDoc(collection(db, "activities"), activity);
     return docId;
   }
@@ -149,7 +151,7 @@ export class FirebaseService {
    * Saves the given activity to local storage.
    * @param activity The activity to be saved.
    */
-  private saveToLocalStorage(activity: Activity){
+  private saveToLocalStorage(activity: Activity) {
     const activities = this.loadActivitiesFromLocalStorage();
     activities.push(activity);
     localStorage.setItem('activities', JSON.stringify(activities));
@@ -160,10 +162,10 @@ export class FirebaseService {
    * Retrieves activities from local storage and saves them to Firebase.
    * Removes saved activities from local storage after they have been successfully saved to Firebase.
    */
-  private async uploadSavedActivities(){
+  private async uploadSavedActivities() {
     let activities = this.loadActivitiesFromLocalStorage();
-    for(let activity of activities){
-      try{
+    for (let activity of activities) {
+      try {
         await this.saveActivity(activity);
 
         // remove from local storage
@@ -178,7 +180,7 @@ export class FirebaseService {
    * Removes the given activity from local storage.
    * @param activity - The activity to be removed.
    */
-  private removeFromLocalStorage(activity: Activity): void{
+  private removeFromLocalStorage(activity: Activity): void {
     let activities = this.loadActivitiesFromLocalStorage();
     activities = activities.filter((a: Activity) => a.startTime.toISOString() !== activity.startTime.toISOString());
     localStorage.setItem('activities', JSON.stringify(activities));
@@ -188,21 +190,21 @@ export class FirebaseService {
    * Updates the activity in the local storage.
    * @param activity - The activity to update.
    */
-  private updateInLocalStorage(activity: Activity): void{
+  private updateInLocalStorage(activity: Activity): void {
     let activities = this.loadActivitiesFromLocalStorage();
     const index = activities.findIndex((a: Activity) => a.startTime.toISOString() === activity.startTime.toISOString());
     activities[index] = activity;
     localStorage.setItem('activities', JSON.stringify(activities));
   }
 
-  private loadActivitiesFromLocalStorage(): Activity[]{
+  private loadActivitiesFromLocalStorage(): Activity[] {
     const activitiesJSON = JSON.parse(localStorage.getItem('activities') || '[]');
     const activities = activitiesJSON.map((a: any) => {
       const activity = {
         ...a,
-        startTime: a.startTime?new Date(a.startTime):undefined,
+        startTime: a.startTime ? new Date(a.startTime) : undefined,
       };
-      if(a.endTime){
+      if (a.endTime) {
         activity['endTime'] = new Date(a.endTime);
       }
       return activity;

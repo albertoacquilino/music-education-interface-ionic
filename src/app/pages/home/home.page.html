@@ -10,10 +10,10 @@
     <ion-list>
       <ion-item>
         <!-- disable control when "isPlaying is true"-->
-        <ion-toggle [checked]="showTrumpetHints" (ionChange)="switchTrumpetHints($event)"
+        <ion-toggle [checked]="hideTrumpet" (ionChange)="switchTrumpetHints($event)"
           [disabled]="isPlaying()">
 
-          Show trumpet
+          Hide trumpet
         </ion-toggle>
       </ion-item>
 
@@ -25,7 +25,7 @@
 
       <ion-item>
         <ion-toggle [checked]="useDynamics" (ionChange)="switchUseDynamics($event)" [disabled]="isPlaying()">
-          <b>Dynamics</b>
+          Dynamics
         </ion-toggle>
       </ion-item>
 
@@ -65,11 +65,8 @@
             <h3 id="action">{{currentAction}}</h3>
           </div>
         </div>
-        <ng-container *ngIf="showTrumpetHints">
-
-
+        <ng-container *ngIf="!hideTrumpet">
           <div class="trumpet">
-
             <img id="trumpet-position" [src]="trumpetPosition">
           </div>
         </ng-container>

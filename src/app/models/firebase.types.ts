@@ -16,7 +16,8 @@ export type Activity = {
   lowNote: number;
   highNote: number;
   useFlatsAndSharps: boolean;
-  showTrumpetHints: boolean;
+  hideTrumpet: boolean;
+  useDynamics: boolean;
   startTime: Date;
   endTime?: Date;
   device: DeviceInfo;

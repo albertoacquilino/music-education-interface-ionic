@@ -39,17 +39,17 @@ export class HomePage {
   /**
    * Indicates whether to show trumpet hints.
    */
-  showTrumpetHints = true;
+  hideTrumpet = false;
 
   /**
    * Indicates whether to use flats and sharps.
    */
-  useFlatsAndSharps = true;
+  useFlatsAndSharps = false;
 
   /**
    * Indicats wheter or not dynamics are enabled.
    */
-  useDynamics = true;
+  useDynamics = false;
 
   /**
    * The audio context used for playing sounds.
@@ -156,7 +156,7 @@ export class HomePage {
    * Checks if the device is muted and displays an alert if it is.
    * @returns void
    */
-  async checkMuted(){
+  async checkMuted() {
     try {
       const muted = await Mute.isMuted();
 
@@ -182,7 +182,7 @@ export class HomePage {
    */
   switchTrumpetHints(event: any) {
     console.log(event);
-    this.showTrumpetHints = event.detail.checked;
+    this.hideTrumpet = event.detail.checked;
   }
 
   /**
@@ -205,9 +205,9 @@ export class HomePage {
     }
   }
 
-  switchUseDynamics(event: any){
+  switchUseDynamics(event: any) {
     this.useDynamics = event.detail.checked;
-    if(!this.useDynamics){
+    if (!this.useDynamics) {
       this.score = scoreFromNote(NOTES[this.currentNote][0]);
       this._sounds.setVolume(1.0);
     }
@@ -268,14 +268,14 @@ export class HomePage {
     const scoreImage = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
     this.scoreImage = `assets/images/score_images/${scoreImage}.svg`
 
-    
-    if(this.useDynamics){
+
+    if (this.useDynamics) {
       const dynamic = DYNAMICS[Math.floor(Math.random() * DYNAMICS.length)];
       this._sounds.setVolume(dynamic.volume);
       this.score = scoreFromNote(scoreImage, dynamic.label);
-    } else{
+    } else {
       this.score = scoreFromNote(scoreImage);
-    }    
+    }
   }
 
   /**
@@ -339,7 +339,13 @@ export class HomePage {
    */
   start() {
     this._tempo.start();
-    this.firebase.saveStart(this.tempo$.value, this.lowNote, this.highNote, this.useFlatsAndSharps, this.showTrumpetHints)
+    this.firebase.saveStart(
+      this.tempo$.value,
+      this.lowNote,
+      this.highNote,
+      this.useFlatsAndSharps,
+      this.hideTrumpet,
+      this.useDynamics);
   }
 
   /**

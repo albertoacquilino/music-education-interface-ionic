@@ -1,4 +1,4 @@
-export const MAXCYCLES = 4;
+export const MAXCYCLES = 12;
 export const MAXNOTE = 30;
 export const MINNOTE = 0;
 export const MAXTEMPO = 180;
