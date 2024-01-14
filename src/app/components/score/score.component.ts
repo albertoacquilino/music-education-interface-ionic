@@ -79,7 +79,7 @@ export class ScoreComponent implements AfterViewInit {
 
     setTimeout(() => {
       this.setSize();
-    }, 100);
+    }, 1000);
   }
 
   /**

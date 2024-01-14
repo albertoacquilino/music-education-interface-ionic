@@ -89,7 +89,7 @@ export class HomePage {
   /**
    * The score.
    */
-  score: Score = scoreFromNote(NOTES[this.currentNote][0], DYNAMICS[2].label);
+  score: Score = scoreFromNote(NOTES[this.currentNote][0]);
 
   /**
    * The audio nodes.
