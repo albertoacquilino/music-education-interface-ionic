@@ -31,13 +31,13 @@ export function generateNotes(notes: string[], duration: string): StaveNote {
 }
 
 
-  /**
-   * Converts a MEI note to a Score object.
-   * 
-   * @param meiNote - The MEI note to convert.
-   * @returns The converted Score object.
-   */
-  export function scoreFromNote(meiNote: string, dynamic: string|undefined = undefined): Score{
+/**
+ * Converts a MEI note to a Score object.
+ * 
+ * @param meiNote - The MEI note to convert.
+ * @returns The converted Score object.
+ */
+export function scoreFromNote(meiNote: string, dynamic: string | undefined = undefined): Score {
     let scoreNote;
     const note = meiNote[0];
     const octave = meiNote[1];
@@ -55,7 +55,7 @@ export function generateNotes(notes: string[], duration: string): StaveNote {
         keySignature: "C",
         measures: [
             [
-                { notes: ['b/4'], duration: 'wr' },
+                { notes: ['c/5'], duration: 'wr' },
             ],
             [
                 { notes: [scoreNote], duration: 'w' },
