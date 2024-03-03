@@ -73,11 +73,11 @@ export class PitchService {
         this.accumNode.connect(this.analyser);
 
         const gainNode = audioContext.createGain();
-        gainNode.gain.value = 0;
+        gainNode.gain.value = 0.0;
         this.analyser.connect(gainNode);
 
         gainNode.connect(audioContext.destination);
-        this.analyse();
+
 
 
         this.accumNode.port.onmessage = (event) => {
@@ -113,15 +113,6 @@ export class PitchService {
         };
 
     }
-
-    analyse() {
-        requestAnimationFrame(this.analyse.bind(this));
-        const data = new Float32Array(this.analyser.frequencyBinCount);
-    }
-
-
-
-
 
     disconnect() {
         console.log("Stopping and disconnecting and cleaning up")
