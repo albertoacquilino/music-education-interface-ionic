@@ -12,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'pitchlite',
-    loadComponent: () => import('./components/pitchlite/pitchlite.page').then((m) => m.PitchComponent)
+    loadComponent: () => import('./pages/pitchlite/pitchlite.page').then((m) => m.PitchComponent)
   },
 
   {
@@ -27,10 +27,6 @@ export const routes: Routes = [
     path: 'dynamics',
     loadComponent: () => import('./pages/dynamics-test.component')
       .then((m) => m.ScoreComponentTest),
-  }, {
-    path: 'pitch',
-    loadComponent: () => import('./pages/pitch-test.component')
-      .then((m) => m.PitchTestComponent),
-  },
+  }
 
 ];
