@@ -3,11 +3,11 @@ import { BehaviorSubject } from 'rxjs';
 import * as pitchlite from 'src/app/services/pitchlite';
 
 
-const worklet_chunk_size = 128;
-const big_win = 4096;
-const small_win = 512;
-const min_pitch = 140; // lower pitch of mpm, 140 hz is close to trumpet
-const use_yin = false; // use MPM by default
+const workletChunkSize = 128;
+const bigWindow = 4096;
+const smallWindow = 512;
+const minPitch = 140; // lower pitch of mpm, 140 hz is close to trumpet
+const useYin = false; // use MPM by default
 
 function scaleArrayToMinusOneToOne(array: Float32Array) {
     const maxAbsValue = Math.max(...array.map(Math.abs));
@@ -43,15 +43,15 @@ export class PitchService {
         this.wasmModule = await pitchlite();
 
         this.n_pitches = this.wasmModule._pitchliteInit(
-            big_win,
-            small_win,
+            bigWindow,
+            smallWindow,
             audioContext.sampleRate, // use the actual sample rate of the audio context
-            use_yin, // use yin
-            min_pitch, // mpm low pitch cutoff
+            useYin, // use yin
+            minPitch, // mpm low pitch cutoff
         );
 
         // Create WASM views of the buffers, do it once and reuse
-        this.ptr = this.wasmModule._malloc(big_win * Float32Array.BYTES_PER_ELEMENT);
+        this.ptr = this.wasmModule._malloc(bigWindow * Float32Array.BYTES_PER_ELEMENT);
         this.ptrPitches = this.wasmModule._malloc(this.n_pitches * Float32Array.BYTES_PER_ELEMENT);
 
 
@@ -89,14 +89,14 @@ export class PitchService {
             const scaledData = scaleArrayToMinusOneToOne(event.data.data);
 
             // Calculate the offset in bytes based on naccumulated
-            const offset = (this.nAccumulated * worklet_chunk_size) * Float32Array.BYTES_PER_ELEMENT;
+            const offset = (this.nAccumulated * workletChunkSize) * Float32Array.BYTES_PER_ELEMENT;
 
             // store latest 128 samples into the WASM buffer
             this.wasmModule.HEAPF32.set(scaledData, (this.ptr + offset) / Float32Array.BYTES_PER_ELEMENT);
             this.nAccumulated += 1;
 
             // Check if we have enough data to calculate the pitch
-            if (this.nAccumulated >= (big_win / worklet_chunk_size)) {
+            if (this.nAccumulated >= (bigWindow / workletChunkSize)) {
                 this.nAccumulated = 0; // reset the accumulator
 
                 // Call the WASM function
@@ -108,7 +108,7 @@ export class PitchService {
                 this.pitch$.next(wasmArrayPitches[this.n_pitches - 1]);
 
                 // clear the entire buffer
-                this.wasmModule._memset(this.ptr, 0, big_win * Float32Array.BYTES_PER_ELEMENT);
+                this.wasmModule._memset(this.ptr, 0, bigWindow * Float32Array.BYTES_PER_ELEMENT);
             }
         };
 
