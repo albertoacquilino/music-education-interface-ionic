@@ -11,6 +11,11 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'pitchlite',
+    loadComponent: () => import('./components/pitchlite/pitchlite.page').then((m) => m.PitchComponent)
+  },
+
+  {
     path: 'scroll-image-page',
     loadComponent: () => import('./components/scroll-image-selector/scroll-image-test-page')
       .then((m) => m.ScrollImagePage),
