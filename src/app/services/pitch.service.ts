@@ -9,7 +9,7 @@ const small_win = 512;
 const min_pitch = 140; // lower pitch of mpm, 140 hz is close to trumpet
 const use_yin = false; // use MPM by default
 
-function scaleArrayToMinusOneToOne(array: Uint8Array) {
+function scaleArrayToMinusOneToOne(array: Float32Array) {
     const maxAbsValue = Math.max(...array.map(Math.abs));
     return array.map((value) => value / maxAbsValue);
 }
@@ -57,20 +57,20 @@ export class PitchService {
 
         await audioContext.audioWorklet.addModule('audio-accumulator.js');
         // Create an instance of your custom AudioWorkletNode
-        // this.accumNode = new AudioWorkletNode(audioContext, 'audio-accumulator', {
-        //     numberOfInputs: 1,
-        //     numberOfOutputs: 1,
-        //     outputChannelCount: [2],
-        // });
+        this.accumNode = new AudioWorkletNode(audioContext, 'audio-accumulator', {
+            numberOfInputs: 1,
+            numberOfOutputs: 1,
+            outputChannelCount: [2],
+        });
 
         // // Connect the microphone stream to the processor
         const source = audioContext.createMediaStreamSource(this.stream);
-        // source.connect(this.accumNode);
+        source.connect(this.accumNode);
 
         this.analyser = audioContext.createAnalyser();
         this.analyser.fftSize = 2048;
 
-        source.connect(this.analyser);
+        this.accumNode.connect(this.analyser);
 
         const gainNode = audioContext.createGain();
         gainNode.gain.value = 0;
@@ -78,38 +78,45 @@ export class PitchService {
 
         gainNode.connect(audioContext.destination);
         this.analyse();
+
+
+        this.accumNode.port.onmessage = (event) => {
+            // Check if the "stop" button has been clicked
+            // event.data contains 128 samples of audio data from
+            // the microphone through the AudioWorkletProcessor
+
+            // scale event.data.data up to [-1, 1]
+            const scaledData = scaleArrayToMinusOneToOne(event.data.data);
+
+            // Calculate the offset in bytes based on naccumulated
+            const offset = (this.nAccumulated * worklet_chunk_size) * Float32Array.BYTES_PER_ELEMENT;
+
+            // store latest 128 samples into the WASM buffer
+            this.wasmModule.HEAPF32.set(scaledData, (this.ptr + offset) / Float32Array.BYTES_PER_ELEMENT);
+            this.nAccumulated += 1;
+
+            // Check if we have enough data to calculate the pitch
+            if (this.nAccumulated >= (big_win / worklet_chunk_size)) {
+                this.nAccumulated = 0; // reset the accumulator
+
+                // Call the WASM function
+                this.wasmModule._pitchlitePitches(this.ptr, this.ptrPitches);
+
+                // copy the results back into a JS array
+                let wasmArrayPitches = new Float32Array(this.wasmModule.HEAPF32.buffer, this.ptrPitches, this.n_pitches);
+                // Do something with the pitch
+                this.pitch$.next(wasmArrayPitches[this.n_pitches - 1]);
+
+                // clear the entire buffer
+                this.wasmModule._memset(this.ptr, 0, big_win * Float32Array.BYTES_PER_ELEMENT);
+            }
+        };
+
     }
 
     analyse() {
         requestAnimationFrame(this.analyse.bind(this));
-        const data = new Uint8Array(this.analyser.frequencyBinCount);
-        this.analyser.getByteTimeDomainData(data);
-
-        const scaledData = scaleArrayToMinusOneToOne(data);
-
-        // Calculate the offset in bytes based on naccumulated
-        const offset = (this.nAccumulated * worklet_chunk_size) * Float32Array.BYTES_PER_ELEMENT;
-
-        // store latest 128 samples into the WASM buffer
-        this.wasmModule.HEAPF32.set(scaledData, (this.ptr + offset) / Float32Array.BYTES_PER_ELEMENT);
-        this.nAccumulated += 1;
-
-        // Check if we have enough data to calculate the pitch
-        if (this.nAccumulated >= (big_win / worklet_chunk_size)) {
-            console.log("Accumulated enough data, calculating pitch")
-            this.nAccumulated = 0; // reset the accumulator
-
-            // Call the WASM function
-            this.wasmModule._pitchlitePitches(this.ptr, this.ptrPitches);
-
-            // copy the results back into a JS array
-            let wasmArrayPitches = new Float32Array(this.wasmModule.HEAPF32.buffer, this.ptrPitches, this.n_pitches);
-
-            this.pitch$.next(wasmArrayPitches[this.n_pitches - 1]);
-
-            // clear the entire buffer
-            this.wasmModule._memset(this.ptr, 0, big_win * Float32Array.BYTES_PER_ELEMENT);
-        }
+        const data = new Float32Array(this.analyser.frequencyBinCount);
     }
 
 
