@@ -15,7 +15,11 @@ const NOTES = { "A0": { "freq": 27.5, "key": 1 }, "A#0/Bb0": { "freq": 29.14, "k
   template: `
   <button (click)="start()">Start</button>
   <div>
-    {{ pitch$ | async }} - {{ (note$ | async)?.note }} - {{ (note$ | async)?.err | number }}
+    Pitch: {{ pitch$ | async }}
+    <br>
+    Note: {{ (note$ | async)?.note }}
+    <br>
+    Error: {{ (note$ | async)?.err | number }}
   </div>`,
   styleUrls: [],
   standalone: true,

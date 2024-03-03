@@ -9,7 +9,7 @@ const small_win = 512;
 const min_pitch = 140; // lower pitch of mpm, 140 hz is close to trumpet
 const use_yin = false; // use MPM by default
 
-function scaleArrayToMinusOneToOne(array: number[]) {
+function scaleArrayToMinusOneToOne(array: Uint8Array) {
     const maxAbsValue = Math.max(...array.map(Math.abs));
     return array.map((value) => value / maxAbsValue);
 }
@@ -24,7 +24,8 @@ console.log("Sample rate:", audioContext.sampleRate);
 })
 export class PitchService {
     private isStopped = false;
-    private node: AudioWorkletNode | null = null;
+    private accumNode!: AudioWorkletNode;
+    private analyser!: AnalyserNode;
     private wasmModule: any;
     private ptr: any;
     private ptrPitches: any;
@@ -56,34 +57,34 @@ export class PitchService {
 
         await audioContext.audioWorklet.addModule('audio-accumulator.js');
         // Create an instance of your custom AudioWorkletNode
-        this.node = new AudioWorkletNode(audioContext, 'audio-accumulator', {
-            numberOfInputs: 1,
-            numberOfOutputs: 1,
-            outputChannelCount: [2],
-        });
+        // this.accumNode = new AudioWorkletNode(audioContext, 'audio-accumulator', {
+        //     numberOfInputs: 1,
+        //     numberOfOutputs: 1,
+        //     outputChannelCount: [2],
+        // });
 
-        // Connect the microphone stream to the processor
+        // // Connect the microphone stream to the processor
         const source = audioContext.createMediaStreamSource(this.stream);
-        source.connect(this.node);
+        // source.connect(this.accumNode);
 
-        // In the onmessage event handler of your AudioWorkletNode.port
-        // append received data to the ring buffer
-        this.node.port.onmessage = (event: any) => {
-            // Check if the "stop" button has been clicked
-            if (this.isStopped) {
-                return;
-            }
-            // event.data contains 128 samples of audio data from
-            // the microphone through the AudioWorkletProcessor
-            this.setPitch(event.data.data);
-        };
+        this.analyser = audioContext.createAnalyser();
+        this.analyser.fftSize = 2048;
 
-        // Connect the processor to the output
-        this.node.connect(audioContext.destination);
+        source.connect(this.analyser);
+
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 0;
+        this.analyser.connect(gainNode);
+
+        gainNode.connect(audioContext.destination);
+        this.analyse();
     }
 
-    setPitch(data: number[]) {
-        // scale event.data.data up to [-1, 1]
+    analyse() {
+        requestAnimationFrame(this.analyse.bind(this));
+        const data = new Uint8Array(this.analyser.frequencyBinCount);
+        this.analyser.getByteTimeDomainData(data);
+
         const scaledData = scaleArrayToMinusOneToOne(data);
 
         // Calculate the offset in bytes based on naccumulated
@@ -120,7 +121,7 @@ export class PitchService {
         this.isStopped = true;
 
         // disconnect the audio worklet node
-        this.node?.disconnect();
+        this.accumNode?.disconnect();
 
         // stop tracks
         this.stream?.getTracks().forEach(function (track: any) {

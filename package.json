@@ -36,7 +36,6 @@
     "howler": "^2.2.3",
     "ionicons": "^7.0.0",
     "lodash": "^4.17.21",
-    "pitch-detection-wasm": "file:./pkg",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "vexflow": "^4.2.3",
@@ -56,6 +55,7 @@
     "@capacitor/assets": "^2.0.4",
     "@capacitor/cli": "5.0.3",
     "@ionic/angular-toolkit": "^9.0.0",
+    "@types/audioworklet": "^0.0.54",
     "@types/howler": "^2.2.7",
     "@types/jasmine": "~4.0.0",
     "@types/lodash": "^4.14.194",
@@ -79,9 +79,9 @@
     "typescript": "~4.8.4"
   },
   "description": "An Ionic project",
-    "browser": {
-      "fs": false,
-      "os": false,
-      "path": false
-    }
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
+  }
 }
