@@ -36,9 +36,9 @@ let n_pitches: number;
 export class PitchService {
     pitch$ = new BehaviorSubject<number>(0);
 
-    constructor() {}
+    constructor() { }
 
-    async addModule (){
+    async addModule() {
         await audioContext.audioWorklet.addModule('audio-accumulator.js');
         // Create an instance of your custom AudioWorkletNode
         node = new AudioWorkletNode(audioContext, 'audio-accumulator', {
@@ -116,7 +116,7 @@ export class PitchService {
         console.log("WASM module initialized, buffers allocated");
     }
 
-    disconnect(){
+    disconnect() {
         console.log("Stopping and disconnecting and cleaning up")
         isStopped = true;
 

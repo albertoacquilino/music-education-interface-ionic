@@ -27,5 +27,10 @@ export const routes: Routes = [
     path: 'dynamics',
     loadComponent: () => import('./pages/dynamics-test.component')
       .then((m) => m.ScoreComponentTest),
-  }
+  }, {
+    path: 'pitch',
+    loadComponent: () => import('./pages/pitch-test.component')
+      .then((m) => m.PitchTestComponent),
+  },
+
 ];
