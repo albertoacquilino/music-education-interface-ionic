@@ -13,14 +13,30 @@ const NOTES = { "A0": { "freq": 27.5, "key": 1 }, "A#0/Bb0": { "freq": 29.14, "k
 @Component({
   selector: 'app-pitchlite',
   template: `
-  <button (click)="start()">Start</button>
-  <div>
-    Pitch: {{ pitch$ | async }}
-    <br>
-    Note: {{ (note$ | async)?.note }}
-    <br>
-    Error: {{ (note$ | async)?.err | number }}
-  </div>`,
+<div class="ion-page" id="main-content" >
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-content [fullscreen]="true">
+    <div id="container">
+
+    <ion-button class="block" (click)="start()">Start</ion-button>
+    <div>
+      Pitch: {{ pitch$ | async }}
+      <br>
+      Note: {{ (note$ | async)?.note }}
+      <br>
+      Error: {{ (note$ | async)?.err | number }}
+    </div>
+    </div>
+  </ion-content>  
+    
+  `,
   styleUrls: [],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
