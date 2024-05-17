@@ -1,0 +1,26 @@
+.slide-red,
+.btn3-red,
+.btn2-red,
+.btn1-red {
+    display: none;
+    transition: transform 0.3s ease-out;
+}
+
+.slide,
+.button1,
+.button2,
+.button3 {
+    transition: transform 0.3s ease-out;
+}
+
+.btn-pressed {
+    transform: translateY(15px);
+}
+
+.slide-open {
+    transform: translateX(20px);
+}
+
+.btn-red-pressed {
+    display: block;
+}

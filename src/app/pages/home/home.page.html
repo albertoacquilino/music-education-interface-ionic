@@ -56,27 +56,30 @@
 
   <ion-content [fullscreen]="true">
     <div id="container">
-      <div class="top">
-        <div class="metronome">
-          <div class="metronome-bullet">
-            <h1 id="metronome-label" *ngIf="beat$|async as beat">
-              {{ beat.beat >= 0 ? (beat.beat + 1): '&nbsp;'}}
-            </h1>
-            <h3 id="action">{{currentAction}}</h3>
+      <div class="top-middle-container">
+        <div class="top">
+          <div class="metronome">
+            <div class="metronome-bullet">
+              <h1 id="metronome-label" *ngIf="beat$|async as beat">
+                {{ beat.beat >= 0 ? (beat.beat + 1): '&nbsp;'}}
+              </h1>
+              <!-- <h3 id="action">{{currentAction}}</h3> -->
+              <semaphore-light [currentAction]="currentAction"></semaphore-light>
+            </div>
           </div>
+          <ng-container *ngIf="!hideTrumpet">
+            <div class="trumpet">
+              <!-- <img id="trumpet-position" [src]="trumpetPosition"> -->
+              <trumpet-diagram [trumpetButtons]="trumpetBtns"></trumpet-diagram>
+            </div>
+          </ng-container>
         </div>
-        <ng-container *ngIf="!hideTrumpet">
-          <div class="trumpet">
-            <img id="trumpet-position" [src]="trumpetPosition">
+        <!--MIDDLE-->
+        <div class="middle">
+          <div class="score">
+            <!-- <img id="score-image" [src]="scoreImage"> -->
+            <app-score id="score-image" [score]="score"></app-score>
           </div>
-        </ng-container>
-      </div>
-
-      <!--MIDDLE-->
-      <div class="middle">
-        <div class="score">
-          <!-- <img id="score-image" [src]="scoreImage"> -->
-          <app-score id="score-image" [score]="score"></app-score>
         </div>
       </div>
       <div class="bottom">

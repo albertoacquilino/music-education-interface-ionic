@@ -15,16 +15,19 @@ import { RegistrationService } from 'src/app/services/registration.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS } from '../../constants';
+import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from '../../constants';
 import { BeatService } from '../../services/beat.service';
 import { AppBeat } from 'src/app/models/appbeat.types';
+import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
+import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule],
+  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule, SemaphoreLightComponent, TrumpetDiagramComponent],
 })
 /**
  * HomePage class represents the home page of the music education interface.
@@ -99,7 +102,7 @@ export class HomePage {
   /**
    * The current action.
    */
-  currentAction = 'rest';
+  currentAction = '';
 
   /**
    * The trumpet position.
@@ -110,6 +113,11 @@ export class HomePage {
    * The score image.
    */
   scoreImage = "assets/images/score_images/G2.svg";
+
+  /**
+   * The trumpet buttons. For each note, the buttons that should be highlighted.
+   */
+  trumpetBtns: number[] = [];
 
   /**
    * The note images.
@@ -255,6 +263,7 @@ export class HomePage {
    */
   updateTrumpetPosition(note: number) {
     const trumpetImg = POSITIONS[note];
+    this.trumpetBtns = TRUMPET_BTN[note];
     this.trumpetPosition = `assets/images/trumpet_positions/${trumpetImg}.png`;
   }
 
