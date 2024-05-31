@@ -38,7 +38,7 @@ ion-modal {
   border-radius: 18px;
   // color: white;
   color: black;
-  min-width: 150px;
+  width: 150px;
   // aleksandra add code
   min-height: 250px;
   //aleksandra done
@@ -238,11 +238,17 @@ ion-modal {
   }
 
   .top-middle-container {
-    width: 50%;
+    width: 100%;
   }
 
-  .bottom {
-    width: 50%;
-  }
+  // .bottom {
+  //   width: 50%;
+  // }
+
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 0px;
+}
 }
 

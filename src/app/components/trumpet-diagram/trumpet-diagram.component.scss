@@ -24,3 +24,10 @@
 .btn-red-pressed {
     display: block;
 }
+
+@media screen and (orientation: landscape) {
+    .trumpet-img {
+        width: 30vw;
+        height: auto;
+    }
+}
