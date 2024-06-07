@@ -1,6 +1,4 @@
 
-<!-- <h3>{{ currentAction }}</h3> -->
-<!-- <div class="circle" [style.background-color]="getCircleColor(currentAction)"></div> -->
 <div *ngIf="hasAction(); else noAction">
   <div class="semaphore-lights">
     <div class="light-container" [class.active]="isActive('Rest')">
@@ -20,16 +18,3 @@
 <ng-template #noAction>
   <div class="no-action-text">Press Start to begin</div>
 </ng-template>
-
-<!-- ver 2 -->
-<!-- <div class="lights">
-  <div class="light" [style.background-color]="getCircleColor('Rest')" [class.active]="isActive('Rest')">
-    Rest
-  </div>
-  <div class="light" [style.background-color]="getCircleColor('Listen')" [class.active]="isActive('Listen')">
-    Listen
-  </div>
-  <div class="light" [style.background-color]="getCircleColor('Play')" [class.active]="isActive('Play')">
-    Play
-  </div>
-</div> -->
