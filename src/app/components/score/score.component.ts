@@ -69,12 +69,19 @@ export class ScoreComponent implements AfterViewInit {
     }
     this._renderer = new Flow.Renderer(div as HTMLDivElement, Flow.Renderer.Backends.SVG);
     this._context = this._renderer.getContext();
+    
 
     combineLatest([this.size$, this.score$]).pipe(
       filter(([_, score]) => score !== null),
     ).subscribe(([size, score]) => {
       this.updateSize(size);
       this.updateScore(score as Score)
+
+      // aleksandra - not use cuz of document selector - didnt find other way :(
+      // const dynamic = document.querySelector('#score > svg > text')
+      // if (dynamic) {
+      //   dynamic.setAttribute('font-style', 'italic')
+      // }
     });
 
     setTimeout(() => {
@@ -122,6 +129,8 @@ export class ScoreComponent implements AfterViewInit {
             shift_y: 30,
             shift_x: (-measureWidth / 2) + 10,
           });
+
+          
 
 
         }

@@ -1,0 +1,20 @@
+
+<div *ngIf="hasAction(); else noAction">
+  <div class="semaphore-lights">
+    <div class="light-container" [class.active]="isActive('Rest')">
+      <div class="light" [style.background-color]="getCircleColor('Rest')"></div>
+      <span class="light-label">REST</span>
+    </div>
+    <div class="light-container" [class.active]="isActive('Listen')">
+      <div class="light" [style.background-color]="getCircleColor('Listen')"></div>
+      <span class="light-label">LISTEN</span>
+    </div>
+    <div class="light-container" [class.active]="isActive('Play')">
+      <div class="light" [style.background-color]="getCircleColor('Play')"></div>
+      <span class="light-label">PLAY</span>
+    </div>
+  </div>
+</div>
+<ng-template #noAction>
+  <div class="no-action-text">Press Start to begin</div>
+</ng-template>
