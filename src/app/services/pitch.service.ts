@@ -8,15 +8,11 @@ const bigWindow = 4096;
 const smallWindow = 512;
 const minPitch = 140; // lower pitch of mpm, 140 hz is close to trumpet
 const useYin = false; // use MPM by default
-
+let audioContext = null;
 function scaleArrayToMinusOneToOne(array: Float32Array) {
     const maxAbsValue = Math.max(...array.map(Math.abs));
     return array.map((value) => value / maxAbsValue);
 }
-
-const audioContext = new AudioContext();
-console.log("Sample rate:", audioContext.sampleRate);
-
 
 
 @Injectable({
@@ -39,6 +35,8 @@ export class PitchService {
     constructor() { }
 
     async connect() {
+        audioContext = new AudioContext();
+        console.log("Sample rate:", audioContext.sampleRate);
         this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         this.wasmModule = await pitchlite();
 

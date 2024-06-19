@@ -1,0 +1,36 @@
+.chromatic-tuner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding: 16px;
+    .tuner {
+        margin-top: 16px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    .pointer {
+        transform-origin: 176px 166px; /* Center of the circle */
+        transition: transform 0.3s ease;
+      }
+    
+    .pitch-detector {
+        margin-top: 10px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    
+        ion-button {
+            margin-bottom: 15px; 
+        }
+    
+        div {
+            text-align: center;
+        }
+    }
+
+}
+
