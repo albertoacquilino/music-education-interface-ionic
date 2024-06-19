@@ -1,10 +1,11 @@
-<div class = "chromatic-tuner">
+<div class="chromatic-tuner">
     <div class="tuner">
         <svg xmlns="http://www.w3.org/2000/svg" width="347" height="309" viewBox="0 0 347 309" fill="none">
             <path
                 d="M319 166C319 128.074 303.934 91.7014 277.116 64.8837C250.299 38.066 213.926 23 176 23C138.074 23 101.701 38.066 74.8837 64.8837C48.066 91.7014 33 128.074 33 166L41.58 166C41.58 130.35 55.7421 96.1593 80.9507 70.9507C106.159 45.7421 140.35 31.58 176 31.58C211.65 31.58 245.841 45.7421 271.049 70.9507C296.258 96.1594 310.42 130.35 310.42 166H319Z"
                 fill="url(#paint0_radial_28_480)" />
-            <path d="M33.3743 166H53.589M319.374 166H299.16" stroke="#4E4E4E" stroke-width="0.5" stroke-linecap="round" />
+            <path d="M33.3743 166H53.589M319.374 166H299.16" stroke="#4E4E4E" stroke-width="0.5"
+                stroke-linecap="round" />
             <path d="M277.491 64.8837L263.197 79.1777" stroke="#4E4E4E" stroke-width="0.5" stroke-linecap="round" />
             <path d="M318.933 154.78L307.365 155.691" stroke="#4E4E4E" stroke-width="0.5" stroke-linecap="round" />
             <path d="M317.614 143.63L306.152 145.445" stroke="#4E4E4E" stroke-width="0.5" stroke-linecap="round" />
@@ -75,7 +76,7 @@
             <path
                 d="M6.22727 162.557V163.807H1.13636V162.557H6.22727ZM8.29119 166.614V165.455L13.4048 157.364H14.2457V159.159H13.6776L9.81392 165.273V165.364H16.7003V166.614H8.29119ZM13.7685 169V166.261V165.722V157.364H15.1094V169H13.7685ZM22.625 169.159C21.7689 169.159 21.0398 168.926 20.4375 168.46C19.8352 167.991 19.375 167.311 19.0568 166.42C18.7386 165.527 18.5795 164.447 18.5795 163.182C18.5795 161.924 18.7386 160.85 19.0568 159.96C19.3788 159.066 19.8409 158.384 20.4432 157.915C21.0492 157.441 21.7765 157.205 22.625 157.205C23.4735 157.205 24.1989 157.441 24.8011 157.915C25.4072 158.384 25.8693 159.066 26.1875 159.96C26.5095 160.85 26.6705 161.924 26.6705 163.182C26.6705 164.447 26.5114 165.527 26.1932 166.42C25.875 167.311 25.4148 167.991 24.8125 168.46C24.2102 168.926 23.4811 169.159 22.625 169.159ZM22.625 167.909C23.4735 167.909 24.1326 167.5 24.6023 166.682C25.072 165.864 25.3068 164.697 25.3068 163.182C25.3068 162.174 25.1989 161.316 24.983 160.608C24.7708 159.9 24.464 159.36 24.0625 158.989C23.6648 158.617 23.1856 158.432 22.625 158.432C21.7841 158.432 21.1269 158.847 20.6534 159.676C20.1799 160.502 19.9432 161.67 19.9432 163.182C19.9432 164.189 20.0492 165.045 20.2614 165.75C20.4735 166.455 20.7784 166.991 21.1761 167.358C21.5777 167.725 22.0606 167.909 22.625 167.909Z"
                 fill="#4E4E4E" />
-            <g class="emoji-happy" [style.display]="currentEmoji === 'happy' ? 'block' : 'none'">
+            <g class="emoji-happy" *ngIf="currentEmoji === 'happy'">
                 <circle cx="176.5" cy="166.5" r="60" fill="#40D134" stroke="#075900" stroke-width="5" />
                 <path d="M143 161C143 142.092 166 142.577 166 161" stroke="#075900" stroke-width="7"
                     stroke-linecap="round" />
@@ -84,7 +85,7 @@
                 <path d="M194 185C194 203.908 158 203.423 158 185" stroke="#075900" stroke-width="7"
                     stroke-linecap="round" />
             </g>
-            <g class="emoji-confused" [style.display]="currentEmoji === 'confused' ? 'block' : 'none'">
+            <g class="emoji-confused" *ngIf="currentEmoji === 'confused'">
                 <path
                     d="M236.5 166.5C236.5 199.637 209.637 226.5 176.5 226.5C143.363 226.5 116.5 199.637 116.5 166.5C116.5 133.363 143.363 106.5 176.5 106.5C209.637 106.5 236.5 133.363 236.5 166.5Z"
                     fill="#FEAD26" stroke="#A16500" stroke-width="5" />
@@ -92,7 +93,7 @@
                 <ellipse cx="157.5" cy="155.5" rx="8.5" ry="11.5" fill="#A16500" />
                 <ellipse cx="193.5" cy="155.5" rx="8.5" ry="11.5" fill="#A16500" />
             </g>
-            <g class="emoji-nothappy" [style.display]="currentEmoji === 'notHappy' ? 'block' : 'none'">
+            <g class="emoji-nothappy" *ngIf="currentEmoji === 'notHappy'">
                 <circle cx="176.5" cy="166.5" r="60" fill="#CB3C3C" stroke="#780000" stroke-width="5" />
                 <path d="M195 200C192.533 190.17 164.907 186.238 158 194.429" stroke="#780000" stroke-width="7"
                     stroke-linecap="round" />
@@ -103,7 +104,7 @@
                 <path d="M185 146C191.618 140.951 202.647 140.39 210 146" stroke="#780000" stroke-width="7"
                     stroke-linecap="round" />
             </g>
-    
+
             <defs>
                 <radialGradient id="paint0_radial_28_480" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
                     gradientTransform="translate(176 23) rotate(135) scale(202.233)">
@@ -112,14 +113,21 @@
                     <stop offset="1" stop-color="#FF1818" />
                 </radialGradient>
             </defs>
-        </svg>     
+        </svg>
     </div>
+
     <div>
-        Pitch: {{ pitch$ | async }}
-        <br>
-        Note: {{ (note$ | async)?.note }}
-        <br>
-        Cents: {{ (note$ | async)?.cents | number }}
+        <ng-container *ngIf="pitch$ | async as pitch; else error">
+            Pitch: {{ pitch }}
+            <br>
+            Note: {{ (note$ | async)?.note }}
+            <br>
+            Cents: {{ (note$ | async)?.cents | number }}
+        </ng-container>
+        <ng-template #error>
+            <p>Error loading pitch.</p>
+        </ng-template>
+
     </div>
     <ion-button class="block" (click)="start()">Start</ion-button>
 
