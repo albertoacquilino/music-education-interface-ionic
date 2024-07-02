@@ -3,7 +3,6 @@ import { AlertController, IonicModule, PickerController } from '@ionic/angular';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-
 import { CommonModule } from '@angular/common';
 import { Mute } from '@capgo/capacitor-mute';
 import { range } from 'lodash';
@@ -15,9 +14,10 @@ import { RegistrationService } from 'src/app/services/registration.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from '../../constants';
+import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN, MINREFFREQUENCY, MAXREFFREQUENCY } from '../../constants';
 import { BeatService } from '../../services/beat.service';
 import { AppBeat } from 'src/app/models/appbeat.types';
+import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
 import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
 
@@ -134,6 +134,9 @@ export class HomePage {
    */
   playing$!: Observable<boolean>;
 
+
+  refFrequencyValue$!: number;
+
   /**
    * Creates an instance of HomePage.
    * @param _picker - The picker controller.
@@ -149,8 +152,8 @@ export class HomePage {
     private _sounds: SoundsService,
     public firebase: FirebaseService,
     private _registration: RegistrationService,
-    private alertController: AlertController
-    //private _pitch: PitchService
+    private alertController: AlertController,
+    private refFrequencyService: RefFreqService
   ) {
     this.beat$ = this._tempo.tick$.pipe(
       tap((tempo: AppBeat) => this.intervalHandler(tempo))
@@ -159,6 +162,22 @@ export class HomePage {
 
     interval(1000).subscribe(async () => this.checkMuted());
   }
+
+  ngOnInit(): void {
+    this.refFrequencyService.getRefFrequency().subscribe(value => {
+      this.refFrequencyValue$ = value;
+    });
+    this.hideTrumpet = this.retrieveAndParseFromLocalStorage('hideTrumpet', false);
+    this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
+    this.useDynamics = this.retrieveAndParseFromLocalStorage('useDynamics', false);
+    this.lowNote = this.retrieveAndParseFromLocalStorage('lowNote', INITIAL_NOTE);
+    this.highNote = this.retrieveAndParseFromLocalStorage('highNote', INITIAL_NOTE);
+  }
+  retrieveAndParseFromLocalStorage(key: string, defaultValue: any): any {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : defaultValue;
+  }
+
 
   /**
    * Checks if the device is muted and displays an alert if it is.
@@ -189,8 +208,10 @@ export class HomePage {
    * @returns void
    */
   switchTrumpetHints(event: any) {
-    console.log(event);
     this.hideTrumpet = event.detail.checked;
+    localStorage.setItem('hideTrumpet', JSON.stringify(this.hideTrumpet));
+    console.log(event);
+
   }
 
   /**
@@ -199,8 +220,9 @@ export class HomePage {
    * @returns void
    */
   switchUseFlatsAndSharps(event: any) {
-    console.log(event);
     this.useFlatsAndSharps = event.detail.checked;
+    localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
+    console.log(event);
     if (!this.useFlatsAndSharps) {
       // check that low and high notes are not on accidentals
       // if they are, move them up by a half step
@@ -215,12 +237,12 @@ export class HomePage {
 
   switchUseDynamics(event: any) {
     this.useDynamics = event.detail.checked;
+    localStorage.setItem('useDynamics', JSON.stringify(this.useDynamics));
     if (!this.useDynamics) {
       this.score = scoreFromNote(NOTES[this.currentNote][0]);
       this._sounds.setVolume(1.0);
     }
   }
-
   /**
    * Changes the low note.
    * @param index - The index.
@@ -236,6 +258,7 @@ export class HomePage {
     if (this.lowNote > this.highNote) {
       this.highNote = this.lowNote;
     }
+    this.saveNotes();
   }
 
   /**
@@ -254,8 +277,12 @@ export class HomePage {
     if (this.highNote < this.lowNote) {
       this.lowNote = this.highNote;
     }
+    this.saveNotes();
   }
-
+  saveNotes() {
+    localStorage.setItem('lowNote', this.lowNote.toString());
+    localStorage.setItem('highNote', this.highNote.toString());
+  }
   /**
    * Updates the position of the trumpet image based on the given note.
    * @param note - The note to update the trumpet position to.
@@ -386,34 +413,40 @@ export class HomePage {
     return this._tempo.playing$.value;
   }
 
-
-  /**
-   * Opens a tempo picker dialog for selecting a new tempo.
-   * If the tempo is currently playing, the dialog will not be opened.
-   */
-  async openTempoPicker() {
-    if (this._tempo.playing$.value) {
+  async openPicker(type: 'frequency' | 'tempo') {
+    // Check if the picker should be opened
+    if (this.isPlaying()) {
       return;
     }
 
     // create list of options to be selected
     let options: { value: number, text: string }[];
-
     let selectedIndex = 0;
     let selectedValue: number;
+    let rangeValues: number[] = [];
+    let unit: string;
 
+    if (type === 'frequency') {
+      selectedValue = this.refFrequencyValue$;
+      rangeValues = range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1);
+      unit = 'Hz';
+    } else if (type === 'tempo') {
+      selectedValue = this.tempo$.value;
+      rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
+      unit = 'bpm';
+    }
 
-    selectedValue = this.tempo$.value;
-    options = range(MINTEMPO, MAXTEMPO + 1, 5).map(v => ({
-      value: v,
-      text: `${v} bpm`
+    options = rangeValues.map(value => ({
+      value: value,
+      text: `${value} ${unit}`
     }));
 
-    selectedIndex = options.findIndex(v => v.value == selectedValue);
+    selectedIndex = options.findIndex(option => option.value === selectedValue);
+
     const picker = await this._picker.create({
       columns: [
         {
-          name: 'tempo',
+          name: type,
           options: options,
           selectedIndex: selectedIndex
         },
@@ -427,7 +460,12 @@ export class HomePage {
         {
           text: 'Confirm',
           handler: (value) => {
-            this._tempo.setTempo(value['tempo'].value);
+            if (type === 'frequency') {
+              this.refFrequencyValue$ = value[type].value;
+              this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
+            } else if (type === 'tempo') {
+              this._tempo.setTempo(value[type].value);
+            }
           }
         },
       ],
@@ -436,6 +474,7 @@ export class HomePage {
     await picker.present();
 
   }
+
 
   /**
    * Determines whether the modal can be dismissed or not.

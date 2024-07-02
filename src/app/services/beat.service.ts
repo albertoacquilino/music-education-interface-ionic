@@ -17,7 +17,7 @@ export class BeatService {
   /**
    * The tempo of the beat.
    */
-  public tempo$ = new BehaviorSubject<number>(DEFAULT_TEMPO);
+  public tempo$ = new BehaviorSubject<number>(this.storedTempo());
 
   /**
    * Whether the beat is currently playing.
@@ -45,6 +45,11 @@ export class BeatService {
 
   constructor() { }
 
+  private storedTempo(): number {
+    const tempo = localStorage.getItem('tempo');
+    return tempo ? parseInt(tempo) : DEFAULT_TEMPO;
+  }
+
   /**
    * Sets the tempo of the beat.
    * @param value The new tempo value.
@@ -55,6 +60,7 @@ export class BeatService {
     if (value > MAXTEMPO || value < MINTEMPO) return;
 
     this.tempo$.next(value);
+    localStorage.setItem('tempo', value.toString());
   }
 
   /**
@@ -70,27 +76,27 @@ export class BeatService {
     this._beat = -1;
     this._measure = -1;
 
-    this._interval = 
+    this._interval =
       interval(60000 / this.tempo$.value)
-      .subscribe(() => {
-        this._beat = (this._beat + 1) % 4;
-        if (this._beat == 0) {
-          this._measure = (this._measure + 1) % 3;
-          if (this._measure == 0) {
-            this._cycle += 1;
-            if (this._cycle == MAXCYCLES) {
-              this.stop();
+        .subscribe(() => {
+          this._beat = (this._beat + 1) % 4;
+          if (this._beat == 0) {
+            this._measure = (this._measure + 1) % 3;
+            if (this._measure == 0) {
+              this._cycle += 1;
+              if (this._cycle == MAXCYCLES) {
+                this.stop();
+              }
             }
           }
-        }
 
-        this.tick$.emit(({
-          playing: true,
-          measure: this._measure,
-          beat: this._beat,
-          cycle: this._cycle
-        }));
-      });
+          this.tick$.emit(({
+            playing: true,
+            measure: this._measure,
+            beat: this._beat,
+            cycle: this._cycle
+          }));
+        });
   }
 
   /**

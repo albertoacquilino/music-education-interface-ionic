@@ -3,7 +3,8 @@ export const MAXNOTE = 30;
 export const MINNOTE = 0;
 export const MAXTEMPO = 180;
 export const MINTEMPO = 40;
-
+export const MINREFFREQUENCY = 430;
+export const MAXREFFREQUENCY = 450;
 export const INITIAL_NOTE = 13;
 
 export const NOTES = [

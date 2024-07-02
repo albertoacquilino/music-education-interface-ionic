@@ -115,20 +115,19 @@
             </defs>
         </svg>
     </div>
-
-    <div>
+    
+    <div class="numeric-values">
         <ng-container *ngIf="pitch$ | async as pitch; else error">
-            Pitch: {{ pitch }}
+            Pitch: {{ pitch | number}}
             <br>
-            Note: {{ (note$ | async)?.note }}
+            Note: {{ currentNote }}
             <br>
-            Cents: {{ (note$ | async)?.cents | number }}
+            Cents: {{ currentCents | number }}
         </ng-container>
         <ng-template #error>
             <p>Error loading pitch.</p>
         </ng-template>
 
     </div>
-    <ion-button class="block" (click)="start()">Start</ion-button>
 
 </div>

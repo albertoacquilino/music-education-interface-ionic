@@ -1,5 +1,3 @@
-
-
 <ion-menu contentId="main-content">
   <ion-header>
     <ion-toolbar>
@@ -8,17 +6,20 @@
   </ion-header>
   <ion-content class="ion-padding">
     <ion-list>
-      <ion-item>
-        <!-- disable control when "isPlaying is true"-->
-        <ion-toggle [checked]="hideTrumpet" (ionChange)="switchTrumpetHints($event)"
-          [disabled]="isPlaying()">
+      <ion-item button (click)="openPicker('frequency')" [disabled]="isPlaying()">
+        <ion-label>Reference Frequency</ion-label>
+        <ion-note slot="end">{{ refFrequencyValue$ }} Hz</ion-note>
+      </ion-item>
 
+      <ion-item>
+        <ion-toggle [checked]="hideTrumpet" (ionChange)="switchTrumpetHints($event)" [disabled]="isPlaying()">
           Hide trumpet
         </ion-toggle>
       </ion-item>
 
       <ion-item>
-        <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)" [disabled]="isPlaying()">
+        <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)"
+          [disabled]="isPlaying()">
           <b>&flat; &amp; &sharp;</b>
         </ion-toggle>
       </ion-item>
@@ -40,7 +41,7 @@
 
   </ion-content>
 </ion-menu>
-<div class="ion-page" id="main-content" >
+<div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -89,7 +90,7 @@
           <div class="tempo-wrapper">
             <div class="simulate-input">
               <div class="title-section-wrapper">Tempo:</div>
-              <div class="tempo" (click)="openTempoPicker()" >
+              <div class="tempo" (click)="openPicker('tempo')">
                 <h1>
                   &#9833;=
                   <span id="tempo">{{tempo$ | async}} bpm</span>
@@ -102,24 +103,13 @@
           <div class="low-note-wrapper">
             <div class="simulate-input">
               <div class="title-section-wrapper">Lowest note:</div>
-              <div 
-                id="open-modal-low-note" 
-                expand="block" 
-                class="low-note">
+              <div id="open-modal-low-note" expand="block" class="low-note">
                 <img id="high-note" [src]="getNoteImg(lowNote)">
               </div>
-              <ion-modal 
-                *ngIf="!isPlaying()" 
-                trigger="open-modal-low-note" 
-                [canDismiss]="canDismiss" 
-                [initialBreakpoint]="1"
-                [breakpoints]="[0, 1]" 
-                [handle]="false">
+              <ion-modal *ngIf="!isPlaying()" trigger="open-modal-low-note" [canDismiss]="canDismiss"
+                [initialBreakpoint]="1" [breakpoints]="[0, 1]" [handle]="false">
                 <ng-template>
-                  <scroll-image-component
-                    [images]="noteImages"
-                    [index]="lowNote"
-                    (indexChange)="changeLowNote($event)">
+                  <scroll-image-component [images]="noteImages" [index]="lowNote" (indexChange)="changeLowNote($event)">
                   </scroll-image-component>
                 </ng-template>
               </ion-modal>
@@ -129,23 +119,13 @@
           <div class="high-note-wrapper">
             <div class="simulate-input">
               <div class="title-section-wrapper">Highest note:</div>
-              <div 
-                id="open-modal-high-note" 
-                expand="block" 
-                class="high-note">
+              <div id="open-modal-high-note" expand="block" class="high-note">
                 <img id="high-note" [src]="getNoteImg(highNote)">
               </div>
-              <ion-modal 
-                *ngIf="!isPlaying()" 
-                trigger="open-modal-high-note" 
-                [canDismiss]="canDismiss" 
-                [initialBreakpoint]="1"
-                [breakpoints]="[0, 1]" 
-                [handle]="false">
+              <ion-modal *ngIf="!isPlaying()" trigger="open-modal-high-note" [canDismiss]="canDismiss"
+                [initialBreakpoint]="1" [breakpoints]="[0, 1]" [handle]="false">
                 <ng-template>
-                  <scroll-image-component
-                    [images]="noteImages"
-                    [index]="highNote"
+                  <scroll-image-component [images]="noteImages" [index]="highNote"
                     (indexChange)="changeHighNote($event)">
                   </scroll-image-component>
                 </ng-template>
@@ -157,7 +137,7 @@
     </div>
   </ion-content>
 
-  <ion-footer >
+  <ion-footer>
     <ion-button (click)="startStop()" expand="block">
       {{isPlaying() ? 'Stop':'Start'}}
     </ion-button>
