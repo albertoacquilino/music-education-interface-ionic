@@ -2,18 +2,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as pitchlite from 'src/app/services/pitchlite';
 
-
 const workletChunkSize = 128;
 const bigWindow = 4096;
 const smallWindow = 512;
 const minPitch = 140; // lower pitch of mpm, 140 hz is close to trumpet
 const useYin = false; // use MPM by default
-let audioContext = null;
+
 function scaleArrayToMinusOneToOne(array: Float32Array) {
     const maxAbsValue = Math.max(...array.map(Math.abs));
     return array.map((value) => value / maxAbsValue);
 }
-
 
 @Injectable({
     providedIn: 'root'
@@ -28,22 +26,23 @@ export class PitchService {
     private stream: MediaStream | undefined;
     private nAccumulated = 0;
     private n_pitches!: number;
-
+    private audioContext: AudioContext | null = null;
 
     pitch$ = new BehaviorSubject<number>(0);
+
 
     constructor() { }
 
     async connect() {
-        audioContext = new AudioContext();
-        console.log("Sample rate:", audioContext.sampleRate);
+        this.audioContext = new AudioContext();
+        console.log("Sample rate:", this.audioContext.sampleRate);
         this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         this.wasmModule = await pitchlite();
 
         this.n_pitches = this.wasmModule._pitchliteInit(
             bigWindow,
             smallWindow,
-            audioContext.sampleRate, // use the actual sample rate of the audio context
+            this.audioContext.sampleRate, // use the actual sample rate of the audio context
             useYin, // use yin
             minPitch, // mpm low pitch cutoff
         );
@@ -52,31 +51,28 @@ export class PitchService {
         this.ptr = this.wasmModule._malloc(bigWindow * Float32Array.BYTES_PER_ELEMENT);
         this.ptrPitches = this.wasmModule._malloc(this.n_pitches * Float32Array.BYTES_PER_ELEMENT);
 
-
-        await audioContext.audioWorklet.addModule('audio-accumulator.js');
+        await this.audioContext.audioWorklet.addModule('audio-accumulator.js');
         // Create an instance of your custom AudioWorkletNode
-        this.accumNode = new AudioWorkletNode(audioContext, 'audio-accumulator', {
+        this.accumNode = new AudioWorkletNode(this.audioContext, 'audio-accumulator', {
             numberOfInputs: 1,
             numberOfOutputs: 1,
             outputChannelCount: [2],
         });
 
-        // // Connect the microphone stream to the processor
-        const source = audioContext.createMediaStreamSource(this.stream);
+        // Connect the microphone stream to the processor
+        const source = this.audioContext.createMediaStreamSource(this.stream);
         source.connect(this.accumNode);
 
-        this.analyser = audioContext.createAnalyser();
+        this.analyser = this.audioContext.createAnalyser();
         this.analyser.fftSize = 2048;
 
         this.accumNode.connect(this.analyser);
 
-        const gainNode = audioContext.createGain();
+        const gainNode = this.audioContext.createGain();
         gainNode.gain.value = 0.0;
         this.analyser.connect(gainNode);
 
-        gainNode.connect(audioContext.destination);
-
-
+        gainNode.connect(this.audioContext.destination);
 
         this.accumNode.port.onmessage = (event) => {
             // Check if the "stop" button has been clicked
@@ -113,22 +109,33 @@ export class PitchService {
     }
 
     disconnect() {
-        console.log("Stopping and disconnecting and cleaning up")
+        console.log("Stopping and disconnecting and cleaning up");
         this.isStopped = true;
 
-        // disconnect the audio worklet node
-        this.accumNode?.disconnect();
+        if (this.accumNode) {
+            // disconnect the audio worklet node
+            this.accumNode.disconnect();
+        }
 
-        // stop tracks
-        this.stream?.getTracks().forEach(function (track: any) {
-            console.log('Stopping stream');
-            // Here you can free the allocated memory
-            track.stop();
-        });
+        if (this.stream) {
+            // stop tracks
+            this.stream.getTracks().forEach(function (track: any) {
+                console.log('Stopping stream');
+                // Here you can free the allocated memory
+                track.stop();
+            });
+        }
 
-        // cleanup
-        this.wasmModule._free(this.ptrPitches);
-        this.wasmModule._free(this.ptr);
+        if (this.wasmModule) {
+            // cleanup
+            this.wasmModule._free(this.ptrPitches);
+            this.wasmModule._free(this.ptr);
+        }
+
+        if (this.audioContext) {
+            this.audioContext.close();
+            this.audioContext = null;
+        }
     }
-
 }
+

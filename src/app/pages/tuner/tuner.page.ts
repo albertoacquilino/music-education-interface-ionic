@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonicModule, PickerController } from '@ionic/angular';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -19,21 +19,18 @@ import { BeatService } from '../../services/beat.service';
 import { AppBeat } from 'src/app/models/appbeat.types';
 import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
-import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
-import { TabsComponent } from '../tabs/tabs.page';
+import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-tuner',
+  templateUrl: './tuner.page.html',
+  styleUrls: ['./tuner.page.scss'],
   standalone: true,
-  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule, SemaphoreLightComponent, TrumpetDiagramComponent, TabsComponent],
+  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule, SemaphoreLightComponent, ChromaticTunerComponent],
 })
-/**
- * HomePage class represents the home page of the music education interface.
- */
-export class HomePage implements OnInit {
+export class TunerComponent implements OnInit {
+  @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
 
   /**
    * Indicates whether the mute alert has been triggered.
@@ -146,7 +143,6 @@ export class HomePage implements OnInit {
    * @param firebase - The Firebase service.
    * @param _registration - The registration service.
    * @param alertController - The alert controller.
-   * @param refFrequencyService : The Reference Frequency Service
    */
   constructor(
     private _picker: PickerController,
@@ -350,6 +346,12 @@ export class HomePage implements OnInit {
         case 1: this.currentAction = "Listen"; break;
         case 2: this.currentAction = "Play"; break;
       }
+
+      switch (tempo.measure) {
+        case 0: this.chromaticTuner.stop(); break;
+        case 2: this.chromaticTuner.start();
+      }
+
     }
     if (tempo.cycle === MAXCYCLES) {
       this.firebase.saveStop('finished');
@@ -357,10 +359,7 @@ export class HomePage implements OnInit {
     }
 
   }
-  navigateTo(page: string) {
-      this.router.navigate([`/${page}`]);
-   
-  }
+
   /**
    * Toggles between starting and stopping the tempo.
    * If the tempo is currently playing, it will stop it.
@@ -396,6 +395,7 @@ export class HomePage implements OnInit {
    */
   stop() {
     this._tempo.stop();
+    this.chromaticTuner.stop();
     // stop everything playing in the audio context
     Howler.stop();
     this.firebase.saveStop('interrupted');
@@ -480,8 +480,11 @@ export class HomePage implements OnInit {
     await picker.present();
 
   }
+  navigateTo(page: string) {
 
-
+      this.router.navigate([`/${page}`]);
+   
+  }
   /**
    * Determines whether the modal can be dismissed or not.
    * @param data Optional data passed to the modal.

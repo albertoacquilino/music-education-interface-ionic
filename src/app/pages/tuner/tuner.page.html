@@ -41,6 +41,8 @@
 
   </ion-content>
 </ion-menu>
+
+
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
@@ -68,16 +70,14 @@
               <semaphore-light [currentAction]="currentAction"></semaphore-light>
             </div>
           </div>
-          <ng-container *ngIf="!hideTrumpet">
-            <div class="trumpet">
-              <!-- <img id="trumpet-position" [src]="trumpetPosition"> -->
-              <trumpet-diagram [trumpetButtons]="trumpetBtns"></trumpet-diagram>
-            </div>
-          </ng-container>
+          <div class="tuner-chromatic">
+            <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>
+          </div>
         </div>
-        <!--MIDDLE-->
         <div class="middle">
+
           <div class="score">
+            <!-- <img id="score-image" [src]="scoreImage"> -->
             <app-score id="score-image" [score]="score"></app-score>
           </div>
         </div>

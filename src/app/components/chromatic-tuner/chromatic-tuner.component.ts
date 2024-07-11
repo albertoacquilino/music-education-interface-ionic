@@ -56,6 +56,7 @@ export class ChromaticTunerComponent implements OnInit {
   pitch$: Observable<number>;
   note$: Observable<{ note: string, cents: number }>;
 
+
   pointerTransform: string = '';
   currentEmoji: string = '';
   NOTES: { [note: string]: { freq: number, key: number } } = {};
@@ -64,12 +65,14 @@ export class ChromaticTunerComponent implements OnInit {
   currentNote: string = '';
   currentCents: number = 0;
 
+
   constructor(
     private pitchService: PitchService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
+
     this.pitch$ = this.pitchService.pitch$.pipe(
-      throttleTime(450),
+      throttleTime(400),
       tap((pitch) => {
         console.log("Pitch:", pitch);
         this.detectedPitch = pitch;
@@ -83,7 +86,7 @@ export class ChromaticTunerComponent implements OnInit {
         let noteDist = Object.keys(this.NOTES).map((note) => ({ note, err: this.NOTES[note].freq - pitch }));
         noteDist.sort((a, b) => Math.abs(a.err) - Math.abs(b.err));
         // Calculate the cents from the frequency of closest note and detected pitch 
-        let cents = (pitch <= 0) ? 0 : 1200 * Math.log2(pitch / this.NOTES[noteDist[0].note].freq);
+        let cents = 1200 * Math.log2(pitch / this.NOTES[noteDist[0].note].freq);
         return { note: noteDist[0].note, cents: cents };
       }),
       tap((note) => {
@@ -100,7 +103,6 @@ export class ChromaticTunerComponent implements OnInit {
       this.currentNote = note.note;
       this.currentCents = note.cents;
       this.changeDetectorRef.detectChanges();
-
     });
   }
   updateNotes() {
@@ -134,5 +136,11 @@ export class ChromaticTunerComponent implements OnInit {
 
   start() {
     this.pitchService.connect();
+  }
+  stop() {
+    this.pitchService.disconnect();
+    this.showEmoji(0);
+    this.rotatePointer(0);
+    this.currentNote = '';
   }
 }

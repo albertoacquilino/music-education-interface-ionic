@@ -6,7 +6,9 @@
 </ion-header>
 <ion-content [fullscreen]="true">
   <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>
-  <div class="refFrequency" style="display: flex; justify-content: center; align-items: center; height: 10vh;">
-    Set Reference Frequency : {{refFrequencyValue$}} Hz
-  </div>
 </ion-content>
+<ion-footer>
+  <ion-button (click)="startStop()" expand="block">
+  Start
+  </ion-button>
+</ion-footer>

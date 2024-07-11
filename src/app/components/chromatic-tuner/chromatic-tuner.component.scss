@@ -2,4 +2,14 @@
     transform-origin: 176px 166px; /* Center of the circle */
     transition: transform 0.3s ease;
   }
+  .numeric-values {
+    position: absolute;
+    top : 200px;
+    left : 1000px;
+   
+  }
+  .tuner{
+    padding-top: 10px;
+    transform: scale(0.7);
+  }
 
