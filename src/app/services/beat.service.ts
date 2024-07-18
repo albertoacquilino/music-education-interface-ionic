@@ -39,9 +39,9 @@ export class BeatService {
     return this.playing$.value;
   }
 
-  private _beat: number = -1;
-  private _measure: number = -1;
-  private _cycle: number = -1;
+  public _beat: number = -1;
+  public _measure: number = -1;
+  public _cycle: number = -1;
 
   constructor() { }
 

@@ -6,17 +6,23 @@
   </ion-header>
   <ion-content class="ion-padding">
     <ion-list>
-      <ion-menu-toggle>
-        <ion-item>
-          <ion-label>Mode</ion-label>
-          <ion-button (click)="navigateTo('home')" color="medium" fill="outline">TRUMPET</ion-button>
-          <ion-button (click)="navigateTo('tuner')" color="medium" fill="outline">TUNER</ion-button>
-        </ion-item>
-      </ion-menu-toggle>
+      <ion-item>
+        <ion-label>Mode</ion-label>
+        <ion-segment (ionChange)="switchMode($event)" mode="ios" value="{{mode}}">
+          <ion-segment-button value="trumpet">
+            <ion-label>TRUMPET</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="tuner">
+            <ion-label>TUNER</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-item>
+
       <ion-item button (click)="openPicker('frequency')" [disabled]="isPlaying()">
         <ion-label>A4</ion-label>
         <ion-note slot="end">{{ refFrequencyValue$ }} Hz</ion-note>
       </ion-item>
+
       <ion-item>
         <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)"
           [disabled]="isPlaying()">
@@ -54,7 +60,6 @@
     </ion-toolbar>
   </ion-header>
 
-
   <ion-content [fullscreen]="true">
     <div id="container">
       <div class="top-middle-container">
@@ -64,16 +69,20 @@
               <h1 id="metronome-label" *ngIf="beat$|async as beat">
                 {{ beat.beat >= 0 ? (beat.beat + 1): '&nbsp;'}}
               </h1>
-              <!-- <h3 id="action">{{currentAction}}</h3> -->
               <semaphore-light [currentAction]="currentAction"></semaphore-light>
             </div>
           </div>
-          <ng-container *ngIf="!hideTrumpet">
+          <ng-container *ngIf="mode === 'tuner'">
+            <div class="chromatic-tuner">
+              <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="mode === 'trumpet'">
             <div class="trumpet">
-              <!-- <img id="trumpet-position" [src]="trumpetPosition"> -->
               <trumpet-diagram [trumpetButtons]="trumpetBtns"></trumpet-diagram>
             </div>
           </ng-container>
+
         </div>
         <!--MIDDLE-->
         <div class="middle">

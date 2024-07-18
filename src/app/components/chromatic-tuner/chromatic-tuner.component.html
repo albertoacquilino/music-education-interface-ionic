@@ -1,6 +1,6 @@
 <div class="chromatic-tuner">
     <div class="tuner">
-        <svg xmlns="http://www.w3.org/2000/svg" width="347" height="309" viewBox="0 0 347 309" fill="none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="240px" viewBox="0 0 347 309" fill="none">
             <path
                 d="M319 166C319 128.074 303.934 91.7014 277.116 64.8837C250.299 38.066 213.926 23 176 23C138.074 23 101.701 38.066 74.8837 64.8837C48.066 91.7014 33 128.074 33 166L41.58 166C41.58 130.35 55.7421 96.1593 80.9507 70.9507C106.159 45.7421 140.35 31.58 176 31.58C211.65 31.58 245.841 45.7421 271.049 70.9507C296.258 96.1594 310.42 130.35 310.42 166H319Z"
                 fill="url(#paint0_radial_28_480)" />
@@ -104,7 +104,6 @@
                 <path d="M185 146C191.618 140.951 202.647 140.39 210 146" stroke="#780000" stroke-width="7"
                     stroke-linecap="round" />
             </g>
-
             <defs>
                 <radialGradient id="paint0_radial_28_480" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
                     gradientTransform="translate(176 23) rotate(135) scale(202.233)">
@@ -115,19 +114,13 @@
             </defs>
         </svg>
     </div>
-    
     <div class="numeric-values">
         <ng-container *ngIf="pitch$ | async as pitch; else error">
-            Pitch: {{ pitch | number}}
-            <br>
-            Note: {{ currentNote }}
-            <br>
-            Cents: {{ currentCents | number }}
+            {{ currentNote }}
         </ng-container>
         <ng-template #error>
-            <p>Error loading pitch.</p>
+            <p>♩</p>
         </ng-template>
 
     </div>
-
 </div>

@@ -4,12 +4,14 @@ import { IonicModule } from '@ionic/angular';
   selector: 'app-tabs',
   templateUrl: './tabs.page.html',
   styleUrls: ['./tabs.page.scss'],
-  imports :[IonicModule],
-  standalone :true
+  imports: [IonicModule],
+  standalone: true
 })
 export class TabsComponent {
-
   constructor() { }
 
+  onChange(event: any) {
+    console.log(event);
 
+  }
 }

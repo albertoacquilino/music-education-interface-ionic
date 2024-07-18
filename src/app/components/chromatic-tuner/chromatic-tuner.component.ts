@@ -86,7 +86,7 @@ export class ChromaticTunerComponent implements OnInit {
         let noteDist = Object.keys(this.NOTES).map((note) => ({ note, err: this.NOTES[note].freq - pitch }));
         noteDist.sort((a, b) => Math.abs(a.err) - Math.abs(b.err));
         // Calculate the cents from the frequency of closest note and detected pitch 
-        let cents = 1200 * Math.log2(pitch / this.NOTES[noteDist[0].note].freq);
+        let cents = (pitch <= 0) ? 0 : 1200 * Math.log2(pitch / this.NOTES[noteDist[0].note].freq);
         return { note: noteDist[0].note, cents: cents };
       }),
       tap((note) => {
@@ -114,6 +114,7 @@ export class ChromaticTunerComponent implements OnInit {
       return acc;
     }, {} as { [note: string]: { freq: number, key: number } });
   }
+
 
   rotatePointer(cents: number) {
     if (cents < minCents) cents = minCents;

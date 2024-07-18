@@ -50,7 +50,7 @@ export class FirebaseService {
     lowNote: number,
     highNote: number,
     useFlatsAndSharps: boolean,
-    hideTrumpet: boolean,
+    mode: string,
     useDynamics: boolean
   ) {
     const startTime = new Date();
@@ -63,7 +63,7 @@ export class FirebaseService {
       lowNote,
       highNote,
       useFlatsAndSharps,
-      hideTrumpet,
+      mode,
       startTime,
       useDynamics,
       device: {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonicModule, PickerController } from '@ionic/angular';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -21,29 +21,32 @@ import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
 import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
 import { TabsComponent } from '../tabs/tabs.page';
-import { Router } from '@angular/router';
+import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule, SemaphoreLightComponent, TrumpetDiagramComponent, TabsComponent],
+  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule, SemaphoreLightComponent, TrumpetDiagramComponent, TabsComponent, ChromaticTunerComponent],
 })
 /**
  * HomePage class represents the home page of the music education interface.
  */
 export class HomePage implements OnInit {
+  @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
+
+  /**
+  * Indicates the mode - tuner or trumpet
+  */
+
+  mode = 'trumpet';
 
   /**
    * Indicates whether the mute alert has been triggered.
    */
   muteAlert = false;
 
-  /**
-   * Indicates whether to show trumpet hints.
-   */
-  hideTrumpet = false;
 
   /**
    * Indicates whether to use flats and sharps.
@@ -155,8 +158,7 @@ export class HomePage implements OnInit {
     public firebase: FirebaseService,
     private _registration: RegistrationService,
     private alertController: AlertController,
-    private refFrequencyService: RefFreqService,
-    private router: Router,
+    private refFrequencyService: RefFreqService
   ) {
     this.beat$ = this._tempo.tick$.pipe(
       tap((tempo: AppBeat) => this.intervalHandler(tempo))
@@ -170,17 +172,24 @@ export class HomePage implements OnInit {
     this.refFrequencyService.getRefFrequency().subscribe(value => {
       this.refFrequencyValue$ = value;
     });
-    this.hideTrumpet = this.retrieveAndParseFromLocalStorage('hideTrumpet', false);
     this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
     this.useDynamics = this.retrieveAndParseFromLocalStorage('useDynamics', false);
     this.lowNote = this.retrieveAndParseFromLocalStorage('lowNote', INITIAL_NOTE);
     this.highNote = this.retrieveAndParseFromLocalStorage('highNote', INITIAL_NOTE);
   }
+
+  ionViewDidEnter(): void {
+
+  }
+  ionViewWillLeave(): void {
+    this._tempo.stop();
+    if (this.mode == "tuner") this.chromaticTuner.stop();
+
+  }
   retrieveAndParseFromLocalStorage(key: string, defaultValue: any): any {
     const storedValue = localStorage.getItem(key);
     return storedValue ? JSON.parse(storedValue) : defaultValue;
   }
-
 
   /**
    * Checks if the device is muted and displays an alert if it is.
@@ -206,15 +215,17 @@ export class HomePage implements OnInit {
   }
 
   /**
-   * Switches the trumpet hints.
+   * Switches the mode.
    * @param event - The event.
    * @returns void
    */
-  switchTrumpetHints(event: any) {
-    this.hideTrumpet = event.detail.checked;
-    localStorage.setItem('hideTrumpet', JSON.stringify(this.hideTrumpet));
-    console.log(event);
 
+  switchMode(event: any) {
+    if (this.mode == 'tuner') {
+      this.chromaticTuner.stop();
+    }
+    this.mode = event.detail.value;
+    console.log(event);
   }
 
   /**
@@ -350,16 +361,19 @@ export class HomePage implements OnInit {
         case 1: this.currentAction = "Listen"; break;
         case 2: this.currentAction = "Play"; break;
       }
+
+      if (this.mode == 'tuner') {
+        switch (tempo.measure) {
+          case 0: this.chromaticTuner.stop(); break;
+          case 2: this.chromaticTuner.start();
+        }
+      }
     }
     if (tempo.cycle === MAXCYCLES) {
       this.firebase.saveStop('finished');
       console.log('finished');
     }
 
-  }
-  navigateTo(page: string) {
-      this.router.navigate([`/${page}`]);
-   
   }
   /**
    * Toggles between starting and stopping the tempo.
@@ -386,7 +400,7 @@ export class HomePage implements OnInit {
       this.lowNote,
       this.highNote,
       this.useFlatsAndSharps,
-      this.hideTrumpet,
+      this.mode,
       this.useDynamics);
   }
 
@@ -396,6 +410,9 @@ export class HomePage implements OnInit {
    */
   stop() {
     this._tempo.stop();
+    if (this.mode == 'tuner') {
+      this.chromaticTuner.stop();
+    }
     // stop everything playing in the audio context
     Howler.stop();
     this.firebase.saveStop('interrupted');

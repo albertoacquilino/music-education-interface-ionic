@@ -11,13 +11,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage),
       },
       {
-        path: 'pitchlite',
+        path: 'tuner',
         loadComponent: () => import('./pages/pitchlite/pitchlite.page').then(m => m.PitchComponent),
       },
-      {
-        path: 'tuner',
-        loadComponent: () => import('./pages/tuner/tuner.page').then(m => m.TunerComponent)
-      },
+
       {
         path: '',
         redirectTo: 'home',
@@ -25,7 +22,7 @@ export const routes: Routes = [
       }
     ]
   },
- 
+
   {
     path: 'scroll-image-page',
     loadComponent: () => import('./components/scroll-image-selector/scroll-image-test-page').then(m => m.ScrollImagePage),

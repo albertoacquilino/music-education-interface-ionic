@@ -1,10 +1,9 @@
-<ion-tabs>
+<ion-tabs  (ionTabsDidChange)="onChange($event)">
   <ion-tab-bar class="custom-tab-bar">
-    <ion-tab-button tab="tuner">
+    <ion-tab-button tab="home">
       X
     </ion-tab-button>
-    <ion-tab-button tab="pitchlite">
+    <ion-tab-button tab="tuner">
       Y
     </ion-tab-button>
   </ion-tab-bar>
-</ion-tabs>

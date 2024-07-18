@@ -16,7 +16,7 @@ export type Activity = {
   lowNote: number;
   highNote: number;
   useFlatsAndSharps: boolean;
-  hideTrumpet: boolean;
+  mode: string;
   useDynamics: boolean;
   startTime: Date;
   endTime?: Date;

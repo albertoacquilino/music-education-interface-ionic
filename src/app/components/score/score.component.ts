@@ -69,7 +69,7 @@ export class ScoreComponent implements AfterViewInit {
     }
     this._renderer = new Flow.Renderer(div as HTMLDivElement, Flow.Renderer.Backends.SVG);
     this._context = this._renderer.getContext();
-    
+
 
     combineLatest([this.size$, this.score$]).pipe(
       filter(([_, score]) => score !== null),
@@ -130,7 +130,7 @@ export class ScoreComponent implements AfterViewInit {
             shift_x: (-measureWidth / 2) + 10,
           });
 
-          
+
 
 
         }
