@@ -1,0 +1,36 @@
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+ion-button[color="dark"] {
+    text-transform: initial;
+}
+
+.forgot-password-container {
+    text-align: end;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.line {
+    flex: 1;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.or {
+    padding: 0 10px;
+    color: #888;
+    font-weight: bold;
+}
