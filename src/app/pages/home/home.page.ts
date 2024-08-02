@@ -169,6 +169,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(localStorage.getItem('userToken'));
     this.refFrequencyService.getRefFrequency().subscribe(value => {
       this.refFrequencyValue$ = value;
     });
