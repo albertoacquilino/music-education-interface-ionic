@@ -4,7 +4,7 @@ import "firebase/firestore";
 import { Device } from '@capacitor/device';
 import { DocumentReference, addDoc, collection, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 import { Injectable } from "@angular/core";
-import { Activity, StudyGroup } from "../models/firebase.types";
+import { User, Activity, StudyGroup } from "../models/firebase.types";
 
 
 const firebaseConfig = {
@@ -124,6 +124,17 @@ export class FirebaseService {
     this.group = group['name'];
     this.user = user;
     return group as StudyGroup;
+  }
+  public async registerUser(user: User): Promise<DocumentReference> {
+    try {
+      const userDocRef = await addDoc(collection(db, 'user_info'), user);
+      console.log('User registered with ID:', userDocRef.id);
+      return userDocRef;
+
+    } catch (e) {
+      console.log('Error', e);
+      throw e;
+    }
   }
 
 

@@ -4,18 +4,23 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-@Component({
+import { FirebaseService } from 'src/app/services/firebase.service';
 
+@Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule],
 })
+
 export class RegisterPage {
   email: string = '';
   password: string = '';
-  role = '';
+  age : number = 0;
+  progressionSpeed : string = '20 min/day';
+  role: string = '';
+  learningMode : string = '';
   roles = [
     {
       id: 1,
@@ -30,7 +35,7 @@ export class RegisterPage {
       name: 'Both',
     },
   ];
-  constructor(private authService: AuthService, private router: Router, private toastController: ToastController) { }
+  constructor(private authService: AuthService, private router: Router, private toastController: ToastController, private firebaseService : FirebaseService) { }
 
   handleChange(ev: any) {
     this.role = ev.target.value.name;
@@ -43,7 +48,15 @@ export class RegisterPage {
   }
   async register() {
     try {
+      const user = {
+        userId : this.email,
+        age : this.age,
+        progressionSpeed : this.progressionSpeed,
+        role : this.role,
+        learningMode : (this.role == 'Learner' || this.role == 'Both') ? this.learningMode : undefined,        
+      };
       await this.authService.register(this.email, this.password);
+      await this.firebaseService.registerUser(user);
       this.showToast('Registration Successful. Please login.', 'success');
       this.clearForm();
       this.router.navigate(['/']);

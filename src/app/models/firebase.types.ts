@@ -27,10 +27,10 @@ export type Activity = {
   user?: string | null;
 
 };
-export interface User {
-  email: string;
+export type User = {
+  userId: string;
   age: number;
   progressionSpeed: string;
   role: string;
-  learningMode?: string | null;
+  learningMode?: string;
 };
