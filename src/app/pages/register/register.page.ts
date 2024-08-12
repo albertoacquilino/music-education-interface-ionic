@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
+
 
 @Component({
   selector: 'app-register',
@@ -14,13 +14,14 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   imports: [IonicModule, CommonModule, FormsModule],
 })
 
-export class RegisterPage {
+export class RegisterPage implements OnInit {
   email: string = '';
-  password: string = '';
-  age : number = 0;
-  progressionSpeed : string = '20 min/day';
+  userId: string = '';
+  age: number = 0;
+  progressionSpeed: string = '20 min/day';
   role: string = '';
-  learningMode : string = '';
+  learningMode: string = '';
+  termsAccepted: boolean = false;
   roles = [
     {
       id: 1,
@@ -35,7 +36,19 @@ export class RegisterPage {
       name: 'Both',
     },
   ];
-  constructor(private authService: AuthService, private router: Router, private toastController: ToastController, private firebaseService : FirebaseService) { }
+  constructor(private router: Router, private toastController: ToastController, private firebaseService: FirebaseService) {
+
+  }
+
+  ngOnInit(): void {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.email = navigation.extras.state['email'];
+      this.userId = this.email.split('@')[0];
+    }
+  }
+
+
 
   handleChange(ev: any) {
     this.role = ev.target.value.name;
@@ -49,13 +62,13 @@ export class RegisterPage {
   async register() {
     try {
       const user = {
-        userId : this.email,
-        age : this.age,
-        progressionSpeed : this.progressionSpeed,
-        role : this.role,
-        learningMode : (this.role == 'Learner' || this.role == 'Both') ? this.learningMode : undefined,        
+        email: this.email,
+        userId: this.userId,
+        age: this.age,
+        progressionSpeed: this.progressionSpeed,
+        role: this.role,
+        learningMode: (this.role == 'Learner' || this.role == 'Both') ? this.learningMode : undefined,
       };
-      await this.authService.register(this.email, this.password);
       await this.firebaseService.registerUser(user);
       this.showToast('Registration Successful. Please login.', 'success');
       this.clearForm();
@@ -80,9 +93,5 @@ export class RegisterPage {
     toast.present();
   }
   private clearForm() {
-    this.email = '';
-    this.password = '';
-    this.role = '';
-
   }
 }

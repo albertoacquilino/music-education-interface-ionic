@@ -28,6 +28,7 @@ export type Activity = {
 
 };
 export type User = {
+  email: string;
   userId: string;
   age: number;
   progressionSpeed: string;

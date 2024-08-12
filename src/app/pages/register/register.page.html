@@ -7,10 +7,7 @@
       <ion-card-content>
         <ion-list>
           <ion-item>
-            <ion-input label="Email address" labelPlacement="floating" type="email" [(ngModel)]="email"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input label="Password" labelPlacement="floating" type="password" [(ngModel)]="password"></ion-input>
+            <ion-input label="User ID" labelPlacement="floating" [(ngModel)]="userId" [disabled]="true"></ion-input>
           </ion-item>
           <ion-item>
             <ion-input label="Age" labelPlacement="floating" [(ngModel)]="age"></ion-input>
@@ -45,11 +42,17 @@
                   <ion-radio value="teacher-guided" labelPlacement="end" justify="start">Teacher-guided</ion-radio>
                 </ion-item>
               </ion-radio-group>
-
             </ion-item>
           </ng-container>
+          <ion-item lines="none">
+            <ion-checkbox [(ngModel)]="termsAccepted"></ion-checkbox>
+            <span style="margin-left: 8px;"></span>
+            <ion-label class="ion-text-wrap">
+              By checking this box, you are agreeing to our terms and conditions.
+            </ion-label>
+          </ion-item>
         </ion-list>
-        <ion-button (click)="register()">SUBMIT</ion-button>
+        <ion-button (click)="register()" [disabled]="!termsAccepted">SUBMIT</ion-button>
       </ion-card-content>
     </ion-card>
   </div>

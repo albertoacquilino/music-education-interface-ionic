@@ -1,6 +1,6 @@
 <ion-content>
   <div class="flex-center">
-    <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white" height=100px>
+    <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white" height="100px">
     <ion-card>
       <ion-card-content>
         <ion-item>
@@ -10,15 +10,25 @@
           <ion-input label="Password" labelPlacement="floating" type="password" [(ngModel)]="password"></ion-input>
         </ion-item>
         <div class="forgot-password-container">
-          <a href="#"> Forgot Password?</a>
+          <a href="#">Forgot Password?</a>
         </div>
         <ion-button color="primary" size="full" (click)="login()">Login</ion-button>
         <div class="divider">
           <span class="line"></span>
-          <span class="or">or</span>
+          <span class="or">OR</span>
           <span class="line"></span>
         </div>
-        <ion-button color="primary" fill="clear" size="full" (click) = "navigate()">Register</ion-button>
+        <ion-button color="light" expand="full" class="google-button" (click)="continueWithGoogle()">
+          <img src="assets/images/google-logo.png" alt="Google logo" class="google-logo">
+          Continue with Google
+        </ion-button>
+        <div class="new-user">
+          <p>New User?</p>
+          <div class="new-user-options">
+            <a (click)="goToSignup()" color="primary">Signup</a> or <a (click)="continueAsGuest()">Continue as a
+              guest</a>
+          </div>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

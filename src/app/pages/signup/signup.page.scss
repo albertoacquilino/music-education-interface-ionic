@@ -4,32 +4,17 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    padding: 20px;
 }
 
-.logo {
-    margin-bottom: 20px;
-}
-
-ion-card {
-    width: 100%;
-    max-width: 400px;
-}
-
-ion-button {
-    --border-radius: 10px;
-    margin-top: 15px;
-}
-
-.forgot-password-container {
-    text-align: end;
-    margin-top: 0.75em;
+ion-button[color="dark"] {
+    text-transform: initial;
 }
 
 .divider {
     display: flex;
     align-items: center;
-    margin: 15px 0;
+    text-align: center;
+    margin: 20px 0;
 }
 
 .line {
@@ -46,10 +31,14 @@ ion-button {
 
 .google-button {
     margin-top: 8px;
+    text-transform: initial;
     font-weight: 500;
     color: #555;
     background-color: #fff;
     border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -58,24 +47,12 @@ ion-button {
     margin-right: 8px;
 }
 
-.new-user {
+.signin-link {
     text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
+    margin-top: 16px;
 }
 
-.new-user p {
-    margin-bottom: 3px;
-}
-
-.new-user-options a {
-    color: var(--ion-color-primary);
-    text-decoration: none;
-    cursor: pointer;
-    flex: 1;
-    text-align: center;
-}
-
-.new-user-options a:hover {
+.signin {
     text-decoration: underline;
+    cursor: pointer;
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, UserCredential } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, UserCredential, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -29,8 +29,18 @@ export class AuthService {
       throw error;
     }
   }
-
-
+  async googleSignup(): Promise<any> {
+    try {
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(this.auth, provider);
+      const token = await userCredential.user.getIdToken();
+      localStorage.setItem('userToken', token);
+      console.log('Google sign-in successful, token:', token);
+    } catch (error) {
+      console.error('Error during Google sign-up:', error);
+      throw error;
+    }
+  }
 
   async signOut(): Promise<void> {
     try {
