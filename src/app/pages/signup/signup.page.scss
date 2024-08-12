@@ -1,20 +1,38 @@
+ion-content {
+    --background: #2d2b2b;
+}
 .flex-center {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
+    padding: 20px;
+    text-align: center;
 }
 
-ion-button[color="dark"] {
-    text-transform: initial;
+  
+.logo {
+    margin-bottom: 10px;
+}
+  
+ion-card {
+    width: 100%;
+    max-width: 350px;
+    padding: 10px;
+    border-radius: 15px;
+    position: relative;
+    z-index: 0;
 }
 
+ion-card-content {
+    padding-top: 0;
+}
+  
 .divider {
     display: flex;
     align-items: center;
-    text-align: center;
-    margin: 20px 0;
+    margin: 25px 0;
 }
 
 .line {
@@ -28,10 +46,9 @@ ion-button[color="dark"] {
     color: #888;
     font-weight: bold;
 }
-
-.google-button {
+  
+  .google-button {
     margin-top: 8px;
-    text-transform: initial;
     font-weight: 500;
     color: #555;
     background-color: #fff;
@@ -40,19 +57,20 @@ ion-button[color="dark"] {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.google-logo {
+  }
+  
+  .google-logo {
     height: 20px;
     margin-right: 8px;
-}
-
-.signin-link {
+  }
+  
+  .signin-link {
     text-align: center;
     margin-top: 16px;
-}
-
-.signin {
+  }
+  
+  .signin {
     text-decoration: underline;
     cursor: pointer;
-}
+  }
+  

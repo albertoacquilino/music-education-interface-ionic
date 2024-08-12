@@ -27,3 +27,25 @@ ion-radio.radio-checked::part(mark) {
     transform: rotate(45deg);
 
 }
+
+ion-content {
+    --background: #2d2b2b;
+
+    .flex-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        padding: 16px;
+        overflow-y: auto;
+    }
+
+    .custom-card {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 16px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}

@@ -1,6 +1,6 @@
 <ion-content>
   <div class="flex-center">
-    <ion-card>
+    <ion-card class="custom-card">
       <ion-card-header>
         <ion-card-title>Register</ion-card-title>
       </ion-card-header>
@@ -52,7 +52,7 @@
             </ion-label>
           </ion-item>
         </ion-list>
-        <ion-button (click)="register()" [disabled]="!termsAccepted">SUBMIT</ion-button>
+        <ion-button expand="full" (click)="register()" [disabled]="!termsAccepted">SUBMIT</ion-button>
       </ion-card-content>
     </ion-card>
   </div>

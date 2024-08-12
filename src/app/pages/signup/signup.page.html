@@ -1,7 +1,7 @@
 <ion-content>
   <div class="flex-center">
-    <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white" height="100px" />
-    <ion-card>
+    <img src="assets/images/mei-logo-white.png" alt="logo" class="logo" height="100px" />
+    <ion-card class="custom-card">
       <ion-card-content>
         <ion-item>
           <ion-input label="Email Address" labelPlacement="floating" type="email" [(ngModel)]="email"></ion-input>
@@ -9,15 +9,15 @@
         <ion-item>
           <ion-input label="Password" labelPlacement="floating" type="password" [(ngModel)]="password"></ion-input>
         </ion-item>
-        <ion-button color="primary" size="full" (click)="signUp()">
+        <ion-button color="primary" size="full" class="custom-button" (click)="signUp()">
           Signup
         </ion-button>
         <div class="divider">
           <span class="line"></span>
-          <span class="or">or</span>
+          <span class="or">OR</span>
           <span class="line"></span>
         </div>
-        <ion-button color="light" expand="full" class="google-button" (click)="googleSignup()">
+        <ion-button color="light" expand="full" class="google-button custom-button" (click)="googleSignup()">
           <img src="assets/images/google-logo.png" alt="Google logo" class="google-logo" />
           Signup with Google
         </ion-button>
