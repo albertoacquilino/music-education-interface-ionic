@@ -16,6 +16,7 @@ import { scoreFromNote } from 'src/app/utils/score.utils';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
 import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN, MINREFFREQUENCY, MAXREFFREQUENCY } from '../../constants';
 import { BeatService } from '../../services/beat.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { AppBeat } from 'src/app/models/appbeat.types';
 import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
@@ -158,7 +159,8 @@ export class HomePage implements OnInit {
     public firebase: FirebaseService,
     private _registration: RegistrationService,
     private alertController: AlertController,
-    private refFrequencyService: RefFreqService
+    private refFrequencyService: RefFreqService,
+    private authService: AuthService
   ) {
     this.beat$ = this._tempo.tick$.pipe(
       tap((tempo: AppBeat) => this.intervalHandler(tempo))
@@ -169,7 +171,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(localStorage.getItem('userToken'));
+    console.log(localStorage.getItem('user'));
     this.refFrequencyService.getRefFrequency().subscribe(value => {
       this.refFrequencyValue$ = value;
     });
@@ -517,6 +519,9 @@ export class HomePage implements OnInit {
   async openRegistrationModal() {
     await this._registration.openModal();
   }
-
-
+  signOut() {
+    sessionStorage.removeItem("LoggedInUser");
+    localStorage.removeItem('user');
+    this.authService.signOut();
+  }
 }

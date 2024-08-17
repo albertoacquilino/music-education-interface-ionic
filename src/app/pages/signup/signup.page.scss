@@ -1,76 +1,86 @@
 ion-content {
-    --background: #2d2b2b;
-}
-.flex-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding: 20px;
-    text-align: center;
+  --background: #2d2b2b;
 }
 
-  
-.logo {
-    margin-bottom: 10px;
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
 }
-  
+
+
+.logo {
+  margin-bottom: 10px;
+}
+
 ion-card {
-    width: 100%;
-    max-width: 350px;
-    padding: 10px;
-    border-radius: 15px;
-    position: relative;
-    z-index: 0;
+  width: 100%;
+  max-width: 350px;
+  padding: 10px;
+  border-radius: 12px;
+  position: relative;
+  z-index: 0;
 }
 
 ion-card-content {
-    padding-top: 0;
+  padding-top: 0;
 }
-  
+
 .divider {
-    display: flex;
-    align-items: center;
-    margin: 25px 0;
+  display: flex;
+  align-items: center;
+  margin: 25px 0;
 }
 
 .line {
-    flex: 1;
-    height: 1px;
-    background-color: #ccc;
+  flex: 1;
+  height: 1px;
+  background-color: #ccc;
 }
 
 .or {
-    padding: 0 7px;
-    color: #888;
-    font-weight: bold;
+  padding: 0 7px;
+  color: #888;
+  font-weight: bold;
 }
-  
-  .google-button {
-    margin-top: 8px;
-    font-weight: 500;
-    color: #555;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .google-logo {
-    height: 20px;
-    margin-right: 8px;
-  }
-  
-  .signin-link {
-    text-align: center;
-    margin-top: 16px;
-  }
-  
-  .signin {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  
+
+.google-button {
+  margin-top: 8px;
+  font-weight: 500;
+  color: #555;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.google-logo {
+  height: 20px;
+  margin-right: 8px;
+}
+
+.signin-link {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.signin {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.curved-item {
+  --border-radius: 12px;
+  --box-shadow: none;
+  margin-bottom: 7px;
+}
+
+ion-input {
+  --border-radius: 12px;
+}

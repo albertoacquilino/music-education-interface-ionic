@@ -3,30 +3,27 @@
     <img src="assets/images/mei-logo-white.png" alt="logo" class="logo" height="100px">
     <ion-card>
       <ion-card-content>
-        <ion-item>
+        <ion-item class="curved-item">
           <ion-input label="Email Address" labelPlacement="floating" type="email" [(ngModel)]="email"></ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item class="curved-item" lines="none">
           <ion-input label="Password" labelPlacement="floating" type="password" [(ngModel)]="password"></ion-input>
         </ion-item>
-        <div class="forgot-password-container">
-          <a href="#">Forgot Password?</a>
-        </div>
         <ion-button color="primary" size="full" (click)="login()">Login</ion-button>
         <div class="divider">
           <span class="line"></span>
           <span class="or">OR</span>
           <span class="line"></span>
         </div>
-        <ion-button color="light" expand="full" class="google-button" (click)="continueWithGoogle()">
+        <!-- <ion-button color="light" expand="full" class="google-button" (click)="continueWithGoogle()">
           <img src="assets/images/google-logo.png" alt="Google logo" class="google-logo">
           Continue with Google
-        </ion-button>
+        </ion-button> -->
+        <div #googleBtn></div>
         <div class="new-user">
           <p>New User?</p>
           <div class="new-user-options">
-            <a (click)="goToSignup()" color="primary">Signup</a> or <a (click)="continueAsGuest()">Continue as a
-              guest</a>
+            <a (click)="goToSignup()" color="primary">Signup</a> or <a (click)="continueAsGuest()">Continue as a guest</a>
           </div>
         </div>
       </ion-card-content>

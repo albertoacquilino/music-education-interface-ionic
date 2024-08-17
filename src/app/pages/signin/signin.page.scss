@@ -20,7 +20,7 @@ ion-card {
     width: 100%;
     max-width: 350px;
     padding: 10px;
-    border-radius: 15px;
+    border-radius: 12px;
     position: relative;
     z-index: 0;
 }
@@ -32,13 +32,6 @@ ion-card-content {
 ion-button {
     margin-top: 15px;
 }
-
-.forgot-password-container {
-    text-align: end;
-    margin-top: 0.75em;
-    margin-bottom: 2em;
-}
-
 .divider {
     display: flex;
     align-items: center;
@@ -67,7 +60,7 @@ ion-button {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+}
 
 .google-logo {
     height: 20px;
@@ -94,4 +87,14 @@ ion-button {
 
 .new-user-options a:hover {
     text-decoration: underline;
+}
+
+.curved-item {
+    --border-radius: 12px;
+    --box-shadow: none;
+    margin-bottom: 7px;
+}
+
+ion-input {
+    --border-radius: 12px;
 }

@@ -1,3 +1,4 @@
+declare var google: any;
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, UserCredential, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -43,14 +44,8 @@ export class AuthService {
   }
 
   async signOut(): Promise<void> {
-    try {
-      await signOut(this.auth);
-      localStorage.removeItem('userToken');
-      this.router.navigate(['/']);
-    } catch (error) {
-      console.error('Error during sign-out:', error);
-      throw error;
-    }
+    google.accounts.id.disableAutoSelect();
+    this.router.navigate(['/']);
   }
 
   getCurrentUser() {
