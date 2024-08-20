@@ -1,9 +1,9 @@
 <ion-tabs (ionTabsDidChange)="onChange($event)">
   <ion-tab-bar class="custom-tab-bar">
-    <ion-tab-button tab="exercise">
+    <ion-tab-button tab="exercise" [disabled]="isPlaying()">
       Exercise
     </ion-tab-button>
-    <ion-tab-button tab="tuner">
+    <ion-tab-button tab="tuner" [disabled]="isPlaying()">
       Tuner
     </ion-tab-button>
   </ion-tab-bar>

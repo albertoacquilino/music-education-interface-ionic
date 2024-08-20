@@ -5,11 +5,12 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <div id="keer">
+  <div class="chromatic-tuner">
     <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>
   </div>
-
-
 </ion-content>
 <ion-footer>
+  <ion-button (click)="startStop()" expand="block">
+    {{isPlaying() ? 'Stop':'Start'}}
+  </ion-button>
 </ion-footer>

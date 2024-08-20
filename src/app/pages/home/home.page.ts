@@ -403,7 +403,6 @@ export class HomePage implements OnInit {
       this.lowNote,
       this.highNote,
       this.useFlatsAndSharps,
-      this.mode,
       this.useDynamics);
   }
 

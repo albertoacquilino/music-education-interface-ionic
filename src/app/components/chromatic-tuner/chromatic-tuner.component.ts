@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { Observable, throttleTime, map, tap } from 'rxjs';
+import { Observable, throttleTime, map, tap, Subject, bufferTime, Subscription } from 'rxjs';
 import { PitchService } from 'src/app/services/pitch.service';
 import { IonicModule } from '@ionic/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -56,6 +56,8 @@ export class ChromaticTunerComponent implements OnInit {
   pitch$: Observable<number>;
   note$: Observable<{ note: string, cents: number }>;
 
+  private pitchSubject = new Subject<number>();
+  private pitchSubscription: Subscription | null = null;
 
   pointerTransform: string = '';
   currentEmoji: string = '';
@@ -65,83 +67,134 @@ export class ChromaticTunerComponent implements OnInit {
   currentNote: string = '';
   currentCents: number = 0;
 
-
   constructor(
-    private pitchService: PitchService,
-    private changeDetectorRef: ChangeDetectorRef
+      private pitchService: PitchService,
+      private changeDetectorRef: ChangeDetectorRef
   ) {
+      // Initialize the pitch$ Observable but do not trigger it until start() is called
+      this.pitch$ = this.pitchSubject.pipe(
+          bufferTime(500), // Accumulate pitches every 500ms
+          map(pitches => {
+              if (pitches.length === 0) return 0; // Return 0 if no pitches were received in the interval
 
-    this.pitch$ = this.pitchService.pitch$.pipe(
-      throttleTime(400),
-      tap((pitch) => {
-        console.log("Pitch:", pitch);
-        this.detectedPitch = pitch;
-        this.changeDetectorRef.detectChanges();
-      })
-    );
+              // Sort pitches into buckets
+              const buckets = new Map<number, number[]>();
+              for (const pitch of pitches) {
+                  let bucketFound = false;
+                  for (const [key, bucket] of buckets.entries()) {
+                      if (Math.abs(pitch - key) <= 1) {
+                          bucket.push(pitch);
+                          bucketFound = true;
+                          break;
+                      }
+                  }
+                  if (!bucketFound) {
+                      buckets.set(pitch, [pitch]);
+                  }
+              }
 
-    this.note$ = this.pitch$.pipe(
-      map((pitch) => {
-        // Find the closest note
-        let noteDist = Object.keys(this.NOTES).map((note) => ({ note, err: this.NOTES[note].freq - pitch }));
-        noteDist.sort((a, b) => Math.abs(a.err) - Math.abs(b.err));
-        // Calculate the cents from the frequency of closest note and detected pitch 
-        let cents = (pitch <= 0) ? 0 : 1200 * Math.log2(pitch / this.NOTES[noteDist[0].note].freq);
-        return { note: noteDist[0].note, cents: cents };
-      }),
-      tap((note) => {
-        this.showEmoji(note.cents);
-        this.rotatePointer(note.cents);
-        this.changeDetectorRef.detectChanges();
-      })
-    );
+              // Find the bucket with the most elements
+              let maxBucket: number[] = [];
+              for (const bucket of buckets.values()) {
+                  if (bucket.length > maxBucket.length) {
+                      maxBucket = bucket;
+                  }
+              }
+
+              // Calculate the mean of the most frequent bucket
+              const mean = maxBucket.reduce((a, b) => a + b, 0) / maxBucket.length;
+              return mean;
+          }),
+          tap(mean => {
+              if (mean > 0) {
+                  console.log("Mean of the most frequent bucket:", mean);
+              }
+              this.detectedPitch = mean;
+              this.changeDetectorRef.detectChanges();
+          })
+      );
+
+      this.note$ = this.pitch$.pipe(
+          map((pitch) => {
+              if (pitch <= 0) return { note: '', cents: 0 };
+
+              // Find the closest note
+              let noteDist = Object.keys(this.NOTES).map((note) => ({ note, err: this.NOTES[note].freq - pitch }));
+              noteDist.sort((a, b) => Math.abs(a.err) - Math.abs(b.err));
+
+              // Calculate the cents from the frequency of closest note and detected pitch
+              let cents = 1200 * Math.log2(pitch / this.NOTES[noteDist[0].note].freq);
+              return { note: noteDist[0].note, cents: cents };
+          }),
+          tap((note) => {
+              this.showEmoji(note.cents);
+              this.rotatePointer(note.cents);
+              this.changeDetectorRef.detectChanges();
+          })
+      );
   }
 
   ngOnInit() {
-    this.updateNotes();
-    this.note$.subscribe((note) => {
-      this.currentNote = note.note;
-      this.currentCents = note.cents;
-      this.changeDetectorRef.detectChanges();
-    });
-  }
-  updateNotes() {
-    this.NOTES = Object.keys(baseNotes).reduce((acc, note) => {
-      acc[note] = {
-        freq: baseNotes[note].freq * (this.refFrequencyValue$ / 440),
-        key: baseNotes[note].key
-      };
-      return acc;
-    }, {} as { [note: string]: { freq: number, key: number } });
+      this.updateNotes();
+      this.note$.subscribe((note) => {
+          this.currentNote = note.note;
+          this.currentCents = note.cents;
+          this.changeDetectorRef.detectChanges();
+      });
   }
 
+  updateNotes() {
+      this.NOTES = Object.keys(baseNotes).reduce((acc, note) => {
+          acc[note] = {
+              freq: baseNotes[note].freq * (this.refFrequencyValue$ / 440),
+              key: baseNotes[note].key
+          };
+          return acc;
+      }, {} as { [note: string]: { freq: number, key: number } });
+  }
 
   rotatePointer(cents: number) {
-    if (cents < minCents) cents = minCents;
-    else if (cents > maxCents) cents = maxCents;
-    // Calculating angle using Linear Interpolation 
-    let angle = 9 * cents / 4;
-    this.pointerTransform = `rotate(${angle}deg)`;
+      if (cents < minCents) cents = minCents;
+      else if (cents > maxCents) cents = maxCents;
+      // Calculating angle using Linear Interpolation 
+      let angle = 9 * cents / 4;
+      this.pointerTransform = `rotate(${angle}deg)`;
   }
 
   showEmoji(cents: number) {
-    if (cents == 0) this.currentEmoji = '';
-    else if (cents >= -10 && cents <= 10) {
-      this.currentEmoji = 'happy';
-    } else if ((cents > 10 && cents <= 30) || (cents < -10 && cents >= -30)) {
-      this.currentEmoji = 'confused';
-    } else if (cents > 30 || cents < -30) {
-      this.currentEmoji = 'notHappy';
-    }
+      if (cents == 0) this.currentEmoji = '';
+      else if (cents >= -10 && cents <= 10) {
+          this.currentEmoji = 'happy';
+      } else if ((cents > 10 && cents <= 30) || (cents < -10 && cents >= -30)) {
+          this.currentEmoji = 'confused';
+      } else if (cents > 30 || cents < -30) {
+          this.currentEmoji = 'notHappy';
+      }
   }
 
   start() {
-    this.pitchService.connect();
+      this.pitchService.connect();
+      // Start listening to pitch data
+      this.pitchSubscription = this.pitchService.pitch$.subscribe(pitch => {
+          this.pitchSubject.next(pitch);
+      });
   }
+
   stop() {
-    this.pitchService.disconnect();
-    this.showEmoji(0);
-    this.rotatePointer(0);
-    this.currentNote = '';
+      this.pitchService.disconnect();
+
+      // Stop listening to pitch data
+      if (this.pitchSubscription) {
+          this.pitchSubscription.unsubscribe();
+          this.pitchSubscription = null;
+      }
+
+      // Reset UI and stop processing
+      this.showEmoji(0);
+      this.rotatePointer(0);
+      this.currentNote = '';
+      this.detectedPitch = 0;
+      this.changeDetectorRef.detectChanges();
   }
 }
+

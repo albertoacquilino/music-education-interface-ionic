@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
+import { BeatService } from 'src/app/services/beat.service';
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.page.html',
@@ -8,10 +9,12 @@ import { IonicModule } from '@ionic/angular';
   standalone: true
 })
 export class TabsComponent {
-  constructor() { }
+  constructor(private _tempo : BeatService) { }
 
   onChange(event: any) {
     console.log(event);
-
+  }
+  isPlaying(): boolean {
+    return this._tempo.playing$.value;
   }
 }

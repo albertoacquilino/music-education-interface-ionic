@@ -8,7 +8,7 @@
     <ion-list>
       <ion-item>
         <ion-label>Mode</ion-label>
-        <ion-segment (ionChange)="switchMode($event)" mode="ios" value="{{mode}}">
+        <ion-segment (ionChange)="switchMode($event)" mode="ios" value="{{mode}}" [disabled]="isPlaying()">
           <ion-segment-button value="trumpet">
             <ion-label>TRUMPET</ion-label>
           </ion-segment-button>
@@ -35,15 +35,8 @@
           Dynamics
         </ion-toggle>
       </ion-item>
-
       <ion-item>
-        {{firebase.group ? 'Registered with "' + firebase.group + '"&nbsp;' : ''}}
-        <ion-button (click)="openRegistrationModal()">
-          {{firebase.group ? 'Clear' : 'Register'}}
-        </ion-button>
-      </ion-item>
-      <ion-item>
-        <ion-button (click) = "signOut()">
+        <ion-button (click)="signOut()">
           LOGOUT
         </ion-button>
       </ion-item>
