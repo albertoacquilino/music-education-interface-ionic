@@ -17,7 +17,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 export class RegisterPage implements OnInit {
   email: string = '';
   userId: string = '';
-  age: number = 0;
+  age!: number;
   progressionSpeed: string = '20 min/day';
   role: string = '';
   learningMode: string = '';
@@ -47,19 +47,18 @@ export class RegisterPage implements OnInit {
       this.userId = this.email.split('@')[0];
     }
   }
-
-
-
   handleChange(ev: any) {
     this.role = ev.target.value.name;
-    console.log(this.role);
-    console.log('Current value:', JSON.stringify(ev.target.value));
   }
 
   trackItems(index: number, item: any) {
     return item.id;
   }
   async register() {
+    if (isNaN(Number(this.age))) {
+      this.showToast('Please enter a valid age.', 'danger');
+      return;
+    }
     try {
       const user = {
         email: this.email,
@@ -70,9 +69,9 @@ export class RegisterPage implements OnInit {
         learningMode: (this.role == 'Learner' || this.role == 'Both') ? this.learningMode : undefined,
       };
       await this.firebaseService.registerUser(user);
-      this.showToast('Registration Successful. Please login.', 'success');
+      this.showToast('Registration Successful. Welcome!', 'success');
       this.clearForm();
-      this.router.navigate(['/']);
+      this.router.navigate(['/home']);
     } catch (error: any) {
       let errorMessage = 'An unexpected error occurred. Please try again.';
 
@@ -83,6 +82,19 @@ export class RegisterPage implements OnInit {
       console.error('Registration error:', error);
     }
   }
+
+  get isFormValid() {
+    return (
+      this.age !== null &&
+      !isNaN(Number(this.age)) &&
+      this.progressionSpeed !== '' &&
+      this.role !== '' &&
+      (this.role !== 'Learner' && this.role !== 'Both' || this.learningMode !== '') &&
+      this.termsAccepted
+    );
+  }
+
+
   private async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
       color: color,

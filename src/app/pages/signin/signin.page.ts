@@ -26,7 +26,7 @@ export class SigninPage implements AfterViewInit {
 
   constructor(private authService: AuthService, private router: Router, private toastController: ToastController, private ngZone: NgZone) { }
   ngAfterViewInit(): void {
-    const userInfo = localStorage.getItem('user');
+    const userInfo = localStorage.getItem('LoggedInUser');
     if (userInfo) {
       this.router.navigate(['/home']);
     }
@@ -56,7 +56,7 @@ export class SigninPage implements AfterViewInit {
       try {
         const userCredential = await signInWithCredential(auth, credential);
         console.log(userCredential);
-        localStorage.setItem('user', JSON.stringify(userCredential.user));
+        localStorage.setItem("LoggedInUser", JSON.stringify(userCredential.user));
         const additionalUserInfo = getAdditionalUserInfo(userCredential);
         const payLoad = this.decodeToken(response.credential);
 
@@ -64,7 +64,7 @@ export class SigninPage implements AfterViewInit {
           if (additionalUserInfo?.isNewUser) {
             this.router.navigate(['register'], { state: { email: userCredential.user.email } });
           } else {
-            sessionStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
+            localStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
             this.router.navigate(['home']);
           }
         });
@@ -77,8 +77,7 @@ export class SigninPage implements AfterViewInit {
 
   async login() {
     try {
-      const userCredential = await this.authService.signIn(this.email, this.password);
-      localStorage.setItem('user', JSON.stringify(userCredential.user));
+      await this.authService.signIn(this.email, this.password);
       this.router.navigate(['/home']);
       this.clearForm();
     } catch (error: any) {

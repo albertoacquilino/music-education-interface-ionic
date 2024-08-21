@@ -16,6 +16,11 @@ export const routes: Routes = [
   },
 
   {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage),
+  },
+
+  {
     path: 'home',
     loadComponent: () => import('./pages/tabs/tabs.page').then(m => m.TabsComponent),
     children: [

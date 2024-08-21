@@ -12,7 +12,10 @@ export class AuthService {
 
   async register(email: string, password: string): Promise<UserCredential> {
     try {
-      return await createUserWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      console.log("User", userCredential);
+      localStorage.setItem('LoggedInUser', JSON.stringify(userCredential.user));
+      return userCredential;
     } catch (error) {
       console.error('Error during sign-up:', error);
       throw error;
@@ -22,33 +25,18 @@ export class AuthService {
   async signIn(email: string, password: string): Promise<UserCredential> {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-      const token = await userCredential.user.getIdToken();
-      localStorage.setItem('userToken', token);
-      console.log(token);
+      console.log("User", userCredential);
+      localStorage.setItem('LoggedInUser', JSON.stringify(userCredential.user));
       return userCredential;
     } catch (error) {
       throw error;
     }
   }
-  async googleSignup(): Promise<any> {
-    try {
-      const provider = new GoogleAuthProvider();
-      const userCredential = await signInWithPopup(this.auth, provider);
-      const token = await userCredential.user.getIdToken();
-      localStorage.setItem('userToken', token);
-      console.log('Google sign-in successful, token:', token);
-    } catch (error) {
-      console.error('Error during Google sign-up:', error);
-      throw error;
-    }
-  }
 
   async signOut(): Promise<void> {
+    localStorage.removeItem("LoggedInUser");
     google.accounts.id.disableAutoSelect();
     this.router.navigate(['/']);
   }
 
-  getCurrentUser() {
-    return this.auth.currentUser;
-  }
 }

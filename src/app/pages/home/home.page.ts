@@ -23,6 +23,8 @@ import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/sema
 import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
 import { TabsComponent } from '../tabs/tabs.page';
 import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
+import { PitchService } from 'src/app/services/pitch.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -160,7 +162,9 @@ export class HomePage implements OnInit {
     private _registration: RegistrationService,
     private alertController: AlertController,
     private refFrequencyService: RefFreqService,
-    private authService: AuthService
+    private authService: AuthService,
+    private pitchService: PitchService,
+    private router: Router,
   ) {
     this.beat$ = this._tempo.tick$.pipe(
       tap((tempo: AppBeat) => this.intervalHandler(tempo))
@@ -171,7 +175,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(localStorage.getItem('user'));
+    console.log(localStorage.getItem('LoggedInUser'));
     this.refFrequencyService.getRefFrequency().subscribe(value => {
       this.refFrequencyValue$ = value;
     });
@@ -365,6 +369,13 @@ export class HomePage implements OnInit {
         case 2: this.currentAction = "Play"; break;
       }
 
+      if (this.mode == 'trumpet') {
+        switch (tempo.measure) {
+          case 0: this.pitchService.disconnect(); break;
+          case 2: this.pitchService.connect();
+        }
+      }
+
       if (this.mode == 'tuner') {
         switch (tempo.measure) {
           case 0: this.chromaticTuner.stop(); break;
@@ -414,6 +425,9 @@ export class HomePage implements OnInit {
     this._tempo.stop();
     if (this.mode == 'tuner') {
       this.chromaticTuner.stop();
+    }
+    else if (this.mode == 'trumpet') {
+      this.pitchService.disconnect();
     }
     // stop everything playing in the audio context
     Howler.stop();
@@ -518,9 +532,9 @@ export class HomePage implements OnInit {
   async openRegistrationModal() {
     await this._registration.openModal();
   }
-  signOut() {
-    sessionStorage.removeItem("LoggedInUser");
-    localStorage.removeItem('user');
-    this.authService.signOut();
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
   }
+
 }

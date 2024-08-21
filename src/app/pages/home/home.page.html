@@ -35,11 +35,6 @@
           Dynamics
         </ion-toggle>
       </ion-item>
-      <ion-item>
-        <ion-button (click)="signOut()">
-          LOGOUT
-        </ion-button>
-      </ion-item>
     </ion-list>
 
   </ion-content>
@@ -54,6 +49,11 @@
         <!-- <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
         <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> -->
       </ion-title>
+      <ion-buttons slot="end">
+        <ion-buttons (click)="goToProfile()">
+          <ion-icon name="person-circle-outline" style="font-size: 32px;"></ion-icon>
+        </ion-buttons>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
 

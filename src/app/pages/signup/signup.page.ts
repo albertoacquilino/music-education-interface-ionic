@@ -60,7 +60,7 @@ export class SignupPage implements AfterViewInit {
             this.router.navigate(['register'], { state: { email: userCredential.user.email } });
           });
         } else {
-          sessionStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
+          localStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
           this.ngZone.run(() => {
             this.router.navigate(['home']);
           });
