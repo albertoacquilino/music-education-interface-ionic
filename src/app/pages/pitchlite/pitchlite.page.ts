@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
 import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
 import { RefFreqService } from 'src/app/services/ref-freq.service';
+import { TabsService } from 'src/app/services/tabs.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -24,6 +26,8 @@ export class PitchComponent implements OnInit {
 
   constructor(
     private refFreqService: RefFreqService,
+    private tabsService: TabsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -31,15 +35,22 @@ export class PitchComponent implements OnInit {
       this.refFrequencyValue$ = value;
     });
   }
-  
+
   startStop() {
     if (this.detecting) {
       this.detecting = false;
       this.chromaticTuner.stop();
+      this.tabsService.setDisabled(false);
     }
+
     else {
       this.detecting = true;
       this.chromaticTuner.start();
+      this.tabsService.setDisabled(true);
     }
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
   }
 }

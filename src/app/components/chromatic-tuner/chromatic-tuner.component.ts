@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { Observable, throttleTime, map, tap, Subject, bufferTime, Subscription, BehaviorSubject } from 'rxjs';
+import { Observable, map, tap, Subject, bufferTime, Subscription, BehaviorSubject, bufferCount } from 'rxjs';
 import { PitchService } from 'src/app/services/pitch.service';
 import { IonicModule } from '@ionic/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -67,17 +67,16 @@ export class ChromaticTunerComponent implements OnInit {
     currentNote: string = '';
     currentCents: number = 0;
 
+    meansArray: number[] = [];  // Array to store the means
+
     constructor(
         private pitchService: PitchService,
         private changeDetectorRef: ChangeDetectorRef
     ) {
-        // Initialize the pitch$ Observable but do not trigger it until start() is called
         this.pitch$ = this.pitchSubject.pipe(
-            bufferTime(400), // Accumulate pitches every 400ms
+            bufferCount(4),
             map(pitches => {
-                if (pitches.length === 0) return 0; // Return 0 if no pitches were received in the interval
-
-                // Sort pitches into buckets
+                if (pitches.length === 0) return 0;
                 const buckets = new Map<number, number[]>();
                 for (const pitch of pitches) {
                     let bucketFound = false;
@@ -93,7 +92,6 @@ export class ChromaticTunerComponent implements OnInit {
                     }
                 }
 
-                // Find the bucket with the most elements
                 let maxBucket: number[] = [];
                 for (const bucket of buckets.values()) {
                     if (bucket.length > maxBucket.length) {
@@ -101,12 +99,14 @@ export class ChromaticTunerComponent implements OnInit {
                     }
                 }
 
-                // Calculate the mean of the most frequent bucket
                 const mean = maxBucket.reduce((a, b) => a + b, 0) / maxBucket.length;
                 return mean;
             }),
             tap(mean => {
                 if (mean > 0) {
+                    if (this.meansArray.length === 0 || this.meansArray[this.meansArray.length - 1] !== mean) {
+                        this.meansArray.push(mean);
+                    }
                     console.log("Mean of the most frequent bucket:", mean);
                 }
                 this.detectedPitch = mean;
@@ -118,11 +118,9 @@ export class ChromaticTunerComponent implements OnInit {
             map((pitch) => {
                 if (pitch <= 0) return { note: '', cents: 0 };
 
-                // Find the closest note
                 let noteDist = Object.keys(this.NOTES).map((note) => ({ note, err: this.NOTES[note].freq - pitch }));
                 noteDist.sort((a, b) => Math.abs(a.err) - Math.abs(b.err));
 
-                // Calculate the cents from the frequency of closest note and detected pitch
                 let cents = 1200 * Math.log2(pitch / this.NOTES[noteDist[0].note].freq);
                 return { note: noteDist[0].note, cents: cents };
             }),
@@ -156,7 +154,6 @@ export class ChromaticTunerComponent implements OnInit {
     rotatePointer(cents: number) {
         if (cents < minCents) cents = minCents;
         else if (cents > maxCents) cents = maxCents;
-        // Calculating angle using Linear Interpolation 
         let angle = 9 * cents / 4;
         this.pointerTransform = `rotate(${angle}deg)`;
     }
@@ -173,14 +170,14 @@ export class ChromaticTunerComponent implements OnInit {
     }
 
     start() {
+        this.meansArray = [];  // Clear the array when starting
         this.pitchService.connect();
-        // Start listening to pitch data
         this.pitchSubscription = this.pitchService.pitch$.subscribe(pitch => {
             this.pitchSubject.next(pitch);
         });
     }
 
-    stop() {
+    stop(): number[] {
         this.pitchService.disconnect();
 
         if (this.pitchSubscription) {
@@ -193,6 +190,10 @@ export class ChromaticTunerComponent implements OnInit {
         this.currentNote = '';
         this.detectedPitch = 0;
         this.changeDetectorRef.detectChanges();
+
+        console.log(this.meansArray);
+        return this.meansArray;  // Return the array of means
     }
 }
+
 

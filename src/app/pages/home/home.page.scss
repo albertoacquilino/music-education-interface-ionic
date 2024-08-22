@@ -1,6 +1,7 @@
 ion-modal {
   --height: auto;
 }
+
 .top {
   display: flex;
   align-items: center;
@@ -82,7 +83,7 @@ ion-modal {
   max-width: 400px;
 }
 
-@media (min-width: 875px) {
+@media (min-width: 700px) {
   .chromatic-tuner ::ng-deep .chromatic-tuner {
     padding-left: 15%;
     display: flex;
@@ -99,7 +100,7 @@ ion-modal {
   }
 }
 
-@media (min-width : 665px) and (max-width: 874px) {
+@media (min-width : 665px) and (max-width: 700px) {
   .chromatic-tuner ::ng-deep .chromatic-tuner {
     display: flex;
     flex-direction: row;

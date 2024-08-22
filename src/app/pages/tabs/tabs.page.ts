@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { BeatService } from 'src/app/services/beat.service';
+import { TabsService } from 'src/app/services/tabs.service';
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.page.html',
@@ -9,12 +10,14 @@ import { BeatService } from 'src/app/services/beat.service';
   standalone: true
 })
 export class TabsComponent {
-  constructor(private _tempo : BeatService) { }
+  constructor(private tabsService: TabsService) { }
+
+  isDisabled(): boolean {
+    return this.tabsService.getDisabled();
+  }
 
   onChange(event: any) {
     console.log(event);
   }
-  isPlaying(): boolean {
-    return this._tempo.playing$.value;
-  }
+
 }

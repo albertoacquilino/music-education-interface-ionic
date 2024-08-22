@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
 
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -47,13 +46,18 @@ export class RegisterPage implements OnInit {
       this.userId = this.email.split('@')[0];
     }
   }
+
   handleChange(ev: any) {
     this.role = ev.target.value.name;
+    if (this.role === 'Teacher') {
+      this.learningMode = '';
+    }
   }
 
   trackItems(index: number, item: any) {
     return item.id;
   }
+
   async register() {
     if (isNaN(Number(this.age))) {
       this.showToast('Please enter a valid age.', 'danger');
@@ -66,19 +70,16 @@ export class RegisterPage implements OnInit {
         age: this.age,
         progressionSpeed: this.progressionSpeed,
         role: this.role,
-        learningMode: (this.role == 'Learner' || this.role == 'Both') ? this.learningMode : undefined,
+        learningMode: this.role === 'Learner' || this.role === 'Both' ? this.learningMode : '',
       };
+
       await this.firebaseService.registerUser(user);
       this.showToast('Registration Successful. Welcome!', 'success');
       this.clearForm();
       this.router.navigate(['/home']);
     } catch (error: any) {
-      let errorMessage = 'An unexpected error occurred. Please try again.';
 
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      this.showToast(errorMessage, 'danger');
+      this.showToast(error, 'danger');
       console.error('Registration error:', error);
     }
   }
@@ -94,7 +95,6 @@ export class RegisterPage implements OnInit {
     );
   }
 
-
   private async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
       color: color,
@@ -104,6 +104,15 @@ export class RegisterPage implements OnInit {
     });
     toast.present();
   }
+
   private clearForm() {
+    this.email = '';
+    this.userId = '';
+    this.age = null!;
+    this.progressionSpeed = '20 min/day';
+    this.role = '';
+    this.learningMode = '';
+    this.termsAccepted = false;
   }
+
 }

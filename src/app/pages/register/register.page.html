@@ -1,50 +1,50 @@
 <ion-content>
   <div class="flex-center">
     <ion-card class="custom-card">
-      <ion-card-header>
+      <ion-card-header class="card-header">
         <ion-card-title>Register</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list>
-          <ion-item>
+          <ion-item class="custom-item">
             <ion-input label="User ID" labelPlacement="floating" [(ngModel)]="userId" [disabled]="true"></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item class="custom-item">
             <ion-input type="number" label="Age" labelPlacement="floating" [(ngModel)]="age"></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item class="custom-item">
             <ion-select label="Progression Speed" interface="action-sheet" [(ngModel)]="progressionSpeed">
               <ion-select-option>10 min/day</ion-select-option>
               <ion-select-option>20 min/day</ion-select-option>
               <ion-select-option>30 min/day</ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-item>
+          <ion-item class="custom-item" lines="none">
             <ion-label>I am a...</ion-label>
           </ion-item>
-          <ion-item>
+          <ion-item class="custom-item">
             <ion-radio-group (ionChange)="handleChange($event)">
-              <ion-item *ngFor="let role of roles; trackBy: trackItems">
+              <ion-item *ngFor="let role of roles; trackBy: trackItems" class="radio-item">
                 <ion-radio [value]="role" labelPlacement="end" justify="start">{{role.name}}</ion-radio>
               </ion-item>
             </ion-radio-group>
           </ion-item>
           <ng-container *ngIf="role === 'Learner' || role === 'Both'">
-            <ion-item>
+            <ion-item class="custom-item" lines="none">
               <ion-label>Learning Mode</ion-label>
             </ion-item>
-            <ion-item>
+            <ion-item class="custom-item">
               <ion-radio-group [(ngModel)]="learningMode">
-                <ion-item>
+                <ion-item class="radio-item">
                   <ion-radio value="autodidact" labelPlacement="end" justify="start">Autodidact</ion-radio>
                 </ion-item>
-                <ion-item>
+                <ion-item class="radio-item">
                   <ion-radio value="teacher-guided" labelPlacement="end" justify="start">Teacher-guided</ion-radio>
                 </ion-item>
               </ion-radio-group>
             </ion-item>
           </ng-container>
-          <ion-item lines="none">
+          <ion-item lines="none" class="custom-item terms-item">
             <ion-checkbox [(ngModel)]="termsAccepted"></ion-checkbox>
             <span style="margin-left: 8px;"></span>
             <ion-label class="ion-text-wrap">
@@ -52,7 +52,8 @@
             </ion-label>
           </ion-item>
         </ion-list>
-        <ion-button expand="full" (click)="register()" [disabled]="!isFormValid">SUBMIT</ion-button>
+        <ion-button expand="full" (click)="register()" [disabled]="!isFormValid"
+          class="custom-button">SUBMIT</ion-button>
       </ion-card-content>
     </ion-card>
   </div>

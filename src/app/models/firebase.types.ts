@@ -22,10 +22,9 @@ export type Activity = {
   device: DeviceInfo;
   action?: 'finished' | 'interrupted';
   duration?: number;
-  group?: string | null;
-  user?: string | null;
-
+  notes?: number[][];
 };
+
 export type User = {
   email: string;
   userId: string;

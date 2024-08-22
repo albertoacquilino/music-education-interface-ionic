@@ -1,10 +1,3 @@
-ion-content {
-    overflow: hidden;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
 .chromatic-tuner {
     margin-top: 0;
     display: flex;
@@ -20,6 +13,7 @@ ion-content {
     max-width: 100%;
     height: auto;
     margin: 0;
+    position: relative;
 }
 
 .chromatic-tuner ::ng-deep .numeric-values {
@@ -27,6 +21,8 @@ ion-content {
     font-weight: bold;
     text-align: center;
     margin-top: 70px;
+    height: 40px;
+    line-height: 40px;
 }
 
 @media (max-width: 768px) {
@@ -36,6 +32,8 @@ ion-content {
 
     .chromatic-tuner ::ng-deep .numeric-values {
         margin-top: 70px;
+        height: 36px;
+        line-height: 36px;
     }
 }
 
@@ -45,6 +43,7 @@ ion-content {
     }
 
     .chromatic-tuner ::ng-deep .numeric-values {
-        font-size: 18px;
+        height: 24px;
+        line-height: 24px;
     }
 }

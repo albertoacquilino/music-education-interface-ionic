@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonicModule, PickerController } from '@ionic/angular';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -10,13 +10,11 @@ import { Observable, interval, tap } from 'rxjs';
 import { ScoreComponent } from 'src/app/components/score/score.component';
 import { Score } from 'src/app/models/score.types';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { RegistrationService } from 'src/app/services/registration.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
 import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN, MINREFFREQUENCY, MAXREFFREQUENCY } from '../../constants';
 import { BeatService } from '../../services/beat.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { AppBeat } from 'src/app/models/appbeat.types';
 import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
@@ -25,6 +23,7 @@ import { TabsComponent } from '../tabs/tabs.page';
 import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
 import { PitchService } from 'src/app/services/pitch.service';
 import { Router } from '@angular/router';
+import { TabsService } from 'src/app/services/tabs.service';
 
 @Component({
   selector: 'app-home',
@@ -141,8 +140,19 @@ export class HomePage implements OnInit {
    */
   playing$!: Observable<boolean>;
 
+  /**
+   * The observable for the reference Frequency.
+   */
 
   refFrequencyValue$!: number;
+
+  /**
+   * An array to get all the notes played.
+   */
+
+  collectedMeansArray: number[][] = [];
+
+
 
   /**
    * Creates an instance of HomePage.
@@ -150,7 +160,6 @@ export class HomePage implements OnInit {
    * @param _tempo - The beat service.
    * @param _sounds - The sounds service.
    * @param firebase - The Firebase service.
-   * @param _registration - The registration service.
    * @param alertController - The alert controller.
    * @param refFrequencyService : The Reference Frequency Service
    */
@@ -159,10 +168,9 @@ export class HomePage implements OnInit {
     private _tempo: BeatService,
     private _sounds: SoundsService,
     public firebase: FirebaseService,
-    private _registration: RegistrationService,
     private alertController: AlertController,
     private refFrequencyService: RefFreqService,
-    private authService: AuthService,
+    private tabsService: TabsService,
     private pitchService: PitchService,
     private router: Router,
   ) {
@@ -188,11 +196,12 @@ export class HomePage implements OnInit {
   ionViewDidEnter(): void {
 
   }
+
   ionViewWillLeave(): void {
     this._tempo.stop();
     if (this.mode == "tuner") this.chromaticTuner.stop();
-
   }
+
   retrieveAndParseFromLocalStorage(key: string, defaultValue: any): any {
     const storedValue = localStorage.getItem(key);
     return storedValue ? JSON.parse(storedValue) : defaultValue;
@@ -364,9 +373,22 @@ export class HomePage implements OnInit {
       }
 
       switch (tempo.measure) {
-        case 0: this.currentAction = "Rest"; break;
-        case 1: this.currentAction = "Listen"; break;
-        case 2: this.currentAction = "Play"; break;
+        case 0:
+          this.currentAction = "Rest";
+          if (this.mode == 'tuner') {
+            const meansArray = this.chromaticTuner.stop();
+            this.collectedMeansArray.push(meansArray);
+          }
+          break;
+        case 1:
+          this.currentAction = "Listen";
+          break;
+        case 2:
+          this.currentAction = "Play";
+          if (this.mode == 'tuner') {
+            this.chromaticTuner.start();
+          }
+          break;
       }
 
       if (this.mode == 'trumpet') {
@@ -375,19 +397,13 @@ export class HomePage implements OnInit {
           case 2: this.pitchService.connect();
         }
       }
-
-      if (this.mode == 'tuner') {
-        switch (tempo.measure) {
-          case 0: this.chromaticTuner.stop(); break;
-          case 2: this.chromaticTuner.start();
-        }
-      }
     }
+
     if (tempo.cycle === MAXCYCLES) {
-      this.firebase.saveStop('finished');
+      this.firebase.saveStop('finished', this.collectedMeansArray);
       console.log('finished');
+      console.log('Collected Means from MAXCYCLES:', this.collectedMeansArray);
     }
-
   }
   /**
    * Toggles between starting and stopping the tempo.
@@ -398,8 +414,10 @@ export class HomePage implements OnInit {
   startStop() {
     if (this._tempo.playing$.value) {
       this.stop();
+      this.tabsService.setDisabled(false);
     } else {
       this.start();
+      this.tabsService.setDisabled(true);
     }
   }
 
@@ -408,6 +426,7 @@ export class HomePage implements OnInit {
    * @returns void
    */
   start() {
+    this.collectedMeansArray = [];
     this._tempo.start();
     this.firebase.saveStart(
       this.tempo$.value,
@@ -424,16 +443,16 @@ export class HomePage implements OnInit {
   stop() {
     this._tempo.stop();
     if (this.mode == 'tuner') {
-      this.chromaticTuner.stop();
+      const meansArray = this.chromaticTuner.stop();
+      this.collectedMeansArray.push(meansArray);
+      console.log('Collected Means from stop method:', this.collectedMeansArray);
     }
     else if (this.mode == 'trumpet') {
       this.pitchService.disconnect();
     }
-    // stop everything playing in the audio context
     Howler.stop();
-    this.firebase.saveStop('interrupted');
+    this.firebase.saveStop('interrupted', this.collectedMeansArray);
   }
-
 
   /**
    * Returns the path to the image file for the given note.
@@ -523,14 +542,6 @@ export class HomePage implements OnInit {
    */
   async canDismiss(data?: any, role?: string) {
     return role !== 'gesture';
-  }
-
-  /**
-   * Opens the registration modal asynchronously.
-   * @returns A promise that resolves when the modal is opened.
-   */
-  async openRegistrationModal() {
-    await this._registration.openModal();
   }
 
   goToProfile() {
