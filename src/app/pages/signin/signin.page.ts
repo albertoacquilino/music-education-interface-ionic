@@ -19,8 +19,7 @@ declare var google: any;
   imports: [IonicModule, FormsModule],
 })
 export class SigninPage implements AfterViewInit {
-  @ViewChild('googleBtn', { static: true })
-  googleBtn!: ElementRef;
+  @ViewChild('googleBtn', { static: true }) googleBtn!: ElementRef;
   email: string = '';
   password: string = '';
 
@@ -30,19 +29,26 @@ export class SigninPage implements AfterViewInit {
     if (userInfo) {
       this.router.navigate(['/home']);
     }
-    initializeApp(environment.firebaseConfig);
 
-    google.accounts.id.initialize({
-      client_id: '838282036165-dbqml0efrbvalsq84tork988akt429kr.apps.googleusercontent.com',
-      callback: (resp: any) => this.handleLogin(resp),
-    });
+    setTimeout(() => {
+      if (typeof google !== 'undefined' && google.accounts) {
+        initializeApp(environment.firebaseConfig);
 
-    google.accounts.id.renderButton(this.googleBtn.nativeElement, {
-      theme: 'filled_blue',
-      size: 'large',
-      shape: 'rectangle',
-      width: 300,
-    });
+        google.accounts.id.initialize({
+          client_id: '838282036165-dbqml0efrbvalsq84tork988akt429kr.apps.googleusercontent.com',
+          callback: (resp: any) => this.handleLogin(resp),
+        });
+
+        google.accounts.id.renderButton(this.googleBtn.nativeElement, {
+          theme: 'filled_blue',
+          size: 'medium',
+          shape: 'pill',
+          width: 250,
+        });
+      } else {
+        console.error('Google Sign-In script not loaded.');
+      }
+    }, 1000);
   }
 
   private decodeToken(token: string) {
@@ -55,16 +61,14 @@ export class SigninPage implements AfterViewInit {
       const auth = getAuth();
       try {
         const userCredential = await signInWithCredential(auth, credential);
-        console.log(userCredential);
-        localStorage.setItem("LoggedInUser", JSON.stringify(userCredential.user));
         const additionalUserInfo = getAdditionalUserInfo(userCredential);
         const payLoad = this.decodeToken(response.credential);
-
+        localStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
+        console.log("User Info", JSON.stringify(payLoad));
         this.ngZone.run(() => {
           if (additionalUserInfo?.isNewUser) {
             this.router.navigate(['register'], { state: { email: userCredential.user.email } });
           } else {
-            localStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
             this.router.navigate(['home']);
           }
         });

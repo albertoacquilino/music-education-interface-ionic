@@ -22,7 +22,7 @@ export type Activity = {
   device: DeviceInfo;
   action?: 'finished' | 'interrupted';
   duration?: number;
-  notes?: number[][];
+  //notes?: number[][];
 };
 
 export type User = {

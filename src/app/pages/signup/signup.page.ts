@@ -18,8 +18,7 @@ declare var google: any;
 })
 
 export class SignupPage implements AfterViewInit {
-  @ViewChild('googleBtn', { static: true })
-  googleBtn!: ElementRef;
+  @ViewChild('googleBtn', { static: true }) googleBtn!: ElementRef;
   email: string = '';
   password: string = '';
 
@@ -36,9 +35,9 @@ export class SignupPage implements AfterViewInit {
 
     google.accounts.id.renderButton(this.googleBtn.nativeElement, {
       theme: 'filled_blue',
-      size: 'large',
-      shape: 'rectangle',
-      width: 300
+      size: 'medium',
+      shape: 'pill',
+      width: 250, 
     });
   }
 
@@ -52,26 +51,20 @@ export class SignupPage implements AfterViewInit {
       const auth = getAuth();
       try {
         const userCredential = await signInWithCredential(auth, credential);
-        console.log(userCredential);
         const additionalUserInfo = getAdditionalUserInfo(userCredential);
         const payLoad = this.decodeToken(response.credential);
-        if (additionalUserInfo?.isNewUser) {
-          this.ngZone.run(() => {
+        localStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
+        console.log("User Info", JSON.stringify(payLoad));
+        this.ngZone.run(() => {
+          if (additionalUserInfo?.isNewUser) {
             this.router.navigate(['register'], { state: { email: userCredential.user.email } });
-          });
-        } else {
-          localStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
-          this.ngZone.run(() => {
+          } else {
             this.router.navigate(['home']);
-          });
-        }
+          }
+        });
       } catch (error) {
         console.error("Error during sign-in:", error);
-        const toast = await this.toastController.create({
-          message: 'Login failed. Please try again.',
-          duration: 2000
-        });
-        toast.present();
+        this.showToast('Login failed. Please try again.', 'danger');
       }
     }
   }
@@ -83,11 +76,8 @@ export class SignupPage implements AfterViewInit {
       this.router.navigate(['/register'], { state: { email: this.email } });
       this.clearForm();
     } catch (error: any) {
-      let errorMessage = 'An unexpected error occurred. Please try again.';
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      this.showToast(errorMessage, 'danger');
+      this.showToast(error, 'danger');
+      this.clearForm();
       console.error('Registration error:', error);
     }
   }

@@ -400,9 +400,11 @@ export class HomePage implements OnInit {
     }
 
     if (tempo.cycle === MAXCYCLES) {
-      this.firebase.saveStop('finished', this.collectedMeansArray);
+      this.firebase.saveStop('finished',
+        //this.collectedMeansArray
+      );
       console.log('finished');
-      console.log('Collected Means from MAXCYCLES:', this.collectedMeansArray);
+      console.log('Collected Means', this.collectedMeansArray);
     }
   }
   /**
@@ -445,13 +447,15 @@ export class HomePage implements OnInit {
     if (this.mode == 'tuner') {
       const meansArray = this.chromaticTuner.stop();
       this.collectedMeansArray.push(meansArray);
-      console.log('Collected Means from stop method:', this.collectedMeansArray);
+      console.log('Collected Means', this.collectedMeansArray);
     }
     else if (this.mode == 'trumpet') {
       this.pitchService.disconnect();
     }
     Howler.stop();
-    this.firebase.saveStop('interrupted', this.collectedMeansArray);
+    this.firebase.saveStop('interrupted',
+      //this.collectedMeansArray
+    );
   }
 
   /**
