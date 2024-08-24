@@ -150,7 +150,7 @@ export class HomePage implements OnInit {
    * An array to get all the notes played.
    */
 
-  collectedMeansArray: number[][] = [];
+  collectedMeansObject: { [key: string]: number[] } = {};
 
 
 
@@ -377,7 +377,10 @@ export class HomePage implements OnInit {
           this.currentAction = "Rest";
           if (this.mode == 'tuner') {
             const meansArray = this.chromaticTuner.stop();
-            this.collectedMeansArray.push(meansArray);
+            this.collectedMeansObject = {
+              ...this.collectedMeansObject,
+              [Object.keys(this.collectedMeansObject).length + 1]: meansArray
+          };
           }
           break;
         case 1:
@@ -400,11 +403,9 @@ export class HomePage implements OnInit {
     }
 
     if (tempo.cycle === MAXCYCLES) {
-      this.firebase.saveStop('finished',
-        //this.collectedMeansArray
-      );
+      this.firebase.saveStop('finished', this.collectedMeansObject);
       console.log('finished');
-      console.log('Collected Means', this.collectedMeansArray);
+      console.log('Collected Means', this.collectedMeansObject);
     }
   }
   /**
@@ -428,7 +429,7 @@ export class HomePage implements OnInit {
    * @returns void
    */
   start() {
-    this.collectedMeansArray = [];
+    this.collectedMeansObject = {};
     this._tempo.start();
     this.firebase.saveStart(
       this.tempo$.value,
@@ -446,16 +447,17 @@ export class HomePage implements OnInit {
     this._tempo.stop();
     if (this.mode == 'tuner') {
       const meansArray = this.chromaticTuner.stop();
-      this.collectedMeansArray.push(meansArray);
-      console.log('Collected Means', this.collectedMeansArray);
+      this.collectedMeansObject = {
+        ...this.collectedMeansObject,
+        [Object.keys(this.collectedMeansObject).length + 1]: meansArray
+    };
+      console.log('Collected Means', this.collectedMeansObject);
     }
     else if (this.mode == 'trumpet') {
       this.pitchService.disconnect();
     }
     Howler.stop();
-    this.firebase.saveStop('interrupted',
-      //this.collectedMeansArray
-    );
+    this.firebase.saveStop('interrupted', this.collectedMeansObject);
   }
 
   /**
@@ -525,6 +527,7 @@ export class HomePage implements OnInit {
             if (type === 'frequency') {
               this.refFrequencyValue$ = value[type].value;
               this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
+              this.mode = 'trumpet';
             } else if (type === 'tempo') {
               this._tempo.setTempo(value[type].value);
             }

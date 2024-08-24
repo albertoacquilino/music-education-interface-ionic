@@ -22,7 +22,7 @@ export type Activity = {
   device: DeviceInfo;
   action?: 'finished' | 'interrupted';
   duration?: number;
-  //notes?: number[][];
+  collectedMeansObject?: { [key: string]: number[] }
 };
 
 export type User = {

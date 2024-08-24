@@ -77,16 +77,14 @@ export class FirebaseService {
    * Saves the current activity and uploads it to Firebase.
    * @param action - The action performed on the activity ('finished' or 'interrupted').
    */
-  public async saveStop(action: 'finished' | 'interrupted', 
-    //notes : number[][]
-    ) {
+  public async saveStop(action: 'finished' | 'interrupted', collectedMeansObject: { [key: string]: number[] }) {
     const endTime = new Date();
     this.currentActivity = {
       ...this.currentActivity,
       action,
       endTime,
       duration: (endTime.getTime() - this.currentActivity.startTime.getTime()) / 1000, 
-      //notes,
+      collectedMeansObject,
     };
 
     this.updateInLocalStorage(this.currentActivity);
