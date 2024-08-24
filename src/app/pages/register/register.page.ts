@@ -59,11 +59,14 @@ export class RegisterPage implements OnInit {
   }
 
   async register() {
-    if (isNaN(Number(this.age))) {
-      this.showToast('Please enter a valid age.', 'danger');
-      return;
-    }
     try {
+      const userExists = await this.firebaseService.checkUserExists(this.userId);
+      if (userExists) {
+        this.showToast('User already exists.', 'danger');
+        this.router.navigate(['/home']);
+        return;
+      }
+
       const user = {
         email: this.email,
         userId: this.userId,
@@ -107,7 +110,6 @@ export class RegisterPage implements OnInit {
 
   private clearForm() {
     this.email = '';
-    this.userId = '';
     this.age = null!;
     this.progressionSpeed = '20 min/day';
     this.role = '';

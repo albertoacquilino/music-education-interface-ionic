@@ -5,6 +5,7 @@ import { Device } from '@capacitor/device';
 import { DocumentReference, addDoc, collection, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 import { Injectable } from "@angular/core";
 import { User, Activity } from "../models/firebase.types";
+import { query, where } from "@angular/fire/firestore";
 
 
 const firebaseConfig = {
@@ -83,7 +84,7 @@ export class FirebaseService {
       ...this.currentActivity,
       action,
       endTime,
-      duration: (endTime.getTime() - this.currentActivity.startTime.getTime()) / 1000, 
+      duration: (endTime.getTime() - this.currentActivity.startTime.getTime()) / 1000,
       collectedMeansObject,
     };
 
@@ -99,7 +100,7 @@ export class FirebaseService {
     }
   }
 
-  
+
   public async registerUser(user: User): Promise<DocumentReference> {
     try {
       const userDocRef = await addDoc(collection(db, 'user_info'), user);
@@ -108,6 +109,17 @@ export class FirebaseService {
 
     } catch (e) {
       console.log('Error', e);
+      throw e;
+    }
+  }
+
+  public async checkUserExists(userId: string): Promise<boolean> {
+    try {
+      const q = query(collection(db, 'user_info'), where('userId', '==', userId));
+      const querySnapshot = await getDocs(q);
+      return !querySnapshot.empty;  // Returns true if user exists
+    } catch (e) {
+      console.error('Error checking user existence:', e);
       throw e;
     }
   }
