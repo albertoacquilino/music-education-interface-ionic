@@ -1,9 +1,11 @@
 <ion-tabs (ionTabsDidChange)="onChange($event)">
   <ion-tab-bar class="custom-tab-bar">
     <ion-tab-button tab="exercise" [disabled]="isDisabled()">
+      <ion-icon name="musical-notes" style="margin-bottom: 2px;"></ion-icon>
       Exercise
     </ion-tab-button>
     <ion-tab-button tab="tuner" [disabled]="isDisabled()">
+      <ion-icon name="radio" style="margin-bottom: 2px;"></ion-icon>
       Tuner
     </ion-tab-button>
   </ion-tab-bar>

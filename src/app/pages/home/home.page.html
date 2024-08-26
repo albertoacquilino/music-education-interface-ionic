@@ -6,9 +6,9 @@
   </ion-header>
   <ion-content class="ion-padding">
     <ion-list>
-      <ion-item>
+      <ion-item [disabled]="isPlaying()">
         <ion-label>Mode</ion-label>
-        <ion-segment (ionChange)="switchMode($event)" mode="ios" value="{{mode}}" [disabled]="isPlaying()">
+        <ion-segment (ionChange)="switchMode($event)" mode="ios" value="{{mode}}">
           <ion-segment-button value="trumpet">
             <ion-label>TRUMPET</ion-label>
           </ion-segment-button>
