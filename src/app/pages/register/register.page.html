@@ -45,12 +45,12 @@
             </ion-item>
           </ng-container>
           <ion-item lines="none" class="custom-item terms-item">
-            <ion-checkbox [(ngModel)]="termsAccepted"></ion-checkbox>
-            <span style="margin-left: 12px;"></span>
             <ion-label>
               By checking this box, you are agreeing to our <a (click)="openTermsModal()" color="primary"
-                style="text-decoration: underline; cursor: pointer;">Terms and Conditions</a>.
+                (click)="$event.stopPropagation()" style="text-decoration: underline; cursor: pointer;">Terms and
+                Conditions</a>
             </ion-label>
+            <ion-checkbox [(ngModel)]="termsAccepted" style="margin-left: 5px;"></ion-checkbox>
           </ion-item>
         </ion-list>
         <ion-button expand="full" (click)="register()" [disabled]="!isFormValid"

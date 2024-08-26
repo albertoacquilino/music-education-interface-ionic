@@ -37,7 +37,7 @@ export class SignupPage implements AfterViewInit {
       theme: 'filled_blue',
       size: 'medium',
       shape: 'pill',
-      width: 250, 
+      width: 250,
     });
   }
 
@@ -76,11 +76,16 @@ export class SignupPage implements AfterViewInit {
       this.router.navigate(['/register'], { state: { email: this.email } });
       this.clearForm();
     } catch (error: any) {
-      this.showToast(error, 'danger');
+      if (error.code === 'auth/email-already-in-use') {
+        this.showToast('User credentials already exist. Please login.', 'danger');
+      } else {
+        this.showToast(error.message || 'Registration failed. Please try again.', 'danger');
+      }
       this.clearForm();
       console.error('Registration error:', error);
     }
   }
+
   private async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
       color: color,

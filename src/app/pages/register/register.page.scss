@@ -12,7 +12,7 @@
 
   .custom-card {
     width: 100%;
-    max-width: 500px;
+    max-width: 520px;
     border-radius: 16px;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
     max-height: 90vh;
@@ -94,9 +94,9 @@
   }
 
   .terms-item ion-checkbox {
-    --color: rgba(255, 255, 255, 0.1);
+    --color: white;
     --background: black;
-    --border-color: rgba(255, 255, 255, 0.1);
+    --border-color: white;
   }
 
   .custom-button {
