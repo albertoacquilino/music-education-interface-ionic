@@ -1,4 +1,4 @@
-ion-content {
+.content {
   --background: linear-gradient(135deg, #1c1c1c, #484848);
 
   .flex-center {
@@ -19,7 +19,7 @@ ion-content {
     background-color: #2e2e2e;
     color: #fff;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
   }
 
   .card-header {
@@ -32,20 +32,39 @@ ion-content {
   }
 
   ion-card-content {
-    flex: 1; 
-    overflow-y: auto; 
+    flex: 1;
+    overflow-y: auto;
   }
 
   .custom-item {
-    --background: transparent;
+    --background: black;
     --border-color: rgba(255, 255, 255, 0.1);
     color: #ffffff;
     margin-bottom: 16px;
+    background-color: black;
+    --ion-background-color: black;
+    --ion-item-background: black;
+  }
+
+  .custom-item:hover,
+  .custom-item:hover ion-select,
+  .custom-item:hover ion-select-option {
+    --background: black;
+    color: #ffffff;
+    background-color: black;
+    --ion-background-color: black;
+    --ion-item-background: black;
   }
 
   .radio-item {
-    --color-checked: #0054e9;
     --color: #ddd;
+    transition: transform 0.2s ease;
+  }
+
+  ion-radio::part(container) {
+    --color-checked: #0054e9;
+    --color: #777;
+    --border-radius: 50%;
     transition: transform 0.2s ease;
   }
 
@@ -56,8 +75,28 @@ ion-content {
   .terms-item {
     display: flex;
     align-items: center;
-    color: #ddd;
     margin-top: 16px;
+    --background: black;
+    --border-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    background-color: black;
+    --ion-background-color: black;
+    --ion-item-background: black;
+  }
+
+  .terms-item:hover,
+  .terms-item:hover ion-label {
+    --background: black;
+    color: #ffffff;
+    background-color: black;
+    --ion-background-color: black;
+    --ion-item-background: black;
+  }
+
+  .terms-item ion-checkbox {
+    --color: rgba(255, 255, 255, 0.1);
+    --background: black;
+    --border-color: rgba(255, 255, 255, 0.1);
   }
 
   .custom-button {
@@ -67,6 +106,8 @@ ion-content {
     margin-top: 20px;
     font-weight: bold;
   }
+
+
 
   @media (max-width: 600px) {
     .custom-card {

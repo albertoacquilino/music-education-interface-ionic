@@ -21,6 +21,7 @@ export class RegisterPage implements OnInit {
   role: string = '';
   learningMode: string = '';
   termsAccepted: boolean = false;
+  isModalOpen = false;
   roles = [
     {
       id: 1,
@@ -115,6 +116,13 @@ export class RegisterPage implements OnInit {
     this.role = '';
     this.learningMode = '';
     this.termsAccepted = false;
+  }
+  openTermsModal() {
+    this.isModalOpen = true;
+  }
+
+  closeTermsModal() {
+    this.isModalOpen = false;
   }
 
 }
