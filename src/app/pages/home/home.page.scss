@@ -17,6 +17,8 @@ ion-modal {
   padding: 5px;
   margin: auto;
   border-radius: 0px 0px 6px 6px;
+  display: flex;
+  justify-content: center;
 }
 
 .metronome {
@@ -146,6 +148,7 @@ ion-segment-button {
 }
 
 .score {
+  margin-top: -20px;
   grid-area: score;
   text-align: center;
 
@@ -157,16 +160,16 @@ ion-segment-button {
 }
 
 .bottom {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1.3fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
+  //display: grid;
+  //grid-template-columns: 1fr 1fr 1fr;
+  //grid-template-rows: 1fr 1.3fr;
+  //gap: 0px 0px;
+  //grid-auto-flow: row;
+  //grid-template-areas:
+/*    "controls controls controls"
     "controls controls controls"
-    "controls controls controls"
-    "start-stop start-stop start-stop";
-  grid-area: bottom;
+    "start-stop start-stop start-stop";*/
+  //grid-area: bottom;
 }
 
 
@@ -192,11 +195,12 @@ ion-segment-button {
 
 .controls {
   display: flex;
-  grid-area: controls;
+  //grid-area: controls;
   background-color: gray;
   padding: 10px;
   margin: 6px;
   border-radius: 6px;
+  justify-content: center;
 }
 
 .controls button {
@@ -247,7 +251,7 @@ ion-segment-button {
 .tempo-wrapper,
 .low-note-wrapper,
 .high-note-wrapper {
-  flex: 1;
+  //flex: 1;
   //border-right: 1px solid lightgray;
   padding: 0 8px;
   display: flex;
