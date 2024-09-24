@@ -1,14 +1,20 @@
 .semaphore-lights {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
   // align-items: center;
 }
 
 .light-container {
   display: flex;
   align-items: center;
-
+  .light-wrapper {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .light {
     width: 40px;
     height: 40px;
