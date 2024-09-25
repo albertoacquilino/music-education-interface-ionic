@@ -310,7 +310,7 @@ ion-segment-button {
 @media screen and (orientation: landscape) {
   #container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
   }
@@ -319,13 +319,27 @@ ion-segment-button {
     width: 100%;
   }
 
+
+
   // .bottom {
   //   width: 50%;
   // }
 
   .controls {
-    flex-direction: column;
+    //flex-direction: column;
     gap: 10px;
     margin-top: 0px;
+  }
+
+  @media screen and (max-height: 600px) {
+    .landscape-d-none {
+      display: none;
+    }
+    .controls-margin {
+      margin-top: 40px;
+    }
+    .top-middle-container {
+      display: flex;
+    }
   }
 }
