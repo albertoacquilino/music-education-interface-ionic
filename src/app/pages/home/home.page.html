@@ -60,7 +60,7 @@
   <ion-content [fullscreen]="true">
     <div id="container">
       <div class="top-middle-container">
-        <div class="top">
+        <div class="top" [ngClass]="!isPlaying()?'landscape-d-none':''">
           <div class="metronome">
             <div class="metronome-bullet">
               <h1 id="metronome-label" *ngIf="beat$|async as beat">
@@ -82,14 +82,15 @@
 
         </div>
         <!--MIDDLE-->
-        <div class="middle">
+        <div class="middle" *ngIf="isPlaying()">
           <div class="score">
             <app-score id="score-image" [score]="score"></app-score>
           </div>
         </div>
       </div>
-      <div class="bottom">
-        <div class="controls">
+
+      <div class="bottom" *ngIf="!isPlaying()">
+        <div class="controls controls-margin">
 
           <!--TEMPO-->
           <div class="tempo-wrapper">
