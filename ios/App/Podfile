@@ -17,6 +17,7 @@ def capacitor_pods
   pod 'CapacitorKeyboard', :path => '../../node_modules/@capacitor/keyboard'
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
   pod 'CapgoCapacitorMute', :path => '../../node_modules/@capgo/capacitor-mute'
+  pod 'MozartecCapacitorMicrophone', :path => '../../node_modules/@mozartec/capacitor-microphone'
 end
 
 target 'App' do

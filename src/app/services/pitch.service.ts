@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Microphone, PermissionStatus } from '@mozartec/capacitor-microphone';
 import * as pitchlite from 'src/app/services/pitchlite';
 
 const workletChunkSize = 128;
@@ -35,6 +36,17 @@ export class PitchService {
 
     async connect() {
         this.audioContext = new AudioContext();
+        const checkPermissionsResult = await Microphone.checkPermissions();
+
+        if (checkPermissionsResult.microphone === 'denied') {
+            const requestPermissionsResult = await Microphone.requestPermissions();
+            if (requestPermissionsResult.microphone === 'denied') {
+                alert('Microphone permissions denied');
+                return;
+            }
+        }
+        await Microphone.startRecording();
+
         console.log("Sample rate:", this.audioContext.sampleRate);
         this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         this.wasmModule = await pitchlite();

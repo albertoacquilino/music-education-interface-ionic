@@ -25,5 +25,3 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
   ],
 });
-
-
