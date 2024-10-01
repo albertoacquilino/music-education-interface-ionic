@@ -555,4 +555,43 @@ export class HomePage implements OnInit {
     this.router.navigate(['/profile']);
   }
 
+  scaleContent(){
+    const container = document.getElementById('wrapper');
+
+    // Dimensioni di base del contenitore
+    const baseWidth = container!.offsetWidth;
+    const baseHeight = container!.offsetHeight;
+
+    // Dimensioni della finestra (viewport)
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calcola il fattore di scala per adattare sia larghezza che altezza
+    const scaleX = viewportWidth / baseWidth;
+    const scaleY = viewportHeight / baseHeight * 0.8;
+
+    // Prendi il fattore di scala minimo tra larghezza e altezza
+    let scale = Math.min(scaleX, scaleY);
+
+    //lascia un margine di almeno 20%
+    //scale = scale * 0.95;
+
+    // Applica il fattore di scala al contenitore
+    container!.style.transform = `scale(${scale})`;
+
+    // Posizionamento centrale del contenitore
+          container!.style.position = 'absolute';
+          container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
+          container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
+  }
+
+
+  //on component load, scale the content
+  ngAfterViewInit() {
+    //on event resize, scale the content
+    window.addEventListener('resize', (event) => this.scaleContent());
+    window.addEventListener('load', (event) => this.scaleContent());
+    this.scaleContent();
+  }
+
 }

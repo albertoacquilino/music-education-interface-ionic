@@ -50,6 +50,14 @@ ion-modal {
   animation: gradient 2s ease infinite;
 }
 
+.wrapper {
+  //background-color: red;
+  width: 650px;
+  height: 460px;
+  overflow: hidden;
+  transform-origin: top left;
+}
+
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -313,6 +321,7 @@ ion-segment-button {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    transform-origin: center center;
   }
 
   .top-middle-container {
