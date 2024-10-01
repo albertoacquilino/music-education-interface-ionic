@@ -380,7 +380,7 @@ export class HomePage implements OnInit {
             this.collectedMeansObject = {
               ...this.collectedMeansObject,
               [Object.keys(this.collectedMeansObject).length + 1]: meansArray
-          };
+            };
           }
           break;
         case 1:
@@ -450,7 +450,7 @@ export class HomePage implements OnInit {
       this.collectedMeansObject = {
         ...this.collectedMeansObject,
         [Object.keys(this.collectedMeansObject).length + 1]: meansArray
-    };
+      };
       console.log('Collected Means', this.collectedMeansObject);
     }
     else if (this.mode == 'trumpet') {
@@ -555,7 +555,7 @@ export class HomePage implements OnInit {
     this.router.navigate(['/profile']);
   }
 
-  scaleContent(){
+  scaleContent() {
     const container = document.getElementById('wrapper');
 
     // Dimensioni di base del contenitore
@@ -580,9 +580,9 @@ export class HomePage implements OnInit {
     container!.style.transform = `scale(${scale})`;
 
     // Posizionamento centrale del contenitore
-          container!.style.position = 'absolute';
-          container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
-          container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
+    container!.style.position = 'absolute';
+    container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
+    container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
   }
 
 
