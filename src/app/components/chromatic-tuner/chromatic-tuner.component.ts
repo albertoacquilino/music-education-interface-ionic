@@ -194,6 +194,41 @@ export class ChromaticTunerComponent implements OnInit {
         console.log(this.meansArray);
         return this.meansArray;  // Return the array of means
     }
+
+    scaleContent(){
+      const container = document.getElementById('tuner');
+
+      // Dimensioni di base del contenitore
+      const baseWidth = container!.offsetWidth;
+      const baseHeight = container!.offsetHeight;
+
+      // Dimensioni della finestra (viewport)
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      // Calcola il fattore di scala per adattare sia larghezza che altezza
+      const scaleX = viewportWidth / baseWidth;
+      const scaleY = viewportHeight / baseHeight;
+
+      // Prendi il fattore di scala minimo tra larghezza e altezza
+      let scale = Math.min(scaleX, scaleY);
+
+      //lascia un margine di almeno 20%
+      scale = scale * 0.8;
+
+      // Applica il fattore di scala al contenitore
+      container!.style.transform = `scale(${scale})`;
+
+    }
+
+
+    //on component load, scale the content
+    ngAfterViewInit() {
+      //on event resize, scale the content
+      window.addEventListener('resize', (event) => this.scaleContent());
+      window.addEventListener('load', (event) => this.scaleContent());
+      this.scaleContent();
+    }
 }
 
 

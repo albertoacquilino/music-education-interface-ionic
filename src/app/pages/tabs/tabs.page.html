@@ -1,5 +1,9 @@
-<ion-tabs (ionTabsDidChange)="onChange($event)">
-  <ion-tab-bar class="custom-tab-bar">
+<ion-tabs #tabs (ionTabsDidChange)="onChange($event)">
+  <ion-tab-bar class="custom-tab-bar d-flex ion-justify-content-between">
+    <ion-tab-button tab="" [disabled]="isDisabled() || checkTab()" (click)="openMenu()">
+      <ion-icon name="settings-outline" style="margin-bottom: 2px;"></ion-icon>
+      Options
+    </ion-tab-button>
     <ion-tab-button tab="exercise" [disabled]="isDisabled()">
       <ion-icon name="musical-notes" style="margin-bottom: 2px;"></ion-icon>
       Exercise
@@ -8,4 +12,9 @@
       <ion-icon name="radio" style="margin-bottom: 2px;"></ion-icon>
       Tuner
     </ion-tab-button>
+    <ion-tab-button (click)="goToProfile()" [disabled]="isDisabled()">
+      <ion-icon name="person-circle-outline" style="margin-bottom: 2px;"></ion-icon>
+      User
+    </ion-tab-button>
   </ion-tab-bar>
+</ion-tabs>

@@ -1,4 +1,4 @@
-<ion-menu contentId="main-content">
+<ion-menu contentId="main-content" menuId="settingsMenu">
   <ion-header>
     <ion-toolbar>
       <ion-title>Options</ion-title>
@@ -40,14 +40,14 @@
   </ion-content>
 </ion-menu>
 <div class="ion-page" id="main-content">
-  <ion-header>
+<!--  <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title>
-        <!-- <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
-        <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> -->
+        &lt;!&ndash; <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
+        <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> &ndash;&gt;
       </ion-title>
       <ion-buttons slot="end">
         <ion-buttons (click)="goToProfile()">
@@ -55,91 +55,94 @@
         </ion-buttons>
       </ion-buttons>
     </ion-toolbar>
-  </ion-header>
+  </ion-header>-->
 
   <ion-content [fullscreen]="true">
     <div id="container">
-      <div class="top-middle-container">
-        <div class="top" [ngClass]="!isPlaying()?'landscape-d-none':''">
-          <div class="metronome">
-            <div class="metronome-bullet">
-              <h1 id="metronome-label" *ngIf="beat$|async as beat">
-                {{ beat.beat >= 0 ? (beat.beat + 1): '&nbsp;'}}
-              </h1>
-              <semaphore-light [currentAction]="currentAction"></semaphore-light>
-            </div>
-          </div>
-          <ng-container *ngIf="mode === 'tuner'">
-            <div class="chromatic-tuner">
-              <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>
-            </div>
-          </ng-container>
-          <ng-container *ngIf="mode === 'trumpet'">
-            <div class="trumpet">
-              <trumpet-diagram [trumpetButtons]="trumpetBtns"></trumpet-diagram>
-            </div>
-          </ng-container>
-
-        </div>
-        <!--MIDDLE-->
-        <div class="middle" *ngIf="isPlaying()">
-          <div class="score">
-            <app-score id="score-image" [score]="score"></app-score>
-          </div>
-        </div>
-      </div>
-
-      <div class="bottom" *ngIf="!isPlaying()">
-        <div class="controls controls-margin">
-
-          <!--TEMPO-->
-          <div class="tempo-wrapper">
-            <div class="simulate-input">
-              <div class="title-section-wrapper">Tempo:</div>
-              <div class="tempo" (click)="openPicker('tempo')">
-                <h1>
-                  &#9833;=
-                  <span id="tempo">{{tempo$ | async}} bpm</span>
+      <div class="wrapper" id="wrapper">
+        <div class="top-middle-container">
+          <div class="top" [ngClass]="!isPlaying()?'landscape-d-none':''">
+            <div class="metronome">
+              <div class="metronome-bullet">
+                <h1 id="metronome-label" *ngIf="beat$|async as beat">
+                  {{ beat.beat >= 0 ? (beat.beat + 1): '&nbsp;'}}
                 </h1>
+                <semaphore-light [currentAction]="currentAction"></semaphore-light>
               </div>
             </div>
-          </div>
-
-          <!--LOW NOTE-->
-          <div class="low-note-wrapper">
-            <div class="simulate-input">
-              <div class="title-section-wrapper">Lowest note:</div>
-              <div id="open-modal-low-note" expand="block" class="low-note">
-                <img id="high-note" [src]="getNoteImg(lowNote)">
+            <ng-container *ngIf="mode === 'tuner'">
+              <div class="chromatic-tuner">
+                <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>
               </div>
-              <ion-modal *ngIf="!isPlaying()" trigger="open-modal-low-note" [canDismiss]="canDismiss"
-                [initialBreakpoint]="1" [breakpoints]="[0, 1]" [handle]="false">
-                <ng-template>
-                  <scroll-image-component [images]="noteImages" [index]="lowNote" (indexChange)="changeLowNote($event)">
-                  </scroll-image-component>
-                </ng-template>
-              </ion-modal>
+            </ng-container>
+            <ng-container *ngIf="mode === 'trumpet'">
+              <div class="trumpet">
+                <trumpet-diagram [trumpetButtons]="trumpetBtns"></trumpet-diagram>
+              </div>
+            </ng-container>
+
+          </div>
+          <!--MIDDLE-->
+          <div class="middle" *ngIf="isPlaying()">
+            <div class="score">
+              <app-score id="score-image" [score]="score"></app-score>
             </div>
           </div>
+        </div>
 
-          <div class="high-note-wrapper">
-            <div class="simulate-input">
-              <div class="title-section-wrapper">Highest note:</div>
-              <div id="open-modal-high-note" expand="block" class="high-note">
-                <img id="high-note" [src]="getNoteImg(highNote)">
+        <div class="bottom" *ngIf="!isPlaying()">
+          <div class="controls controls-margin">
+
+            <!--TEMPO-->
+            <div class="tempo-wrapper">
+              <div class="simulate-input">
+                <div class="title-section-wrapper">Tempo:</div>
+                <div class="tempo" (click)="openPicker('tempo')">
+                  <h1>
+                    &#9833;=
+                    <span id="tempo">{{tempo$ | async}} bpm</span>
+                  </h1>
+                </div>
               </div>
-              <ion-modal *ngIf="!isPlaying()" trigger="open-modal-high-note" [canDismiss]="canDismiss"
-                [initialBreakpoint]="1" [breakpoints]="[0, 1]" [handle]="false">
-                <ng-template>
-                  <scroll-image-component [images]="noteImages" [index]="highNote"
-                    (indexChange)="changeHighNote($event)">
-                  </scroll-image-component>
-                </ng-template>
-              </ion-modal>
+            </div>
+
+            <!--LOW NOTE-->
+            <div class="low-note-wrapper">
+              <div class="simulate-input">
+                <div class="title-section-wrapper">Lowest note:</div>
+                <div id="open-modal-low-note" expand="block" class="low-note">
+                  <img id="high-note" [src]="getNoteImg(lowNote)">
+                </div>
+                <ion-modal *ngIf="!isPlaying()" trigger="open-modal-low-note" [canDismiss]="canDismiss"
+                           [initialBreakpoint]="1" [breakpoints]="[0, 1]" [handle]="false">
+                  <ng-template>
+                    <scroll-image-component [images]="noteImages" [index]="lowNote" (indexChange)="changeLowNote($event)">
+                    </scroll-image-component>
+                  </ng-template>
+                </ion-modal>
+              </div>
+            </div>
+
+            <div class="high-note-wrapper">
+              <div class="simulate-input">
+                <div class="title-section-wrapper">Highest note:</div>
+                <div id="open-modal-high-note" expand="block" class="high-note">
+                  <img id="high-note" [src]="getNoteImg(highNote)">
+                </div>
+                <ion-modal *ngIf="!isPlaying()" trigger="open-modal-high-note" [canDismiss]="canDismiss"
+                           [initialBreakpoint]="1" [breakpoints]="[0, 1]" [handle]="false">
+                  <ng-template>
+                    <scroll-image-component [images]="noteImages" [index]="highNote"
+                                            (indexChange)="changeHighNote($event)">
+                    </scroll-image-component>
+                  </ng-template>
+                </ion-modal>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </ion-content>
 
