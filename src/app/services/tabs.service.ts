@@ -15,4 +15,5 @@ export class TabsService {
   getDisabled(): boolean {
     return this.disabled;
   }
+
 }
