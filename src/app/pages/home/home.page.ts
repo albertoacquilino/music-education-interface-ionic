@@ -406,6 +406,7 @@ export class HomePage implements OnInit {
       this.firebase.saveStop('finished', this.collectedMeansObject);
       console.log('finished');
       console.log('Collected Means', this.collectedMeansObject);
+      this.tabsService.setDisabled(false);
     }
   }
   /**
