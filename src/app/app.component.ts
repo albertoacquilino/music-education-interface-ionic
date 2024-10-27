@@ -3,6 +3,7 @@ import { IonicModule, Platform } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
 import { Microphone, PermissionStatus } from '@mozartec/capacitor-microphone';
 import { PitchService } from './services/pitch.service';
+import { KeepAwake } from '@capacitor-community/keep-awake';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,10 @@ export class AppComponent implements AfterViewInit {
   }
 
   async ngAfterViewInit() {
+
+    // keep the screen awake using plugin
+    await KeepAwake.keepAwake();
+
     if (this.platform.is('android') || this.platform.is('ios')) {
       const checkPermissionsResult = await Microphone.checkPermissions();
       if (checkPermissionsResult.microphone === 'denied') {
@@ -28,6 +33,7 @@ export class AppComponent implements AfterViewInit {
       }
     }
 
+    // start the pitch monitoring service
     this.pitchService.connect()
   }
 }

@@ -3,6 +3,8 @@ PODS:
     - CapacitorCordova
   - CapacitorApp (6.0.1):
     - Capacitor
+  - CapacitorCommunityKeepAwake (5.0.1):
+    - Capacitor
   - CapacitorCordova (6.0.0)
   - CapacitorDevice (6.0.1):
     - Capacitor
@@ -20,6 +22,7 @@ PODS:
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
+  - "CapacitorCommunityKeepAwake (from `../../node_modules/@capacitor-community/keep-awake`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
@@ -33,6 +36,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorApp:
     :path: "../../node_modules/@capacitor/app"
+  CapacitorCommunityKeepAwake:
+    :path: "../../node_modules/@capacitor-community/keep-awake"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorDevice:
@@ -51,6 +56,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: 559d073c4ca6c27f8e7002c807eea94c3ba435a9
   CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
+  CapacitorCommunityKeepAwake: e2ddd50812e3407f8dc3a2c28e97d66e9b59b2f5
   CapacitorCordova: 8c4bfdf69368512e85b1d8b724dd7546abeb30af
   CapacitorDevice: 7097a1deb4224b77fd13a6e60a355d0062a5d772
   CapacitorHaptics: fe689ade56ef20ec9b041a753c6da70c5d8ec9a9
@@ -59,6 +65,6 @@ SPEC CHECKSUMS:
   CapgoCapacitorMute: 6cf5b54cb19afe8f0cf9b20c0040ec65d9ecf0a0
   MozartecCapacitorMicrophone: 43dd3a517756bbf909a5c47623b862fc518d92c4
 
-PODFILE CHECKSUM: 76f27a00e1f48fc49cb063c4456475466cb05c32
+PODFILE CHECKSUM: 5daa95e44f153f3c7310690252f636ecb36b2405
 
 COCOAPODS: 1.14.3
