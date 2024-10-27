@@ -396,8 +396,8 @@ export class HomePage implements OnInit {
 
       if (this.mode == 'trumpet') {
         switch (tempo.measure) {
-          case 0: this.pitchService.disconnect(); break;
-          case 2: this.pitchService.connect();
+          // case 0: this.pitchService.disconnect(); break;
+          // case 2: this.pitchService.connect();
         }
       }
     }
@@ -454,7 +454,7 @@ export class HomePage implements OnInit {
       console.log('Collected Means', this.collectedMeansObject);
     }
     else if (this.mode == 'trumpet') {
-      this.pitchService.disconnect();
+      // this.pitchService.disconnect();
     }
     Howler.stop();
     this.firebase.saveStop('interrupted', this.collectedMeansObject);

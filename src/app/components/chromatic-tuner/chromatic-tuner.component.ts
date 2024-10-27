@@ -171,14 +171,14 @@ export class ChromaticTunerComponent implements OnInit {
 
     start() {
         this.meansArray = [];  // Clear the array when starting
-        this.pitchService.connect();
+        // this.pitchService.connect();
         this.pitchSubscription = this.pitchService.pitch$.subscribe(pitch => {
             this.pitchSubject.next(pitch);
         });
     }
 
     stop(): number[] {
-        this.pitchService.disconnect();
+        // this.pitchService.disconnect();
 
         if (this.pitchSubscription) {
             this.pitchSubscription.unsubscribe();

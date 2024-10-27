@@ -2,6 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { IonicModule, Platform } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
 import { Microphone, PermissionStatus } from '@mozartec/capacitor-microphone';
+import { PitchService } from './services/pitch.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import { Microphone, PermissionStatus } from '@mozartec/capacitor-microphone';
   imports: [IonicModule],
 })
 export class AppComponent implements AfterViewInit {
-  constructor(private platform: Platform) {
+  constructor(private platform: Platform, private pitchService: PitchService) {
     StatusBar.show();
   }
 
@@ -26,5 +27,7 @@ export class AppComponent implements AfterViewInit {
         }
       }
     }
+
+    this.pitchService.connect()
   }
 }
