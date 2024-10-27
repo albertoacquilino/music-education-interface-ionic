@@ -590,9 +590,11 @@ export class HomePage implements OnInit {
   //on component load, scale the content
   ngAfterViewInit() {
     //on event resize, scale the content
-    window.addEventListener('resize', (event) => this.scaleContent());
-    window.addEventListener('load', (event) => this.scaleContent());
-    this.scaleContent();
+    window.addEventListener('resize', () => this.scaleContent());
+    window.addEventListener('load', () => this.scaleContent());
+
+    // 
+    setTimeout( () => this.scaleContent(), 250);
   }
 
 }
