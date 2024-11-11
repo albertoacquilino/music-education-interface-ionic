@@ -6,6 +6,7 @@
     align-items: center;
     height: 100%;
     overflow: hidden;
+  position: relative;
 }
 
 .chromatic-tuner ::ng-deep .tuner {
@@ -20,9 +21,13 @@
     font-size: 36px;
     font-weight: bold;
     text-align: center;
-    margin-top: 70px;
+/*    margin-top: 70px;
     height: 40px;
-    line-height: 40px;
+    line-height: 40px;*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 768px) {

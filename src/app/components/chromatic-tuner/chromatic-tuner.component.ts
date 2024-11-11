@@ -213,11 +213,15 @@ export class ChromaticTunerComponent implements OnInit {
       // Prendi il fattore di scala minimo tra larghezza e altezza
       let scale = Math.min(scaleX, scaleY);
 
-      //lascia un margine di almeno 20%
-      scale = scale * 0.8;
+      //lascia un margine di almeno 20% su x e 30% su y
+      scale = Math.min(scale, 0.8 * scaleX, 0.7 * scaleY);
 
       // Applica il fattore di scala al contenitore
       container!.style.transform = `scale(${scale})`;
+      // trasla il contenitore per centrarlo
+      //container!.style.transformOrigin = '0 0';
+      //container!.style.left = `${(viewportWidth - baseWidth * scale) / 2}px`;
+      //container!.style.top = `${(viewportHeight - baseHeight * scale) / 2}px`;
 
     }
 
