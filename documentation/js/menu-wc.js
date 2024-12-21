@@ -63,6 +63,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="components/HomePage.html" data-type="entity-link" >HomePage</a>
                             </li>
                             <li class="link">
+                                <a href="components/NoteSelectorComponent.html" data-type="entity-link" >NoteSelectorComponent</a>
+                            </li>
+                            <li class="link">
                                 <a href="components/PitchComponent.html" data-type="entity-link" >PitchComponent</a>
                             </li>
                             <li class="link">
@@ -72,19 +75,10 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="components/RegisterPage.html" data-type="entity-link" >RegisterPage</a>
                             </li>
                             <li class="link">
-                                <a href="components/ScoreComponent.html" data-type="entity-link" >ScoreComponent</a>
-                            </li>
-                            <li class="link">
-                                <a href="components/ScoreComponentTest.html" data-type="entity-link" >ScoreComponentTest</a>
-                            </li>
-                            <li class="link">
-                                <a href="components/ScoreComponentTest-1.html" data-type="entity-link" >ScoreComponentTest</a>
+                                <a href="components/ScoreViewComponent.html" data-type="entity-link" >ScoreViewComponent</a>
                             </li>
                             <li class="link">
                                 <a href="components/ScrollImageComponent.html" data-type="entity-link" >ScrollImageComponent</a>
-                            </li>
-                            <li class="link">
-                                <a href="components/ScrollImagePage.html" data-type="entity-link" >ScrollImagePage</a>
                             </li>
                             <li class="link">
                                 <a href="components/SemaphoreLightComponent.html" data-type="entity-link" >SemaphoreLightComponent</a>
@@ -97,6 +91,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="components/TabsComponent.html" data-type="entity-link" >TabsComponent</a>
+                            </li>
+                            <li class="link">
+                                <a href="components/TempoSelectorComponent.html" data-type="entity-link" >TempoSelectorComponent</a>
                             </li>
                             <li class="link">
                                 <a href="components/TrumpetDiagramComponent.html" data-type="entity-link" >TrumpetDiagramComponent</a>
