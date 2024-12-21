@@ -421,7 +421,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component } from &quot;@angular/core&quot;;
-import { ScoreComponent } from &quot;../components/score/score.component&quot;;
+import { ScoreViewComponent } from &quot;../components/score/score.component&quot;;
 import { Score } from &#x27;../models/score.types&#x27;;
 import { CommonModule } from &quot;@angular/common&quot;;
 import { Flow } from &#x27;vexflow&#x27;;
@@ -502,7 +502,7 @@ export class ScoreComponentTest {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><ion-content class="ion-padding"><div>    <ion-button (click)="play(\'p\')">piano</ion-button></div><div>    <ion-button (click)="play(\'mf\')">mezzoforte</ion-button></div><div>    <ion-button (click)="play(\'f\')">forte</ion-button></div><hr><ng-container *ngFor="let volume of [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]">    <div>        <ion-button (click)="playVolume(volume)">{{volume}}</ion-button>    </div></ng-container></ion-content></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChromaticTunerComponent', 'selector': 'chromatic-tuner'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'PitchComponent', 'selector': 'app-pitchlite'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'RegisterPage', 'selector': 'app-register'},{'name': 'ScoreComponent', 'selector': 'app-score'},{'name': 'ScoreComponentTest', 'selector': 'app-test-score'},{'name': 'ScoreComponentTest', 'selector': 'app-test-score'},{'name': 'ScrollImageComponent', 'selector': 'scroll-image-component'},{'name': 'ScrollImagePage', 'selector': 'scroll-image-page'},{'name': 'SemaphoreLightComponent', 'selector': 'semaphore-light'},{'name': 'SigninPage', 'selector': 'app-signin'},{'name': 'SignupPage', 'selector': 'app-signup'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TrumpetDiagramComponent', 'selector': 'trumpet-diagram'}];
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChromaticTunerComponent', 'selector': 'chromatic-tuner'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'NoteSelectorComponent', 'selector': 'note-selector'},{'name': 'PitchComponent', 'selector': 'app-pitchlite'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'RegisterPage', 'selector': 'app-register'},{'name': 'ScoreViewComponent', 'selector': 'score-view'},{'name': 'ScrollImageComponent', 'selector': 'scroll-image-component'},{'name': 'SemaphoreLightComponent', 'selector': 'semaphore-light'},{'name': 'SigninPage', 'selector': 'app-signin'},{'name': 'SignupPage', 'selector': 'app-signup'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TempoSelectorComponent', 'selector': 'tempo-selector'},{'name': 'TrumpetDiagramComponent', 'selector': 'trumpet-diagram'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'ScoreComponentTest'};
 </script>

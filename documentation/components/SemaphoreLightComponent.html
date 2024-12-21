@@ -124,6 +124,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>SemaphoreLightComponent is responsible for displaying a semaphore light interface.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;semaphore-light [currentAction]=&quot;currentAction&quot;&gt;&lt;/semaphore-light&gt;</code></pre></div>
+    </p>
 
 
     <p class="comment">
@@ -252,7 +259,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:18</a></div>
                             </td>
                         </tr>
 
@@ -283,7 +290,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:12</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:18</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -317,8 +324,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:26</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -384,8 +391,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:22</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -421,8 +428,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="18"
-                                    class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:18</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="24"
+                                    class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -488,8 +495,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="16"
-                                    class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:16</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/app/components/semaphore-light/semaphore-light.component.ts:22</a></div>
                         </td>
                     </tr>
 
@@ -514,6 +521,12 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit } from &#x27;@angular/core&#x27;;
 import { CommonModule } from &#x27;@angular/common&#x27;;
 
+/**
+ * SemaphoreLightComponent is responsible for displaying a semaphore light interface.
+ * 
+ * @example
+ * &lt;semaphore-light [currentAction]&#x3D;&quot;currentAction&quot;&gt;&lt;/semaphore-light&gt;
+ */
 @Component({
   selector: &#x27;semaphore-light&#x27;,
   templateUrl: &#x27;./semaphore-light.component.html&#x27;,
@@ -526,7 +539,7 @@ export class SemaphoreLightComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   isActive(action: string): boolean {
     return this.currentAction &#x3D;&#x3D;&#x3D; action;
@@ -664,7 +677,7 @@ export class SemaphoreLightComponent implements OnInit {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div *ngIf="hasAction(); else noAction">  <div class="semaphore-lights">    <div class="light-container" [class.active]="isActive(\'Rest\')">      <div class="light-wrapper">        <div class="light" [style.background-color]="getCircleColor(\'Rest\')"></div>      </div>      <span class="light-label">REST</span>    </div>    <div class="light-container" [class.active]="isActive(\'Listen\')">      <div class="light-wrapper">        <div class="light" [style.background-color]="getCircleColor(\'Listen\')"></div>      </div>      <span class="light-label">LISTEN</span>    </div>    <div class="light-container" [class.active]="isActive(\'Play\')">      <div class="light-wrapper">        <div class="light" [style.background-color]="getCircleColor(\'Play\')"></div>      </div>      <span class="light-label">PLAY</span>    </div>  </div></div><ng-template #noAction>  <div class="no-action-text">Press Start to begin</div></ng-template></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChromaticTunerComponent', 'selector': 'chromatic-tuner'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'PitchComponent', 'selector': 'app-pitchlite'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'RegisterPage', 'selector': 'app-register'},{'name': 'ScoreComponent', 'selector': 'app-score'},{'name': 'ScoreComponentTest', 'selector': 'app-test-score'},{'name': 'ScoreComponentTest', 'selector': 'app-test-score'},{'name': 'ScrollImageComponent', 'selector': 'scroll-image-component'},{'name': 'ScrollImagePage', 'selector': 'scroll-image-page'},{'name': 'SemaphoreLightComponent', 'selector': 'semaphore-light'},{'name': 'SigninPage', 'selector': 'app-signin'},{'name': 'SignupPage', 'selector': 'app-signup'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TrumpetDiagramComponent', 'selector': 'trumpet-diagram'}];
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChromaticTunerComponent', 'selector': 'chromatic-tuner'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'NoteSelectorComponent', 'selector': 'note-selector'},{'name': 'PitchComponent', 'selector': 'app-pitchlite'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'RegisterPage', 'selector': 'app-register'},{'name': 'ScoreViewComponent', 'selector': 'score-view'},{'name': 'ScrollImageComponent', 'selector': 'scroll-image-component'},{'name': 'SemaphoreLightComponent', 'selector': 'semaphore-light'},{'name': 'SigninPage', 'selector': 'app-signin'},{'name': 'SignupPage', 'selector': 'app-signup'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TempoSelectorComponent', 'selector': 'tempo-selector'},{'name': 'TrumpetDiagramComponent', 'selector': 'trumpet-diagram'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SemaphoreLightComponent'};
 </script>

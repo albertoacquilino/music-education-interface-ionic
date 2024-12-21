@@ -1,6 +1,14 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { CommonModule } from '@angular/common';  // Import CommonModule
 
+
+/**
+ * TrumpetDiagramComponent is responsible for displaying a trumpet diagram interface.
+ * It shows fingering positions for a trumpet and highlights active buttons.
+ * 
+ * @example
+ * <trumpet-diagram [trumpetButtons]="[0, 1, 2]"></trumpet-diagram>
+ */
 @Component({
   selector: 'trumpet-diagram',
   templateUrl: './trumpet-diagram.component.html',
@@ -37,6 +45,6 @@ export class TrumpetDiagramComponent implements OnInit, OnChanges {
         this.isActive[pos] = true;
       }
     });
-}
+  }
 }
 

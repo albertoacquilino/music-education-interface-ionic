@@ -44,12 +44,19 @@ const baseNotes: { [note: string]: { freq: number, key: number } } = {
 const minCents = -40;
 const maxCents = 40;
 
+/**
+ * ChromaticTunerComponent is responsible for displaying a chromatic tuner interface.
+ * It displays the detected pitch and note, and provides visual feedback to the user.
+ * 
+ * @example
+ * <chromatic-tuner [refFrequencyValue$]="440"></chromatic-tuner>
+ */
 @Component({
     selector: 'chromatic-tuner',
     templateUrl: './chromatic-tuner.component.html',
     styleUrls: ['./chromatic-tuner.component.scss'],
     standalone: true,
-    imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, CommonModule]
+    imports: [IonicModule, FontAwesomeModule, CommonModule]
 })
 export class ChromaticTunerComponent implements OnInit {
     @Input() refFrequencyValue$!: number;
@@ -195,39 +202,39 @@ export class ChromaticTunerComponent implements OnInit {
         return this.meansArray;  // Return the array of means
     }
 
-    scaleContent(){
-      const container = document.getElementById('tuner');
+    scaleContent() {
+        const container = document.getElementById('tuner');
 
-      // Dimensioni di base del contenitore
-      const baseWidth = container!.offsetWidth;
-      const baseHeight = container!.offsetHeight;
+        // Dimensioni di base del contenitore
+        const baseWidth = container!.offsetWidth;
+        const baseHeight = container!.offsetHeight;
 
-      // Dimensioni della finestra (viewport)
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
+        // Dimensioni della finestra (viewport)
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
 
-      // Calcola il fattore di scala per adattare sia larghezza che altezza
-      const scaleX = viewportWidth / baseWidth;
-      const scaleY = viewportHeight / baseHeight;
+        // Calcola il fattore di scala per adattare sia larghezza che altezza
+        const scaleX = viewportWidth / baseWidth;
+        const scaleY = viewportHeight / baseHeight;
 
-      // Prendi il fattore di scala minimo tra larghezza e altezza
-      let scale = Math.min(scaleX, scaleY);
+        // Prendi il fattore di scala minimo tra larghezza e altezza
+        let scale = Math.min(scaleX, scaleY);
 
-      //lascia un margine di almeno 20%
-      scale = scale * 0.8;
+        //lascia un margine di almeno 20%
+        scale = scale * 0.8;
 
-      // Applica il fattore di scala al contenitore
-      container!.style.transform = `scale(${scale})`;
+        // Applica il fattore di scala al contenitore
+        container!.style.transform = `scale(${scale})`;
 
     }
 
 
     //on component load, scale the content
     ngAfterViewInit() {
-      //on event resize, scale the content
-      window.addEventListener('resize', (event) => this.scaleContent());
-      window.addEventListener('load', (event) => this.scaleContent());
-      this.scaleContent();
+        //on event resize, scale the content
+        window.addEventListener('resize', (event) => this.scaleContent());
+        window.addEventListener('load', (event) => this.scaleContent());
+        this.scaleContent();
     }
 }
 

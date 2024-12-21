@@ -1,9 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
 import { CommonModule } from '@angular/common';
-import { IonicModule, PickerController } from '@ionic/angular';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
 import { NOTES } from 'src/app/constants';
+import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
 
+/**
+ * NoteSelectorComponent is responsible for displaying a note selector interface.
+ * It allows users to select musical notes and emits changes when a note is selected.
+ * 
+ * @example
+ * <note-selector [label]="Note" [note]="1" (change)="onNoteChange($event)"></note-selector>
+ */
 @Component({
   selector: 'note-selector',
   template: `

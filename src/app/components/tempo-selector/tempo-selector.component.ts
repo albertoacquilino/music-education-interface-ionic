@@ -5,6 +5,14 @@ import { range } from 'lodash';
 import { MAXTEMPO, MINTEMPO } from 'src/app/constants';
 
 
+/**
+ * TempoSelectorComponent is responsible for displaying a tempo selector interface.
+ * It allows users to select a tempo value and emits changes when a tempo is selected.
+ * 
+ * @example
+ * <tempo-selector [tempo]="120" (change)="onTempoChange($event)"></tempo-selector>
+ */
+
 @Component({
   selector: 'tempo-selector',
   template: `
@@ -51,7 +59,14 @@ import { MAXTEMPO, MINTEMPO } from 'src/app/constants';
   ]
 })
 export class TempoSelectorComponent implements OnInit {
+  /**
+   * The current tempo value.
+   */
   @Input() tempo!: number;
+
+  /**
+   * Event emitted when the tempo value changes.
+   */
   @Output() change: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(
@@ -61,6 +76,9 @@ export class TempoSelectorComponent implements OnInit {
   ngOnInit() { }
 
 
+  /**
+  * Opens the picker to select a new tempo value.
+  */
   async openPicker() {
     // create list of options to be selected
     let options: { value: number, text: string }[];

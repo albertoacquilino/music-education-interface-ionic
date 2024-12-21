@@ -10,7 +10,7 @@ import { range } from 'lodash';
 import { Observable, interval, tap } from 'rxjs';
 import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
 import { NoteSelectorComponent } from 'src/app/components/note-selector/note-selector.component';
-import { ScoreComponent } from 'src/app/components/score/score.component';
+import { ScoreViewComponent } from 'src/app/components/score/score.component';
 import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
 import { TempoSelectorComponent } from 'src/app/components/tempo-selector/tempo-selector.component';
 import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
@@ -32,7 +32,7 @@ import { BeatService } from '../../services/beat.service';
   standalone: true,
   imports: [
     IonicModule, FontAwesomeModule,
-    ScoreComponent,
+    ScoreViewComponent,
     CommonModule, SemaphoreLightComponent,
     TrumpetDiagramComponent, TempoSelectorComponent, NoteSelectorComponent,
     ChromaticTunerComponent],

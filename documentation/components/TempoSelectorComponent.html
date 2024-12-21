@@ -89,7 +89,7 @@
   <li class="breadcrumb-item">Components</li>
   <li class="breadcrumb-item"
   >
-  ProfilePage</li>
+  TempoSelectorComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -100,10 +100,6 @@
         <li class="nav-item">
             <a href="#source" class="nav-link"
                 role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
-        </li>
-        <li class="nav-item">
-            <a href="#templateData" class="nav-link"
-                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
         </li>
         <li class="nav-item">
             <a href="#styleData" class="nav-link"
@@ -120,12 +116,26 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/pages/profile/profile.page.ts</code>
+    <code>src/app/components/tempo-selector/tempo-selector.component.ts</code>
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>TempoSelectorComponent is responsible for displaying a tempo selector interface.
+It allows users to select a tempo value and emits changes when a tempo is selected.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;tempo-selector [tempo]=&quot;120&quot; (change)=&quot;onTempoChange($event)&quot;&gt;&lt;/tempo-selector&gt;</code></pre></div>
+    </p>
 
 
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
 
 
 <section data-compodoc="block-metadata">
@@ -146,7 +156,7 @@
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>app-profile</code></td>
+                <td class="col-md-9"><code>tempo-selector</code></td>
             </tr>
 
             <tr>
@@ -162,17 +172,52 @@
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>./profile.page.scss</code></td>
-            </tr>
-
-
 
             <tr>
-                <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>./profile.page.html</code></td>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+  .tempo h1 {
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  .tempo {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .simulate-input {
+    background-color: #ececec;
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    padding: 10px 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+    max-width: 165px;
+    max-height: 165px;
+  }
+  </code></td>
             </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;simulate-input&quot;&gt;
+&lt;div class&#x3D;&quot;title-section-wrapper&quot;&gt;Tempo:&lt;/div&gt;
+&lt;div class&#x3D;&quot;tempo&quot; (click)&#x3D;&quot;openPicker()&quot;&gt;
+  &lt;h1&gt;
+      &amp;#9833;&#x3D;
+      &lt;span id&#x3D;&quot;tempo&quot;&gt;{{ tempo }} bpm&lt;/span&gt;
+  &lt;/h1&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
 
 
 
@@ -189,29 +234,6 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                <a href="#displayName" >displayName</a>
-                            </li>
-                            <li>
-                                <a href="#emailAddress" >emailAddress</a>
-                            </li>
-                            <li>
-                                <a href="#ProfileImg" >ProfileImg</a>
-                            </li>
-                            <li>
-                                <a href="#UserID" >UserID</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -222,19 +244,45 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#goBack" >goBack</a>
+                                <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                             <li>
-                                <a href="#ionViewWillEnter" >ionViewWillEnter</a>
-                            </li>
-                            <li>
-                                <a href="#signOut" >signOut</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#openPicker" >openPicker</a>
                             </li>
                         </ul>
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#tempo" >tempo</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#change" >change</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
 
 
@@ -248,12 +296,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(authService: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, router: Router)</code>
+<code>constructor(_picker: PickerController)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/profile/profile.page.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/components/tempo-selector/tempo-selector.component.ts:70</a></div>
                             </td>
                         </tr>
 
@@ -271,22 +319,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>authService</td>
+                                                        <td>_picker</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>router</td>
-                                                  
-                                                        <td>
-                                                                    <code>Router</code>
+                                                                    <code>PickerController</code>
                                                         </td>
                                                   
                                                     <td>
@@ -303,8 +339,66 @@
         </table>
 </section>
 
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="tempo"></a>
+                        <b>tempo</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/components/tempo-selector/tempo-selector.component.ts:65</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>The current tempo value.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="change"></a>
+                        <b>change</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;number&gt;</code>
 
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/components/tempo-selector/tempo-selector.component.ts:70</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitted when the tempo value changes.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
 
 
     <section data-compodoc="block-methods">
@@ -316,24 +410,24 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="goBack"></a>
+                    <a name="ngOnInit"></a>
                     <span class="name">
-                        <span ><b>goBack</b></span>
-                        <a href="#goBack"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>goBack()</code>
+<code>ngOnInit()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="39"
-                                    class="link-to-prism">src/app/pages/profile/profile.page.ts:39</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/app/components/tempo-selector/tempo-selector.component.ts:76</a></div>
                         </td>
                     </tr>
 
@@ -353,184 +447,41 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ionViewWillEnter"></a>
+                    <a name="openPicker"></a>
                     <span class="name">
-                        <span ><b>ionViewWillEnter</b></span>
-                        <a href="#ionViewWillEnter"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>openPicker</b></span>
+                        <a href="#openPicker"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>ionViewWillEnter()</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openPicker()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="23"
-                                    class="link-to-prism">src/app/pages/profile/profile.page.ts:23</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="82"
+                                    class="link-to-prism">src/app/components/tempo-selector/tempo-selector.component.ts:82</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Opens the picker to select a new tempo value.</p>
+</div>
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                 </td>
             </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="signOut"></a>
-                    <span class="name">
-                        <span ><b>signOut</b></span>
-                        <a href="#signOut"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>signOut()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="43"
-                                    class="link-to-prism">src/app/pages/profile/profile.page.ts:43</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>
-    <section data-compodoc="block-properties">
-    
-    <h3 id="inputs">
-        Properties
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="displayName"></a>
-                    <span class="name">
-                        <span ><b>displayName</b></span>
-                        <a href="#displayName"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/pages/profile/profile.page.ts:16</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="emailAddress"></a>
-                    <span class="name">
-                        <span ><b>emailAddress</b></span>
-                        <a href="#emailAddress"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/pages/profile/profile.page.ts:17</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ProfileImg"></a>
-                    <span class="name">
-                        <span ><b>ProfileImg</b></span>
-                        <a href="#ProfileImg"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/pages/profile/profile.page.ts:18</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="UserID"></a>
-                    <span class="name">
-                        <span ><b>UserID</b></span>
-                        <a href="#UserID"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/profile/profile.page.ts:19</a></div>
-                        </td>
-                    </tr>
-
-
         </tbody>
     </table>
 </section>
@@ -539,148 +490,167 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, OnInit } from &#x27;@angular/core&#x27;;
-import { AuthService } from &#x27;src/app/services/auth.service&#x27;;
-import { IonicModule } from &#x27;@ionic/angular&#x27;;
-import { Router } from &#x27;@angular/router&#x27;;
-import { CommonModule } from &#x27;@angular/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Component, EventEmitter, Input, OnInit, Output } from &#x27;@angular/core&#x27;;
+import { IonicModule, PickerController } from &#x27;@ionic/angular&#x27;;
+import { range } from &#x27;lodash&#x27;;
+import { MAXTEMPO, MINTEMPO } from &#x27;src/app/constants&#x27;;
+
+
+/**
+ * TempoSelectorComponent is responsible for displaying a tempo selector interface.
+ * It allows users to select a tempo value and emits changes when a tempo is selected.
+ * 
+ * @example
+ * &lt;tempo-selector [tempo]&#x3D;&quot;120&quot; (change)&#x3D;&quot;onTempoChange($event)&quot;&gt;&lt;/tempo-selector&gt;
+ */
 
 @Component({
-  selector: &#x27;app-profile&#x27;,
-  templateUrl: &#x27;./profile.page.html&#x27;,
-  styleUrls: [&#x27;./profile.page.scss&#x27;],
+  selector: &#x27;tempo-selector&#x27;,
+  template: &#x60;
+  &lt;div class&#x3D;&quot;simulate-input&quot;&gt;
+  &lt;div class&#x3D;&quot;title-section-wrapper&quot;&gt;Tempo:&lt;/div&gt;
+  &lt;div class&#x3D;&quot;tempo&quot; (click)&#x3D;&quot;openPicker()&quot;&gt;
+    &lt;h1&gt;
+        &amp;#9833;&#x3D;
+        &lt;span id&#x3D;&quot;tempo&quot;&gt;{{ tempo }} bpm&lt;/span&gt;
+    &lt;/h1&gt;
+  &lt;/div&gt;
+  
+  &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+  .tempo h1 {
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  .tempo {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .simulate-input {
+    background-color: #ececec;
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    padding: 10px 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+    max-width: 165px;
+    max-height: 165px;
+  }
+  &#x60;],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [
+    IonicModule, CommonModule
+  ]
 })
-export class ProfilePage {
+export class TempoSelectorComponent implements OnInit {
+  /**
+   * The current tempo value.
+   */
+  @Input() tempo!: number;
 
-  displayName!: string;
-  emailAddress!: string;
-  ProfileImg!: string;
-  UserID!: string;
+  /**
+   * Event emitted when the tempo value changes.
+   */
+  @Output() change: EventEmitter&lt;number&gt; &#x3D; new EventEmitter&lt;number&gt;();
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private _picker: PickerController,
+  ) { }
 
-  ionViewWillEnter() {
-    const user &#x3D; JSON.parse(localStorage.getItem(&quot;LoggedInUser&quot;)!);
+  ngOnInit() { }
 
-    if (user) {
-      this.emailAddress &#x3D; user.email;
-      this.ProfileImg &#x3D; user.picture;
-      this.UserID &#x3D; user.email.split(&#x27;@&#x27;)[0];
-      this.displayName &#x3D; user.name;
-    } else {
-      this.emailAddress &#x3D; &#x27;&#x27;;
-      this.displayName &#x3D; &#x27;Guest&#x27;;
-      this.ProfileImg &#x3D; &#x27;assets/images/user.png&#x27;;
-      this.UserID &#x3D; &#x27;&#x27;;
-    }
+
+  /**
+  * Opens the picker to select a new tempo value.
+  */
+  async openPicker() {
+    // create list of options to be selected
+    let options: { value: number, text: string }[];
+    let selectedIndex &#x3D; 0;
+    let selectedValue: number;
+    let rangeValues: number[] &#x3D; [];
+    let unit: string;
+
+    selectedValue &#x3D; this.tempo;
+    rangeValues &#x3D; range(MINTEMPO, MAXTEMPO + 1, 5);
+    unit &#x3D; &#x27;bpm&#x27;;
+
+    options &#x3D; rangeValues.map(value &#x3D;&gt; ({
+      value: value,
+      text: &#x60;${value} ${unit}&#x60;
+    }));
+
+    selectedIndex &#x3D; options.findIndex(option &#x3D;&gt; option.value &#x3D;&#x3D;&#x3D; selectedValue);
+
+    const picker &#x3D; await this._picker.create({
+      columns: [
+        {
+          name: &#x27;tempo&#x27;,
+          options: options,
+          selectedIndex: selectedIndex
+        },
+      ],
+
+      buttons: [
+        {
+          text: &#x27;Cancel&#x27;,
+          role: &#x27;cancel&#x27;,
+        },
+        {
+          text: &#x27;Confirm&#x27;,
+          handler: (value) &#x3D;&gt; {
+            this.tempo &#x3D; value[&#x27;tempo&#x27;].value;
+            this.change.emit(this.tempo);
+          }
+        },
+      ],
+    });
+
+    await picker.present();
+
   }
 
-  goBack() {
-    this.router.navigate([&#x27;/home&#x27;]);
-  }
-
-  signOut() {
-    localStorage.removeItem(&#x27;LoggedInUser&#x27;);
-    this.authService.signOut();
-  }
 }
-
-
 </code></pre>
     </div>
 
-    <div class="tab-pane fade " id="templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;ion-header&gt;
-    &lt;ion-toolbar&gt;
-    &lt;/ion-toolbar&gt;
-&lt;/ion-header&gt;
-&lt;ion-content&gt;
-    &lt;div class&#x3D;&quot;profile-container&quot;&gt;
-        &lt;ion-card&gt;
-            &lt;ion-card-header&gt;
-                &lt;ion-card-title&gt;Profile&lt;/ion-card-title&gt;
-                &lt;div class&#x3D;&quot;profile-img-container&quot;&gt;
-                    &lt;ion-img [src]&#x3D;&quot;ProfileImg || &#x27;assets/images/user.png&#x27;&quot; class&#x3D;&quot;profile-img&quot;&gt;&lt;/ion-img&gt;
-                &lt;/div&gt;
-            &lt;/ion-card-header&gt;
-            &lt;ion-card-content&gt;
-
-                &lt;div class&#x3D;&quot;profile-details&quot;&gt;
-                    &lt;h2 *ngIf&#x3D;&quot;displayName&quot;&gt;Display Name: {{ displayName }}&lt;/h2&gt;
-                    &lt;h2&gt;UserID: {{ UserID }}&lt;/h2&gt;
-                    &lt;h2&gt;Email: {{ emailAddress }}&lt;/h2&gt;
-                &lt;/div&gt;
-                &lt;div class&#x3D;&quot;button-container&quot;&gt;
-                    &lt;ion-button (click)&#x3D;&quot;goBack()&quot;&gt;Go Back&lt;/ion-button&gt;
-                    &lt;ion-button (click)&#x3D;&quot;signOut()&quot;&gt;Sign Out&lt;/ion-button&gt;
-                &lt;/div&gt;
-            &lt;/ion-card-content&gt;
-        &lt;/ion-card&gt;
-    &lt;/div&gt;
-&lt;/ion-content&gt;</code></pre>
-    </div>
 
     <div class="tab-pane fade " id="styleData">
-                <p class="comment">
-                    <code>./profile.page.scss</code>
-                </p>
-                <pre class="line-numbers"><code class="language-scss">.profile-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
+            <pre class="line-numbers"><code class="language-scss">
+  .tempo h1 {
+    font-size: 1.5em;
+    text-align: center;
+  }
 
-ion-card {
-  width: 90%;
-  max-width: 550px;
-  text-align: center;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.profile-img-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  width: 150px;
-  height: 150px;
-  overflow: hidden;
-  border-radius: 50%;
-}
-
-ion-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile-details {
-  margin: 16px 0;
-}
-
-.profile-details h2 {
-  margin: 8px 0;
-  font-size: 1.2em;
-  font-weight: normal;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 16px;
-}
-
-ion-button {
-  flex: 1;
-  margin: 0 4px;
-}</code></pre>
+  .tempo {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .simulate-input {
+    background-color: #ececec;
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    padding: 10px 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+    max-width: 165px;
+    max-height: 165px;
+  }
+  
+</code></pre>
     </div>
 
     <div class="tab-pane fade " id="tree">
@@ -708,10 +678,10 @@ ion-button {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><ion-header>    <ion-toolbar>    </ion-toolbar></ion-header><ion-content>    <div class="profile-container">        <ion-card>            <ion-card-header>                <ion-card-title>Profile</ion-card-title>                <div class="profile-img-container">                    <ion-img [src]="ProfileImg || \'assets/images/user.png\'" class="profile-img"></ion-img>                </div>            </ion-card-header>            <ion-card-content>                <div class="profile-details">                    <h2 *ngIf="displayName">Display Name: {{ displayName }}</h2>                    <h2>UserID: {{ UserID }}</h2>                    <h2>Email: {{ emailAddress }}</h2>                </div>                <div class="button-container">                    <ion-button (click)="goBack()">Go Back</ion-button>                    <ion-button (click)="signOut()">Sign Out</ion-button>                </div>            </ion-card-content>        </ion-card>    </div></ion-content></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="simulate-input"><div class="title-section-wrapper">Tempo:</div><div class="tempo" (click)="openPicker()">  <h1>      &#9833;=      <span id="tempo">{{ tempo }} bpm</span>  </h1></div></div></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChromaticTunerComponent', 'selector': 'chromatic-tuner'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'NoteSelectorComponent', 'selector': 'note-selector'},{'name': 'PitchComponent', 'selector': 'app-pitchlite'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'RegisterPage', 'selector': 'app-register'},{'name': 'ScoreViewComponent', 'selector': 'score-view'},{'name': 'ScrollImageComponent', 'selector': 'scroll-image-component'},{'name': 'SemaphoreLightComponent', 'selector': 'semaphore-light'},{'name': 'SigninPage', 'selector': 'app-signin'},{'name': 'SignupPage', 'selector': 'app-signup'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TempoSelectorComponent', 'selector': 'tempo-selector'},{'name': 'TrumpetDiagramComponent', 'selector': 'trumpet-diagram'}];
     var DIRECTIVES = [];
-    var ACTUAL_COMPONENT = {'name': 'ProfilePage'};
+    var ACTUAL_COMPONENT = {'name': 'TempoSelectorComponent'};
 </script>
 <script src="../js/tree.js"></script>
 
@@ -757,7 +727,7 @@ ion-button {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'ProfilePage.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'TempoSelectorComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
