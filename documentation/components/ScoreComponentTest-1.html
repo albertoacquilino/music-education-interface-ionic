@@ -155,7 +155,7 @@
             <tr>
                 <td class="col-md-3">imports</td>
                 <td class="col-md-9">
-                                <code><a href="../components/ScoreViewComponent.html" target="_self" >ScoreViewComponent</a></code>
+                                <code><a href="../miscellaneous/typealiases.html#Score" target="_self" >ScoreComponent</a></code>
                             <code>CommonModule</code>
                 </td>
             </tr>
@@ -164,7 +164,7 @@
 
             <tr>
                 <td class="col-md-3">template</td>
-                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;score-view [score]&#x3D;&quot;score&quot;&gt;&lt;/score-view&gt;
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;app-score [score]&#x3D;&quot;score&quot;&gt;&lt;/app-score&gt;
 &lt;button (click)&#x3D;&quot;changeScore()&quot;&gt;change&lt;/button&gt;
 &lt;div id&#x3D;&quot;test&quot; style&#x3D;&quot;height:300px; widht: 600px;&quot;&gt;&lt;/div&gt;
 </code></pre></td>
@@ -348,9 +348,9 @@
                 { notes: [&quot;b#/3&quot;, &quot;d#/4&quot;], duration: &#x27;w&#x27; },
             ],
             [
-                { notes: [&quot;g#/4&quot;], duration: &#x27;w&#x27; },
-            ], [
-                { notes: [&quot;eb/4&quot;], duration: &#x27;w&#x27; },
+                { notes: [&quot;g#/4&quot;], duration: &#x27;w&#x27;}, 
+            ],[
+                { notes: [&quot;eb/4&quot;], duration: &#x27;w&#x27;}, 
             ]
         ]
     }</code>
@@ -372,7 +372,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component } from &quot;@angular/core&quot;;
-import { ScoreViewComponent } from &quot;../components/score/score.component&quot;;
+import { ScoreComponent } from &quot;../components/score/score.component&quot;;
 import { Score } from &#x27;../models/score.types&#x27;;
 import { CommonModule } from &quot;@angular/common&quot;;
 import { Flow } from &#x27;vexflow&#x27;;
@@ -380,14 +380,14 @@ import { Flow } from &#x27;vexflow&#x27;;
 @Component({
     selector: &quot;app-test-score&quot;,
     template: &#x60;
-        &lt;score-view [score]&#x3D;&quot;score&quot;&gt;&lt;/score-view&gt;
+        &lt;app-score [score]&#x3D;&quot;score&quot;&gt;&lt;/app-score&gt;
         &lt;button (click)&#x3D;&quot;changeScore()&quot;&gt;change&lt;/button&gt;
         &lt;div id&#x3D;&quot;test&quot; style&#x3D;&quot;height:300px; widht: 600px;&quot;&gt;&lt;/div&gt;
     &#x60;,
     styles: [],
     standalone: true,
-    imports: [ScoreViewComponent, CommonModule]
-})
+    imports: [ScoreComponent, CommonModule]
+    })
 export class ScoreComponentTest implements AfterViewInit {
     public score: Score &#x3D; {
         clef: &#x27;treble&#x27;,
@@ -399,40 +399,40 @@ export class ScoreComponentTest implements AfterViewInit {
                 { notes: [&quot;b#/3&quot;, &quot;d#/4&quot;], duration: &#x27;w&#x27; },
             ],
             [
-                { notes: [&quot;g#/4&quot;], duration: &#x27;w&#x27; },
-            ], [
-                { notes: [&quot;eb/4&quot;], duration: &#x27;w&#x27; },
+                { notes: [&quot;g#/4&quot;], duration: &#x27;w&#x27;}, 
+            ],[
+                { notes: [&quot;eb/4&quot;], duration: &#x27;w&#x27;}, 
             ]
         ]
     }
 
-    changeScore() {
+    changeScore(){
         this.score &#x3D; {
-            clef: &#x27;treble&#x27;,
-            dynamic: &#x27;mf&#x27;,
-            dynamicPosition: 2,
-            timeSignature: &quot;4/4&quot;,
-            keySignature: &quot;C&quot;,
-            measures: [
-                [
-                    { notes: [&quot;b#/4&quot;, &#x27;eb/3&#x27;], duration: &#x27;q&#x27; },
-                    { notes: [&quot;c/4&quot;], duration: &#x27;q&#x27; },
-                    { notes: [&quot;d/4&quot;], duration: &#x27;q&#x27; },
-                    { notes: [&quot;e/4&quot;], duration: &#x27;q&#x27; }
-                ], [
-                    { notes: [&quot;b/4&quot;], duration: &#x27;w&#x27; },
-                ], [
-                    { notes: [&quot;b/4&quot;], duration: &#x27;w&#x27; },
-                ]
+        clef: &#x27;treble&#x27;,
+        dynamic: &#x27;mf&#x27;,
+        dynamicPosition: 2,
+        timeSignature: &quot;4/4&quot;,
+        keySignature: &quot;C&quot;,
+        measures: [
+            [
+                { notes: [&quot;b#/4&quot;, &#x27;eb/3&#x27;], duration: &#x27;q&#x27; },
+                { notes: [&quot;c/4&quot;], duration: &#x27;q&#x27; },
+                { notes: [&quot;d/4&quot;], duration: &#x27;q&#x27; },
+                { notes: [&quot;e/4&quot;], duration: &#x27;q&#x27; }
+            ], [
+                { notes: [&quot;b/4&quot;], duration: &#x27;w&#x27; },
+            ], [
+                { notes: [&quot;b/4&quot;], duration: &#x27;w&#x27; },
             ]
-        }
+        ]
+    }
 
 
     }
 
 
     ngAfterViewInit() {
-    }
+   }
 
 }</code></pre>
     </div>
@@ -464,7 +464,7 @@ export class ScoreComponentTest implements AfterViewInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><score-view [score]="score"></score-view><button (click)="changeScore()">change</button><div id="test" style="height:300px; widht: 600px;"></div></div>'
+        var COMPONENT_TEMPLATE = '<div><app-score [score]="score"></app-score><button (click)="changeScore()">change</button><div id="test" style="height:300px; widht: 600px;"></div></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChromaticTunerComponent', 'selector': 'chromatic-tuner'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'NoteSelectorComponent', 'selector': 'note-selector'},{'name': 'PitchComponent', 'selector': 'app-pitchlite'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'RegisterPage', 'selector': 'app-register'},{'name': 'ScoreViewComponent', 'selector': 'score-view'},{'name': 'ScrollImageComponent', 'selector': 'scroll-image-component'},{'name': 'SemaphoreLightComponent', 'selector': 'semaphore-light'},{'name': 'SigninPage', 'selector': 'app-signin'},{'name': 'SignupPage', 'selector': 'app-signup'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TempoSelectorComponent', 'selector': 'tempo-selector'},{'name': 'TrumpetDiagramComponent', 'selector': 'trumpet-diagram'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'ScoreComponentTest-1'};
