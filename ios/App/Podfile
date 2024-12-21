@@ -11,12 +11,14 @@ install! 'cocoapods', :disable_input_output_paths => true
 def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
+  pod 'CapacitorCommunityKeepAwake', :path => '../../node_modules/@capacitor-community/keep-awake'
   pod 'CapacitorApp', :path => '../../node_modules/@capacitor/app'
   pod 'CapacitorDevice', :path => '../../node_modules/@capacitor/device'
   pod 'CapacitorHaptics', :path => '../../node_modules/@capacitor/haptics'
   pod 'CapacitorKeyboard', :path => '../../node_modules/@capacitor/keyboard'
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
   pod 'CapgoCapacitorMute', :path => '../../node_modules/@capgo/capacitor-mute'
+  pod 'MozartecCapacitorMicrophone', :path => '../../node_modules/@mozartec/capacitor-microphone'
 end
 
 target 'App' do

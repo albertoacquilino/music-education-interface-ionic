@@ -31,7 +31,9 @@ export class PitchService {
     pitch$ = new BehaviorSubject<number>(0);
 
 
-    constructor() { }
+    constructor(
+
+    ) { }
 
     async connect() {
         this.audioContext = new AudioContext();

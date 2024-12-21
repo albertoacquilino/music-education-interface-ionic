@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { IonicModule, ViewDidEnter, ViewDidLeave } from '@ionic/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, CommonModule, ChromaticTunerComponent],
 })
-export class PitchComponent implements OnInit {
+export class PitchComponent implements OnInit, ViewDidEnter, ViewDidLeave {
   @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
 
   refFrequencyValue$!: number;
@@ -36,18 +36,16 @@ export class PitchComponent implements OnInit {
     });
   }
 
-  startStop() {
-    if (this.detecting) {
+  ionViewDidEnter(){
+    this.detecting = true;
+    this.chromaticTuner.start();
+    // this.tabsService.setDisabled(true);
+  }
+
+  ionViewDidLeave() {
       this.detecting = false;
       this.chromaticTuner.stop();
-      this.tabsService.setDisabled(false);
-    }
-
-    else {
-      this.detecting = true;
-      this.chromaticTuner.start();
-      this.tabsService.setDisabled(true);
-    }
+      // this.tabsService.setDisabled(false);
   }
 
   goToProfile() {

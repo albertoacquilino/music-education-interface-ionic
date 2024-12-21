@@ -380,7 +380,7 @@ export class HomePage implements OnInit {
             this.collectedMeansObject = {
               ...this.collectedMeansObject,
               [Object.keys(this.collectedMeansObject).length + 1]: meansArray
-          };
+            };
           }
           break;
         case 1:
@@ -396,8 +396,8 @@ export class HomePage implements OnInit {
 
       if (this.mode == 'trumpet') {
         switch (tempo.measure) {
-          case 0: this.pitchService.disconnect(); break;
-          case 2: this.pitchService.connect();
+          // case 0: this.pitchService.disconnect(); break;
+          // case 2: this.pitchService.connect();
         }
       }
     }
@@ -406,6 +406,7 @@ export class HomePage implements OnInit {
       this.firebase.saveStop('finished', this.collectedMeansObject);
       console.log('finished');
       console.log('Collected Means', this.collectedMeansObject);
+      this.tabsService.setDisabled(false);
     }
   }
   /**
@@ -450,11 +451,11 @@ export class HomePage implements OnInit {
       this.collectedMeansObject = {
         ...this.collectedMeansObject,
         [Object.keys(this.collectedMeansObject).length + 1]: meansArray
-    };
+      };
       console.log('Collected Means', this.collectedMeansObject);
     }
     else if (this.mode == 'trumpet') {
-      this.pitchService.disconnect();
+      // this.pitchService.disconnect();
     }
     Howler.stop();
     this.firebase.saveStop('interrupted', this.collectedMeansObject);
@@ -555,7 +556,7 @@ export class HomePage implements OnInit {
     this.router.navigate(['/profile']);
   }
 
-  scaleContent(){
+  scaleContent() {
     const container = document.getElementById('wrapper');
 
     // Dimensioni di base del contenitore
@@ -580,18 +581,20 @@ export class HomePage implements OnInit {
     container!.style.transform = `scale(${scale})`;
 
     // Posizionamento centrale del contenitore
-          container!.style.position = 'absolute';
-          container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
-          container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
+    container!.style.position = 'absolute';
+    container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
+    container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
   }
 
 
   //on component load, scale the content
   ngAfterViewInit() {
     //on event resize, scale the content
-    window.addEventListener('resize', (event) => this.scaleContent());
-    window.addEventListener('load', (event) => this.scaleContent());
-    this.scaleContent();
+    window.addEventListener('resize', () => this.scaleContent());
+    window.addEventListener('load', () => this.scaleContent());
+
+    // 
+    setTimeout( () => this.scaleContent(), 250);
   }
 
 }
