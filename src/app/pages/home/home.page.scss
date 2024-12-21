@@ -74,7 +74,7 @@ ion-modal {
 
 .metronome-bullet h1 {
   margin: 0;
-  margin-bottom: .2em;
+  margin-bottom: 0.2em;
   font-size: 3em;
 }
 
@@ -110,7 +110,7 @@ ion-modal {
   }
 }
 
-@media (min-width : 665px) and (max-width: 700px) {
+@media (min-width: 665px) and (max-width: 700px) {
   .chromatic-tuner ::ng-deep .chromatic-tuner {
     display: flex;
     flex-direction: row;
@@ -124,10 +124,9 @@ ion-modal {
     color: black;
     transform: scale(1.2);
   }
-
 }
 
-@media (max-width : 664px) {
+@media (max-width: 664px) {
   .chromatic-tuner ::ng-deep .chromatic-tuner {
     position: relative;
     display: flex;
@@ -141,9 +140,7 @@ ion-modal {
     padding-left: 70%;
     color: black;
   }
-
 }
-
 
 ion-segment {
   transform: scale(0.85);
@@ -174,12 +171,11 @@ ion-segment-button {
   //gap: 0px 0px;
   //grid-auto-flow: row;
   //grid-template-areas:
-/*    "controls controls controls"
+  /*    "controls controls controls"
     "controls controls controls"
     "start-stop start-stop start-stop";*/
   //grid-area: bottom;
 }
-
 
 .start-stop {
   grid-area: start-stop;
@@ -232,25 +228,12 @@ ion-segment-button {
   color: #ce8b1c;
 }
 
-
 .up-tempo,
 .down-tempo,
 .up-low-note,
 .down-low-note,
 .up-high-note,
 .down-high-note {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tempo h1 {
-  font-size: 1.5em;
-  text-align: center;
-}
-
-.tempo {
-  flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -299,20 +282,6 @@ ion-segment-button {
   width: 100%;
 }
 
-.simulate-input {
-  background-color: #ececec;
-  border: 1px solid lightgrey;
-  border-radius: 6px;
-  padding: 10px 10px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: black;
-  max-width: 165px;
-  max-height: 165px;
-}
-
 // aleksandra add code
 
 @media screen and (orientation: landscape) {
@@ -327,8 +296,6 @@ ion-segment-button {
   .top-middle-container {
     width: 100%;
   }
-
-
 
   // .bottom {
   //   width: 50%;

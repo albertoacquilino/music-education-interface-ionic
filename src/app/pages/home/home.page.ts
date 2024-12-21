@@ -1,36 +1,41 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonicModule, PickerController } from '@ionic/angular';
 
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { Mute } from '@capgo/capacitor-mute';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { CommonModule } from '@angular/common';
-import { Mute } from '@capgo/capacitor-mute';
 import { range } from 'lodash';
 import { Observable, interval, tap } from 'rxjs';
+import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
+import { NoteSelectorComponent } from 'src/app/components/note-selector/note-selector.component';
 import { ScoreComponent } from 'src/app/components/score/score.component';
+import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
+import { TempoSelectorComponent } from 'src/app/components/tempo-selector/tempo-selector.component';
+import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
+import { AppBeat } from 'src/app/models/appbeat.types';
 import { Score } from 'src/app/models/score.types';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { SoundsService } from 'src/app/services/sounds.service';
-import { scoreFromNote } from 'src/app/utils/score.utils';
-import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN, MINREFFREQUENCY, MAXREFFREQUENCY } from '../../constants';
-import { BeatService } from '../../services/beat.service';
-import { AppBeat } from 'src/app/models/appbeat.types';
-import { RefFreqService } from 'src/app/services/ref-freq.service';
-import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
-import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
-import { TabsComponent } from '../tabs/tabs.page';
-import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
 import { PitchService } from 'src/app/services/pitch.service';
-import { Router } from '@angular/router';
+import { RefFreqService } from 'src/app/services/ref-freq.service';
+import { SoundsService } from 'src/app/services/sounds.service';
 import { TabsService } from 'src/app/services/tabs.service';
+import { scoreFromNote } from 'src/app/utils/score.utils';
+import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from '../../constants';
+import { BeatService } from '../../services/beat.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule, SemaphoreLightComponent, TrumpetDiagramComponent, TabsComponent, ChromaticTunerComponent],
+  imports: [
+    IonicModule, FontAwesomeModule,
+    ScoreComponent,
+    CommonModule, SemaphoreLightComponent,
+    TrumpetDiagramComponent, TempoSelectorComponent, NoteSelectorComponent,
+    ChromaticTunerComponent],
 })
 /**
  * HomePage class represents the home page of the music education interface.
@@ -541,6 +546,10 @@ export class HomePage implements OnInit {
 
   }
 
+  changeTempo(tempo: number) {
+    this._tempo.setTempo(tempo);
+  }
+
 
   /**
    * Determines whether the modal can be dismissed or not.
@@ -594,7 +603,7 @@ export class HomePage implements OnInit {
     window.addEventListener('load', () => this.scaleContent());
 
     // 
-    setTimeout( () => this.scaleContent(), 250);
+    setTimeout(() => this.scaleContent(), 250);
   }
 
 }
