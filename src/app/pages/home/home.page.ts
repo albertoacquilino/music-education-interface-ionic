@@ -25,6 +25,7 @@ import { scoreFromNote } from 'src/app/utils/score.utils';
 import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from '../../constants';
 import { BeatService } from '../../services/beat.service';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
