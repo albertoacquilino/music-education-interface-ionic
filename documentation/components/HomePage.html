@@ -1,0 +1,4119 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>music-education-interface-ionic documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">music-education-interface-ionic documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  HomePage</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/home/home.page.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-home</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>IonicModule</code>
+                            <code>FontAwesomeModule</code>
+                                <code><a href="../components/ScoreViewComponent.html" target="_self" >ScoreViewComponent</a></code>
+                            <code>CommonModule</code>
+                                <code><a href="../components/SemaphoreLightComponent.html" target="_self" >SemaphoreLightComponent</a></code>
+                                <code><a href="../components/TrumpetDiagramComponent.html" target="_self" >TrumpetDiagramComponent</a></code>
+                                <code><a href="../components/TempoSelectorComponent.html" target="_self" >TempoSelectorComponent</a></code>
+                                <code><a href="../components/NoteSelectorComponent.html" target="_self" >NoteSelectorComponent</a></code>
+                                <code><a href="../components/ChromaticTunerComponent.html" target="_self" >ChromaticTunerComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>home.page.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>home.page.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#audioContext" >audioContext</a>
+                            </li>
+                            <li>
+                                <a href="#audioNodes" >audioNodes</a>
+                            </li>
+                            <li>
+                                <a href="#beat$" >beat$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
+                                <a href="#chromaticTuner" >chromaticTuner</a>
+                            </li>
+                            <li>
+                                <a href="#collectedMeansObject" >collectedMeansObject</a>
+                            </li>
+                            <li>
+                                <a href="#currentAction" >currentAction</a>
+                            </li>
+                            <li>
+                                <a href="#currentNote" >currentNote</a>
+                            </li>
+                            <li>
+                                <a href="#faCircleChevronDown" >faCircleChevronDown</a>
+                            </li>
+                            <li>
+                                <a href="#faCircleChevronUp" >faCircleChevronUp</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#firebase" >firebase</a>
+                            </li>
+                            <li>
+                                <a href="#highNote" >highNote</a>
+                            </li>
+                            <li>
+                                <a href="#lowNote" >lowNote</a>
+                            </li>
+                            <li>
+                                <a href="#mode" >mode</a>
+                            </li>
+                            <li>
+                                <a href="#muteAlert" >muteAlert</a>
+                            </li>
+                            <li>
+                                <a href="#noteImages" >noteImages</a>
+                            </li>
+                            <li>
+                                <a href="#playing$" >playing$</a>
+                            </li>
+                            <li>
+                                <a href="#refFrequencyValue$" >refFrequencyValue$</a>
+                            </li>
+                            <li>
+                                <a href="#score" >score</a>
+                            </li>
+                            <li>
+                                <a href="#scoreImage" >scoreImage</a>
+                            </li>
+                            <li>
+                                <a href="#tempo$" >tempo$</a>
+                            </li>
+                            <li>
+                                <a href="#trumpetBtns" >trumpetBtns</a>
+                            </li>
+                            <li>
+                                <a href="#trumpetPosition" >trumpetPosition</a>
+                            </li>
+                            <li>
+                                <a href="#useDynamics" >useDynamics</a>
+                            </li>
+                            <li>
+                                <a href="#useFlatsAndSharps" >useFlatsAndSharps</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#canDismiss" >canDismiss</a>
+                            </li>
+                            <li>
+                                <a href="#changeHighNote" >changeHighNote</a>
+                            </li>
+                            <li>
+                                <a href="#changeLowNote" >changeLowNote</a>
+                            </li>
+                            <li>
+                                <a href="#changeTempo" >changeTempo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkMuted" >checkMuted</a>
+                            </li>
+                            <li>
+                                <a href="#getNoteImg" >getNoteImg</a>
+                            </li>
+                            <li>
+                                <a href="#goToProfile" >goToProfile</a>
+                            </li>
+                            <li>
+                                <a href="#intervalHandler" >intervalHandler</a>
+                            </li>
+                            <li>
+                                <a href="#ionViewDidEnter" >ionViewDidEnter</a>
+                            </li>
+                            <li>
+                                <a href="#ionViewWillLeave" >ionViewWillLeave</a>
+                            </li>
+                            <li>
+                                <a href="#isPlaying" >isPlaying</a>
+                            </li>
+                            <li>
+                                <a href="#nextNote" >nextNote</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openPicker" >openPicker</a>
+                            </li>
+                            <li>
+                                <a href="#retrieveAndParseFromLocalStorage" >retrieveAndParseFromLocalStorage</a>
+                            </li>
+                            <li>
+                                <a href="#saveNotes" >saveNotes</a>
+                            </li>
+                            <li>
+                                <a href="#scaleContent" >scaleContent</a>
+                            </li>
+                            <li>
+                                <a href="#start" >start</a>
+                            </li>
+                            <li>
+                                <a href="#startStop" >startStop</a>
+                            </li>
+                            <li>
+                                <a href="#stop" >stop</a>
+                            </li>
+                            <li>
+                                <a href="#switchMode" >switchMode</a>
+                            </li>
+                            <li>
+                                <a href="#switchUseDynamics" >switchUseDynamics</a>
+                            </li>
+                            <li>
+                                <a href="#switchUseFlatsAndSharps" >switchUseFlatsAndSharps</a>
+                            </li>
+                            <li>
+                                <a href="#updateScore" >updateScore</a>
+                            </li>
+                            <li>
+                                <a href="#updateTrumpetPosition" >updateTrumpetPosition</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(_picker: PickerController, _tempo: <a href="../injectables/BeatService.html" target="_self">BeatService</a>, _sounds: <a href="../injectables/SoundsService.html" target="_self">SoundsService</a>, firebase: <a href="../injectables/FirebaseService.html" target="_self">FirebaseService</a>, alertController: AlertController, refFrequencyService: <a href="../injectables/RefFreqService.html" target="_self">RefFreqService</a>, tabsService: <a href="../injectables/TabsService.html" target="_self">TabsService</a>, pitchService: <a href="../injectables/PitchService.html" target="_self">PitchService</a>, router: Router)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">src/app/pages/home/home.page.ts:159</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates an instance of HomePage.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>_picker</td>
+                                                  
+                                                        <td>
+                                                                    <code>PickerController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>The picker controller.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>_tempo</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/BeatService.html" target="_self" >BeatService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>The beat service.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>_sounds</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SoundsService.html" target="_self" >SoundsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>The sounds service.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>firebase</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/FirebaseService.html" target="_self" >FirebaseService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>The Firebase service.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>alertController</td>
+                                                  
+                                                        <td>
+                                                                    <code>AlertController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>The alert controller.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>refFrequencyService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/RefFreqService.html" target="_self" >RefFreqService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>: The Reference Frequency Service</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>tabsService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/TabsService.html" target="_self" >TabsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>pitchService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PitchService.html" target="_self" >PitchService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canDismiss"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>canDismiss</b></span>
+                        <a href="#canDismiss"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>canDismiss(data?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, role?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="561"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:561</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Determines whether the modal can be dismissed or not.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Optional data passed to the modal.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>role</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Optional role of the modal.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A Promise that resolves to a boolean indicating whether the modal can be dismissed or not.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeHighNote"></a>
+                    <span class="name">
+                        <span ><b>changeHighNote</b></span>
+                        <a href="#changeHighNote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeHighNote(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="305"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:305</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Changes the high note.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The index.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeLowNote"></a>
+                    <span class="name">
+                        <span ><b>changeLowNote</b></span>
+                        <a href="#changeLowNote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeLowNote(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="287"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:287</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Changes the low note.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The index.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeTempo"></a>
+                    <span class="name">
+                        <span ><b>changeTempo</b></span>
+                        <a href="#changeTempo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeTempo(tempo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="550"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:550</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tempo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkMuted"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>checkMuted</b></span>
+                        <a href="#checkMuted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkMuted()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="220"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:220</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Checks if the device is muted and displays an alert if it is.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getNoteImg"></a>
+                    <span class="name">
+                        <span ><b>getNoteImg</b></span>
+                        <a href="#getNoteImg"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getNoteImg(note: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="475"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:475</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns the path to the image file for the given note.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>note</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The note to get the image for.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>The path to the image file.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToProfile"></a>
+                    <span class="name">
+                        <span ><b>goToProfile</b></span>
+                        <a href="#goToProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToProfile()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="565"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:565</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="intervalHandler"></a>
+                    <span class="name">
+                        <span ><b>intervalHandler</b></span>
+                        <a href="#intervalHandler"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>intervalHandler(tempo: <a href="../undefineds/AppBeat.html" target="_self">AppBeat</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="372"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:372</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles the interval for the given tempo.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tempo</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#AppBeat" target="_self" >AppBeat</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The tempo to handle the interval for.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ionViewDidEnter"></a>
+                    <span class="name">
+                        <span ><b>ionViewDidEnter</b></span>
+                        <a href="#ionViewDidEnter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ionViewDidEnter()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="202"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:202</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ionViewWillLeave"></a>
+                    <span class="name">
+                        <span ><b>ionViewWillLeave</b></span>
+                        <a href="#ionViewWillLeave"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ionViewWillLeave()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="206"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:206</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isPlaying"></a>
+                    <span class="name">
+                        <span ><b>isPlaying</b></span>
+                        <a href="#isPlaying"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isPlaying()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="483"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:483</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns a boolean indicating whether the tempo is currently playing or not.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A boolean indicating whether the tempo is currently playing or not.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nextNote"></a>
+                    <span class="name">
+                        <span ><b>nextNote</b></span>
+                        <a href="#nextNote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>nextNote()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="357"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:357</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generates a random note within the range of lowNote and highNote.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>The generated note.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="601"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:601</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:191</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openPicker"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>openPicker</b></span>
+                        <a href="#openPicker"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openPicker(type: "frequency" | "tempo")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="487"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:487</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>type</td>
+                                            <td>
+                                                        <code>&quot;frequency&quot; | &quot;tempo&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveAndParseFromLocalStorage"></a>
+                    <span class="name">
+                        <span ><b>retrieveAndParseFromLocalStorage</b></span>
+                        <a href="#retrieveAndParseFromLocalStorage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>retrieveAndParseFromLocalStorage(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, defaultValue: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="211"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:211</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>defaultValue</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveNotes"></a>
+                    <span class="name">
+                        <span ><b>saveNotes</b></span>
+                        <a href="#saveNotes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveNotes()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="318"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:318</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scaleContent"></a>
+                    <span class="name">
+                        <span ><b>scaleContent</b></span>
+                        <a href="#scaleContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>scaleContent()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="569"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:569</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="start"></a>
+                    <span class="name">
+                        <span ><b>start</b></span>
+                        <a href="#start"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>start()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="438"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:438</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Starts the tempo and saves the current state to Firebase.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startStop"></a>
+                    <span class="name">
+                        <span ><b>startStop</b></span>
+                        <a href="#startStop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startStop()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="424"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:424</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggles between starting and stopping the tempo.
+If the tempo is currently playing, it will stop it.
+If the tempo is currently stopped, it will start it.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stop"></a>
+                    <span class="name">
+                        <span ><b>stop</b></span>
+                        <a href="#stop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>stop()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="453"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:453</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Stops the tempo and all audio playback, and saves the stop event to Firebase.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="switchMode"></a>
+                    <span class="name">
+                        <span ><b>switchMode</b></span>
+                        <a href="#switchMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>switchMode(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="245"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:245</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Switches the mode.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The event.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="switchUseDynamics"></a>
+                    <span class="name">
+                        <span ><b>switchUseDynamics</b></span>
+                        <a href="#switchUseDynamics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>switchUseDynamics(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="274"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="switchUseFlatsAndSharps"></a>
+                    <span class="name">
+                        <span ><b>switchUseFlatsAndSharps</b></span>
+                        <a href="#switchUseFlatsAndSharps"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>switchUseFlatsAndSharps(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="258"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:258</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Switches the use of flats and sharps.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The event.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateScore"></a>
+                    <span class="name">
+                        <span ><b>updateScore</b></span>
+                        <a href="#updateScore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateScore(noteNumber: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="338"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:338</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Updates the score image based on the given note.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>noteNumber</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The index of the note to use for updating the score image.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateTrumpetPosition"></a>
+                    <span class="name">
+                        <span ><b>updateTrumpetPosition</b></span>
+                        <a href="#updateTrumpetPosition"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateTrumpetPosition(note: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="327"
+                                    class="link-to-prism">src/app/pages/home/home.page.ts:327</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Updates the position of the trumpet image based on the given note.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>note</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The note to update the trumpet position to.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="audioContext"></a>
+                    <span class="name">
+                        <span ><b>audioContext</b></span>
+                        <a href="#audioContext"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new AudioContext()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/pages/home/home.page.ts:72</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The audio context used for playing sounds.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="audioNodes"></a>
+                    <span class="name">
+                        <span ><b>audioNodes</b></span>
+                        <a href="#audioNodes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/app/pages/home/home.page.ts:112</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The audio nodes.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="beat$"></a>
+                    <span class="name">
+                        <span ><b>beat$</b></span>
+                        <a href="#beat$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#AppBeat" target="_self" >Observable&lt;AppBeat&gt;</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/app/pages/home/home.page.ts:142</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The observable for the beat.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="chromaticTuner"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Private</span>
+                        <span ><b>chromaticTuner</b></span>
+                        <a href="#chromaticTuner"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/ChromaticTunerComponent.html" target="_self" >ChromaticTunerComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(ChromaticTunerComponent)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/home/home.page.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="collectedMeansObject"></a>
+                    <span class="name">
+                        <span ><b>collectedMeansObject</b></span>
+                        <a href="#collectedMeansObject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">src/app/pages/home/home.page.ts:159</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>An array to get all the notes played.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentAction"></a>
+                    <span class="name">
+                        <span ><b>currentAction</b></span>
+                        <a href="#currentAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/app/pages/home/home.page.ts:117</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The current action.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentNote"></a>
+                    <span class="name">
+                        <span ><b>currentNote</b></span>
+                        <a href="#currentNote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>INITIAL_NOTE</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/app/pages/home/home.page.ts:102</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The current note.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="faCircleChevronDown"></a>
+                    <span class="name">
+                        <span ><b>faCircleChevronDown</b></span>
+                        <a href="#faCircleChevronDown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>faCircleChevronDown</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/pages/home/home.page.ts:77</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The FontAwesome icon for a circle chevron down.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="faCircleChevronUp"></a>
+                    <span class="name">
+                        <span ><b>faCircleChevronUp</b></span>
+                        <a href="#faCircleChevronUp"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>faCircleChevronUp</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/pages/home/home.page.ts:82</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The FontAwesome icon for a circle chevron up.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="firebase"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>firebase</b></span>
+                        <a href="#firebase"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/FirebaseService.html" target="_self" >FirebaseService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="176" class="link-to-prism">src/app/pages/home/home.page.ts:176</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description">- The Firebase service.</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="highNote"></a>
+                    <span class="name">
+                        <span ><b>highNote</b></span>
+                        <a href="#highNote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>INITIAL_NOTE</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/app/pages/home/home.page.ts:92</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The high note.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lowNote"></a>
+                    <span class="name">
+                        <span ><b>lowNote</b></span>
+                        <a href="#lowNote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>INITIAL_NOTE</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/app/pages/home/home.page.ts:97</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The low note.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mode"></a>
+                    <span class="name">
+                        <span ><b>mode</b></span>
+                        <a href="#mode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;trumpet&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/pages/home/home.page.ts:51</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates the mode - tuner or trumpet</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="muteAlert"></a>
+                    <span class="name">
+                        <span ><b>muteAlert</b></span>
+                        <a href="#muteAlert"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/pages/home/home.page.ts:56</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates whether the mute alert has been triggered.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="noteImages"></a>
+                    <span class="name">
+                        <span ><b>noteImages</b></span>
+                        <a href="#noteImages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>NOTES.map(note &#x3D;&gt; &#x60;assets/images/notes_images/_${note[0]}.svg&#x60;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/app/pages/home/home.page.ts:137</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The note images.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="playing$"></a>
+                    <span class="name">
+                        <span ><b>playing$</b></span>
+                        <a href="#playing$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Observable&lt;boolean&gt;</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="147" class="link-to-prism">src/app/pages/home/home.page.ts:147</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The observable for playing.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="refFrequencyValue$"></a>
+                    <span class="name">
+                        <span ><b>refFrequencyValue$</b></span>
+                        <a href="#refFrequencyValue$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="153" class="link-to-prism">src/app/pages/home/home.page.ts:153</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The observable for the reference Frequency.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="score"></a>
+                    <span class="name">
+                        <span ><b>score</b></span>
+                        <a href="#score"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#Score" target="_self" >Score</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>scoreFromNote(NOTES[this.currentNote][0])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/app/pages/home/home.page.ts:107</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The score.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scoreImage"></a>
+                    <span class="name">
+                        <span ><b>scoreImage</b></span>
+                        <a href="#scoreImage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;assets/images/score_images/G2.svg&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="127" class="link-to-prism">src/app/pages/home/home.page.ts:127</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The score image.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tempo$"></a>
+                    <span class="name">
+                        <span ><b>tempo$</b></span>
+                        <a href="#tempo$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._tempo.tempo$</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/pages/home/home.page.ts:87</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The observable for the tempo.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trumpetBtns"></a>
+                    <span class="name">
+                        <span ><b>trumpetBtns</b></span>
+                        <a href="#trumpetBtns"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="132" class="link-to-prism">src/app/pages/home/home.page.ts:132</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The trumpet buttons. For each note, the buttons that should be highlighted.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trumpetPosition"></a>
+                    <span class="name">
+                        <span ><b>trumpetPosition</b></span>
+                        <a href="#trumpetPosition"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;assets/images/trumpet_positions/pos_1.png&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">src/app/pages/home/home.page.ts:122</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The trumpet position.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="useDynamics"></a>
+                    <span class="name">
+                        <span ><b>useDynamics</b></span>
+                        <a href="#useDynamics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/home/home.page.ts:67</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicats wheter or not dynamics are enabled.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="useFlatsAndSharps"></a>
+                    <span class="name">
+                        <span ><b>useFlatsAndSharps</b></span>
+                        <a href="#useFlatsAndSharps"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/pages/home/home.page.ts:62</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates whether to use flats and sharps.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { AlertController, IonicModule, PickerController } from &#x27;@ionic/angular&#x27;;
+
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { Mute } from &#x27;@capgo/capacitor-mute&#x27;;
+import { FontAwesomeModule } from &#x27;@fortawesome/angular-fontawesome&#x27;;
+import { faCircleChevronDown, faCircleChevronUp } from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
+import { range } from &#x27;lodash&#x27;;
+import { Observable, interval, tap } from &#x27;rxjs&#x27;;
+import { ChromaticTunerComponent } from &#x27;src/app/components/chromatic-tuner/chromatic-tuner.component&#x27;;
+import { NoteSelectorComponent } from &#x27;src/app/components/note-selector/note-selector.component&#x27;;
+import { ScoreViewComponent } from &#x27;src/app/components/score/score.component&#x27;;
+import { SemaphoreLightComponent } from &#x27;src/app/components/semaphore-light/semaphore-light.component&#x27;;
+import { TempoSelectorComponent } from &#x27;src/app/components/tempo-selector/tempo-selector.component&#x27;;
+import { TrumpetDiagramComponent } from &#x27;src/app/components/trumpet-diagram/trumpet-diagram.component&#x27;;
+import { AppBeat } from &#x27;src/app/models/appbeat.types&#x27;;
+import { Score } from &#x27;src/app/models/score.types&#x27;;
+import { FirebaseService } from &#x27;src/app/services/firebase.service&#x27;;
+import { PitchService } from &#x27;src/app/services/pitch.service&#x27;;
+import { RefFreqService } from &#x27;src/app/services/ref-freq.service&#x27;;
+import { SoundsService } from &#x27;src/app/services/sounds.service&#x27;;
+import { TabsService } from &#x27;src/app/services/tabs.service&#x27;;
+import { scoreFromNote } from &#x27;src/app/utils/score.utils&#x27;;
+import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from &#x27;../../constants&#x27;;
+import { BeatService } from &#x27;../../services/beat.service&#x27;;
+
+
+@Component({
+  selector: &#x27;app-home&#x27;,
+  templateUrl: &#x27;home.page.html&#x27;,
+  styleUrls: [&#x27;home.page.scss&#x27;],
+  standalone: true,
+  imports: [
+    IonicModule, FontAwesomeModule,
+    ScoreViewComponent,
+    CommonModule, SemaphoreLightComponent,
+    TrumpetDiagramComponent, TempoSelectorComponent, NoteSelectorComponent,
+    ChromaticTunerComponent],
+})
+/**
+ * HomePage class represents the home page of the music education interface.
+ */
+export class HomePage implements OnInit {
+  @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
+
+  /**
+  * Indicates the mode - tuner or trumpet
+  */
+
+  mode &#x3D; &#x27;trumpet&#x27;;
+
+  /**
+   * Indicates whether the mute alert has been triggered.
+   */
+  muteAlert &#x3D; false;
+
+
+  /**
+   * Indicates whether to use flats and sharps.
+   */
+  useFlatsAndSharps &#x3D; false;
+
+  /**
+   * Indicats wheter or not dynamics are enabled.
+   */
+  useDynamics &#x3D; false;
+
+  /**
+   * The audio context used for playing sounds.
+   */
+  audioContext &#x3D; new AudioContext();
+
+  /**
+   * The FontAwesome icon for a circle chevron down.
+   */
+  faCircleChevronDown &#x3D; faCircleChevronDown;
+
+  /**
+   * The FontAwesome icon for a circle chevron up.
+   */
+  faCircleChevronUp &#x3D; faCircleChevronUp;
+
+  /**
+   * The observable for the tempo.
+   */
+  tempo$ &#x3D; this._tempo.tempo$;
+
+  /**
+   * The high note.
+   */
+  highNote &#x3D; INITIAL_NOTE;
+
+  /**
+   * The low note.
+   */
+  lowNote &#x3D; INITIAL_NOTE;
+
+  /**
+   * The current note.
+   */
+  currentNote: number &#x3D; INITIAL_NOTE;
+
+  /**
+   * The score.
+   */
+  score: Score &#x3D; scoreFromNote(NOTES[this.currentNote][0]);
+
+  /**
+   * The audio nodes.
+   */
+  audioNodes &#x3D; {};
+
+  /**
+   * The current action.
+   */
+  currentAction &#x3D; &#x27;&#x27;;
+
+  /**
+   * The trumpet position.
+   */
+  trumpetPosition &#x3D; &quot;assets/images/trumpet_positions/pos_1.png&quot;
+
+  /**
+   * The score image.
+   */
+  scoreImage &#x3D; &quot;assets/images/score_images/G2.svg&quot;;
+
+  /**
+   * The trumpet buttons. For each note, the buttons that should be highlighted.
+   */
+  trumpetBtns: number[] &#x3D; [];
+
+  /**
+   * The note images.
+   */
+  noteImages &#x3D; NOTES.map(note &#x3D;&gt; &#x60;assets/images/notes_images/_${note[0]}.svg&#x60;);
+
+  /**
+   * The observable for the beat.
+   */
+  beat$!: Observable&lt;AppBeat&gt;;
+
+  /**
+   * The observable for playing.
+   */
+  playing$!: Observable&lt;boolean&gt;;
+
+  /**
+   * The observable for the reference Frequency.
+   */
+
+  refFrequencyValue$!: number;
+
+  /**
+   * An array to get all the notes played.
+   */
+
+  collectedMeansObject: { [key: string]: number[] } &#x3D; {};
+
+
+
+  /**
+   * Creates an instance of HomePage.
+   * @param _picker - The picker controller.
+   * @param _tempo - The beat service.
+   * @param _sounds - The sounds service.
+   * @param firebase - The Firebase service.
+   * @param alertController - The alert controller.
+   * @param refFrequencyService : The Reference Frequency Service
+   */
+  constructor(
+    private _picker: PickerController,
+    private _tempo: BeatService,
+    private _sounds: SoundsService,
+    public firebase: FirebaseService,
+    private alertController: AlertController,
+    private refFrequencyService: RefFreqService,
+    private tabsService: TabsService,
+    private pitchService: PitchService,
+    private router: Router,
+  ) {
+    this.beat$ &#x3D; this._tempo.tick$.pipe(
+      tap((tempo: AppBeat) &#x3D;&gt; this.intervalHandler(tempo))
+    );
+    this.playing$ &#x3D; this._tempo.playing$.asObservable();
+
+    interval(1000).subscribe(async () &#x3D;&gt; this.checkMuted());
+  }
+
+  ngOnInit(): void {
+    console.log(localStorage.getItem(&#x27;LoggedInUser&#x27;));
+    this.refFrequencyService.getRefFrequency().subscribe(value &#x3D;&gt; {
+      this.refFrequencyValue$ &#x3D; value;
+    });
+    this.useFlatsAndSharps &#x3D; this.retrieveAndParseFromLocalStorage(&#x27;useFlatsAndSharps&#x27;, false);
+    this.useDynamics &#x3D; this.retrieveAndParseFromLocalStorage(&#x27;useDynamics&#x27;, false);
+    this.lowNote &#x3D; this.retrieveAndParseFromLocalStorage(&#x27;lowNote&#x27;, INITIAL_NOTE);
+    this.highNote &#x3D; this.retrieveAndParseFromLocalStorage(&#x27;highNote&#x27;, INITIAL_NOTE);
+  }
+
+  ionViewDidEnter(): void {
+
+  }
+
+  ionViewWillLeave(): void {
+    this._tempo.stop();
+    if (this.mode &#x3D;&#x3D; &quot;tuner&quot;) this.chromaticTuner.stop();
+  }
+
+  retrieveAndParseFromLocalStorage(key: string, defaultValue: any): any {
+    const storedValue &#x3D; localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : defaultValue;
+  }
+
+  /**
+   * Checks if the device is muted and displays an alert if it is.
+   * @returns void
+   */
+  async checkMuted() {
+    try {
+      const muted &#x3D; await Mute.isMuted();
+
+      if (!muted.value || this.muteAlert) {
+        return;
+      }
+      this.muteAlert &#x3D; true;
+      const alert &#x3D; await this.alertController.create({
+        header: &#x27;Mute Alert&#x27;,
+        message: &#x27;Your device is currently muted. Please unmute to hear the trumpet sounds.&#x27;,
+        buttons: [&#x27;OK&#x27;],
+      });
+      alert.present();
+    } catch (e) {
+    }
+
+  }
+
+  /**
+   * Switches the mode.
+   * @param event - The event.
+   * @returns void
+   */
+
+  switchMode(event: any) {
+    if (this.mode &#x3D;&#x3D; &#x27;tuner&#x27;) {
+      this.chromaticTuner.stop();
+    }
+    this.mode &#x3D; event.detail.value;
+    console.log(event);
+  }
+
+  /**
+   * Switches the use of flats and sharps.
+   * @param event - The event.
+   * @returns void
+   */
+  switchUseFlatsAndSharps(event: any) {
+    this.useFlatsAndSharps &#x3D; event.detail.checked;
+    localStorage.setItem(&#x27;useFlatsAndSharps&#x27;, JSON.stringify(this.useFlatsAndSharps));
+    console.log(event);
+    if (!this.useFlatsAndSharps) {
+      // check that low and high notes are not on accidentals
+      // if they are, move them up by a half step
+      if (NOTES[this.lowNote].length &#x3D;&#x3D; 2) {
+        this.lowNote++;
+      }
+      if (NOTES[this.highNote].length &#x3D;&#x3D; 2) {
+        this.highNote++;
+      }
+    }
+  }
+
+  switchUseDynamics(event: any) {
+    this.useDynamics &#x3D; event.detail.checked;
+    localStorage.setItem(&#x27;useDynamics&#x27;, JSON.stringify(this.useDynamics));
+    if (!this.useDynamics) {
+      this.score &#x3D; scoreFromNote(NOTES[this.currentNote][0]);
+      this._sounds.setVolume(1.0);
+    }
+  }
+  /**
+   * Changes the low note.
+   * @param index - The index.
+   * @returns void
+   */
+  changeLowNote(index: number) {
+    this.lowNote &#x3D; index;
+    if (!this.useFlatsAndSharps) {
+      if (NOTES[this.lowNote].length &#x3D;&#x3D; 2) {
+        this.lowNote++;
+      }
+    }
+    if (this.lowNote &gt; this.highNote) {
+      this.highNote &#x3D; this.lowNote;
+    }
+    this.saveNotes();
+  }
+
+  /**
+   * Changes the high note.
+   * @param index - The index.
+   * @returns void
+   */
+  changeHighNote(index: number) {
+    this.highNote &#x3D; index;
+    if (!this.useFlatsAndSharps) {
+      if (NOTES[this.highNote].length &#x3D;&#x3D; 2) {
+        this.highNote--;
+      }
+    }
+
+    if (this.highNote &lt; this.lowNote) {
+      this.lowNote &#x3D; this.highNote;
+    }
+    this.saveNotes();
+  }
+  saveNotes() {
+    localStorage.setItem(&#x27;lowNote&#x27;, this.lowNote.toString());
+    localStorage.setItem(&#x27;highNote&#x27;, this.highNote.toString());
+  }
+  /**
+   * Updates the position of the trumpet image based on the given note.
+   * @param note - The note to update the trumpet position to.
+   * @returns void
+   */
+  updateTrumpetPosition(note: number) {
+    const trumpetImg &#x3D; POSITIONS[note];
+    this.trumpetBtns &#x3D; TRUMPET_BTN[note];
+    this.trumpetPosition &#x3D; &#x60;assets/images/trumpet_positions/${trumpetImg}.png&#x60;;
+  }
+
+  /**
+   * Updates the score image based on the given note.
+   * @param noteNumber - The index of the note to use for updating the score image.
+   * @returns void
+   */
+  updateScore(noteNumber: number) {
+    const _notes &#x3D; NOTES[noteNumber];
+    const scoreImage &#x3D; _notes.length &#x3D;&#x3D; 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
+    this.scoreImage &#x3D; &#x60;assets/images/score_images/${scoreImage}.svg&#x60;
+
+
+    if (this.useDynamics) {
+      const dynamic &#x3D; DYNAMICS[Math.floor(Math.random() * DYNAMICS.length)];
+      this._sounds.setVolume(dynamic.volume);
+      this.score &#x3D; scoreFromNote(scoreImage, dynamic.label);
+    } else {
+      this.score &#x3D; scoreFromNote(scoreImage);
+    }
+  }
+
+  /**
+   * Generates a random note within the range of lowNote and highNote.
+   * @returns {number} The generated note.
+   */
+  nextNote() {
+    const next &#x3D; Math.round(Math.random() * (this.highNote - this.lowNote)) + this.lowNote;
+    if (!this.useFlatsAndSharps) {
+      if (NOTES[next].length &#x3D;&#x3D; 2) {
+        return next + 1;
+      }
+    }
+    return next;
+  }
+
+  /**
+   * Handles the interval for the given tempo.
+   * @param {AppBeat} tempo - The tempo to handle the interval for.
+   * @returns void
+   */
+  intervalHandler(tempo: AppBeat) {
+    if (tempo.beat &#x3D;&#x3D; 0) {
+      if (tempo.measure &#x3D;&#x3D; 0) {
+        this.currentNote &#x3D; this.nextNote();
+        this._sounds.currentNote &#x3D; this.currentNote;
+        this.updateScore(this.currentNote);
+        this.updateTrumpetPosition(this.currentNote);
+      }
+
+      switch (tempo.measure) {
+        case 0:
+          this.currentAction &#x3D; &quot;Rest&quot;;
+          if (this.mode &#x3D;&#x3D; &#x27;tuner&#x27;) {
+            const meansArray &#x3D; this.chromaticTuner.stop();
+            this.collectedMeansObject &#x3D; {
+              ...this.collectedMeansObject,
+              [Object.keys(this.collectedMeansObject).length + 1]: meansArray
+            };
+          }
+          break;
+        case 1:
+          this.currentAction &#x3D; &quot;Listen&quot;;
+          break;
+        case 2:
+          this.currentAction &#x3D; &quot;Play&quot;;
+          if (this.mode &#x3D;&#x3D; &#x27;tuner&#x27;) {
+            this.chromaticTuner.start();
+          }
+          break;
+      }
+
+      if (this.mode &#x3D;&#x3D; &#x27;trumpet&#x27;) {
+        switch (tempo.measure) {
+          // case 0: this.pitchService.disconnect(); break;
+          // case 2: this.pitchService.connect();
+        }
+      }
+    }
+
+    if (tempo.cycle &#x3D;&#x3D;&#x3D; MAXCYCLES) {
+      this.firebase.saveStop(&#x27;finished&#x27;, this.collectedMeansObject);
+      console.log(&#x27;finished&#x27;);
+      console.log(&#x27;Collected Means&#x27;, this.collectedMeansObject);
+      this.tabsService.setDisabled(false);
+    }
+  }
+  /**
+   * Toggles between starting and stopping the tempo.
+   * If the tempo is currently playing, it will stop it.
+   * If the tempo is currently stopped, it will start it.
+   * @returns void
+   */
+  startStop() {
+    if (this._tempo.playing$.value) {
+      this.stop();
+      this.tabsService.setDisabled(false);
+    } else {
+      this.start();
+      this.tabsService.setDisabled(true);
+    }
+  }
+
+  /**
+   * Starts the tempo and saves the current state to Firebase.
+   * @returns void
+   */
+  start() {
+    this.collectedMeansObject &#x3D; {};
+    this._tempo.start();
+    this.firebase.saveStart(
+      this.tempo$.value,
+      this.lowNote,
+      this.highNote,
+      this.useFlatsAndSharps,
+      this.useDynamics);
+  }
+
+  /**
+   * Stops the tempo and all audio playback, and saves the stop event to Firebase.
+   * @returns void
+   */
+  stop() {
+    this._tempo.stop();
+    if (this.mode &#x3D;&#x3D; &#x27;tuner&#x27;) {
+      const meansArray &#x3D; this.chromaticTuner.stop();
+      this.collectedMeansObject &#x3D; {
+        ...this.collectedMeansObject,
+        [Object.keys(this.collectedMeansObject).length + 1]: meansArray
+      };
+      console.log(&#x27;Collected Means&#x27;, this.collectedMeansObject);
+    }
+    else if (this.mode &#x3D;&#x3D; &#x27;trumpet&#x27;) {
+      // this.pitchService.disconnect();
+    }
+    Howler.stop();
+    this.firebase.saveStop(&#x27;interrupted&#x27;, this.collectedMeansObject);
+  }
+
+  /**
+   * Returns the path to the image file for the given note.
+   * @param note - The note to get the image for.
+   * @returns The path to the image file.
+   */
+  getNoteImg(note: number): string {
+    return &#x60;assets/images/notes_images/_${NOTES[note][0]}.png&#x60;;
+  }
+
+  /**
+   * Returns a boolean indicating whether the tempo is currently playing or not.
+   * @returns {boolean} A boolean indicating whether the tempo is currently playing or not.
+   */
+  isPlaying(): boolean {
+    return this._tempo.playing$.value;
+  }
+
+  async openPicker(type: &#x27;frequency&#x27; | &#x27;tempo&#x27;) {
+    // Check if the picker should be opened
+    if (this.isPlaying()) {
+      return;
+    }
+
+    // create list of options to be selected
+    let options: { value: number, text: string }[];
+    let selectedIndex &#x3D; 0;
+    let selectedValue: number;
+    let rangeValues: number[] &#x3D; [];
+    let unit: string;
+
+    if (type &#x3D;&#x3D;&#x3D; &#x27;frequency&#x27;) {
+      selectedValue &#x3D; this.refFrequencyValue$;
+      rangeValues &#x3D; range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1);
+      unit &#x3D; &#x27;Hz&#x27;;
+    } else if (type &#x3D;&#x3D;&#x3D; &#x27;tempo&#x27;) {
+      selectedValue &#x3D; this.tempo$.value;
+      rangeValues &#x3D; range(MINTEMPO, MAXTEMPO + 1, 5);
+      unit &#x3D; &#x27;bpm&#x27;;
+    }
+
+    options &#x3D; rangeValues.map(value &#x3D;&gt; ({
+      value: value,
+      text: &#x60;${value} ${unit}&#x60;
+    }));
+
+    selectedIndex &#x3D; options.findIndex(option &#x3D;&gt; option.value &#x3D;&#x3D;&#x3D; selectedValue);
+
+    const picker &#x3D; await this._picker.create({
+      columns: [
+        {
+          name: type,
+          options: options,
+          selectedIndex: selectedIndex
+        },
+      ],
+
+      buttons: [
+        {
+          text: &#x27;Cancel&#x27;,
+          role: &#x27;cancel&#x27;,
+        },
+        {
+          text: &#x27;Confirm&#x27;,
+          handler: (value) &#x3D;&gt; {
+            if (type &#x3D;&#x3D;&#x3D; &#x27;frequency&#x27;) {
+              this.refFrequencyValue$ &#x3D; value[type].value;
+              this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
+              this.mode &#x3D; &#x27;trumpet&#x27;;
+            } else if (type &#x3D;&#x3D;&#x3D; &#x27;tempo&#x27;) {
+              this._tempo.setTempo(value[type].value);
+            }
+          }
+        },
+      ],
+    });
+
+    await picker.present();
+
+  }
+
+  changeTempo(tempo: number) {
+    this._tempo.setTempo(tempo);
+  }
+
+
+  /**
+   * Determines whether the modal can be dismissed or not.
+   * @param data Optional data passed to the modal.
+   * @param role Optional role of the modal.
+   * @returns A Promise that resolves to a boolean indicating whether the modal can be dismissed or not.
+   */
+  async canDismiss(data?: any, role?: string) {
+    return role !&#x3D;&#x3D; &#x27;gesture&#x27;;
+  }
+
+  goToProfile() {
+    this.router.navigate([&#x27;/profile&#x27;]);
+  }
+
+  scaleContent() {
+    const container &#x3D; document.getElementById(&#x27;wrapper&#x27;);
+
+    // Dimensioni di base del contenitore
+    const baseWidth &#x3D; container!.offsetWidth;
+    const baseHeight &#x3D; container!.offsetHeight;
+
+    // Dimensioni della finestra (viewport)
+    const viewportWidth &#x3D; window.innerWidth;
+    const viewportHeight &#x3D; window.innerHeight;
+
+    // Calcola il fattore di scala per adattare sia larghezza che altezza
+    const scaleX &#x3D; viewportWidth / baseWidth;
+    const scaleY &#x3D; viewportHeight / baseHeight * 0.8;
+
+    // Prendi il fattore di scala minimo tra larghezza e altezza
+    let scale &#x3D; Math.min(scaleX, scaleY);
+
+    //lascia un margine di almeno 20%
+    //scale &#x3D; scale * 0.95;
+
+    // Applica il fattore di scala al contenitore
+    container!.style.transform &#x3D; &#x60;scale(${scale})&#x60;;
+
+    // Posizionamento centrale del contenitore
+    container!.style.position &#x3D; &#x27;absolute&#x27;;
+    container!.style.left &#x3D; &#x60;calc(50% - ${baseWidth * scale / 2}px)&#x60;;
+    container!.style.top &#x3D; &#x60;calc(50% - ${baseHeight * scale / 2}px)&#x60;;
+  }
+
+
+  //on component load, scale the content
+  ngAfterViewInit() {
+    //on event resize, scale the content
+    window.addEventListener(&#x27;resize&#x27;, () &#x3D;&gt; this.scaleContent());
+    window.addEventListener(&#x27;load&#x27;, () &#x3D;&gt; this.scaleContent());
+
+    // 
+    setTimeout(() &#x3D;&gt; this.scaleContent(), 250);
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;ion-menu contentId&#x3D;&quot;main-content&quot; menuId&#x3D;&quot;settingsMenu&quot;&gt;
+  &lt;ion-header&gt;
+    &lt;ion-toolbar&gt;
+      &lt;ion-title&gt;Options&lt;/ion-title&gt;
+    &lt;/ion-toolbar&gt;
+  &lt;/ion-header&gt;
+  &lt;ion-content class&#x3D;&quot;ion-padding&quot;&gt;
+    &lt;ion-list&gt;
+      &lt;ion-item [disabled]&#x3D;&quot;isPlaying()&quot;&gt;
+        &lt;ion-label&gt;Mode&lt;/ion-label&gt;
+        &lt;ion-segment (ionChange)&#x3D;&quot;switchMode($event)&quot; mode&#x3D;&quot;ios&quot; value&#x3D;&quot;{{mode}}&quot;&gt;
+          &lt;ion-segment-button value&#x3D;&quot;trumpet&quot;&gt;
+            &lt;ion-label&gt;TRUMPET&lt;/ion-label&gt;
+          &lt;/ion-segment-button&gt;
+          &lt;ion-segment-button value&#x3D;&quot;tuner&quot;&gt;
+            &lt;ion-label&gt;TUNER&lt;/ion-label&gt;
+          &lt;/ion-segment-button&gt;
+        &lt;/ion-segment&gt;
+      &lt;/ion-item&gt;
+
+      &lt;ion-item button (click)&#x3D;&quot;openPicker(&#x27;frequency&#x27;)&quot; [disabled]&#x3D;&quot;isPlaying()&quot;&gt;
+        &lt;ion-label&gt;A4&lt;/ion-label&gt;
+        &lt;ion-note slot&#x3D;&quot;end&quot;&gt;{{ refFrequencyValue$ }} Hz&lt;/ion-note&gt;
+      &lt;/ion-item&gt;
+
+      &lt;ion-item&gt;
+        &lt;ion-toggle [checked]&#x3D;&quot;useFlatsAndSharps&quot; (ionChange)&#x3D;&quot;switchUseFlatsAndSharps($event)&quot;
+          [disabled]&#x3D;&quot;isPlaying()&quot;&gt;
+          &lt;b&gt;&amp;flat; &amp;amp; &amp;sharp;&lt;/b&gt;
+        &lt;/ion-toggle&gt;
+      &lt;/ion-item&gt;
+
+      &lt;ion-item&gt;
+        &lt;ion-toggle [checked]&#x3D;&quot;useDynamics&quot; (ionChange)&#x3D;&quot;switchUseDynamics($event)&quot; [disabled]&#x3D;&quot;isPlaying()&quot;&gt;
+          Dynamics
+        &lt;/ion-toggle&gt;
+      &lt;/ion-item&gt;
+    &lt;/ion-list&gt;
+
+  &lt;/ion-content&gt;
+&lt;/ion-menu&gt;
+&lt;div class&#x3D;&quot;ion-page&quot; id&#x3D;&quot;main-content&quot;&gt;
+&lt;!--  &lt;ion-header&gt;
+    &lt;ion-toolbar&gt;
+      &lt;ion-buttons slot&#x3D;&quot;start&quot;&gt;
+        &lt;ion-menu-button&gt;&lt;/ion-menu-button&gt;
+      &lt;/ion-buttons&gt;
+      &lt;ion-title&gt;
+        &amp;lt;!&amp;ndash; &lt;img src&#x3D;&quot;assets/images/mei-logo.png&quot; alt&#x3D;&quot;logo&quot; class&#x3D;&quot;logo logo-black&quot;&gt;
+        &lt;img src&#x3D;&quot;assets/images/mei-logo-white.png&quot; alt&#x3D;&quot;logo&quot; class&#x3D;&quot;logo logo-white&quot;&gt; &amp;ndash;&amp;gt;
+      &lt;/ion-title&gt;
+      &lt;ion-buttons slot&#x3D;&quot;end&quot;&gt;
+        &lt;ion-buttons (click)&#x3D;&quot;goToProfile()&quot;&gt;
+          &lt;ion-icon name&#x3D;&quot;person-circle-outline&quot; style&#x3D;&quot;font-size: 32px;&quot;&gt;&lt;/ion-icon&gt;
+        &lt;/ion-buttons&gt;
+      &lt;/ion-buttons&gt;
+    &lt;/ion-toolbar&gt;
+  &lt;/ion-header&gt;--&gt;
+
+  &lt;ion-content [fullscreen]&#x3D;&quot;true&quot;&gt;
+    &lt;div id&#x3D;&quot;container&quot;&gt;
+      &lt;div class&#x3D;&quot;wrapper&quot; id&#x3D;&quot;wrapper&quot;&gt;
+        &lt;div class&#x3D;&quot;top-middle-container&quot;&gt;
+          &lt;div class&#x3D;&quot;top&quot; [ngClass]&#x3D;&quot;!isPlaying()?&#x27;landscape-d-none&#x27;:&#x27;&#x27;&quot;&gt;
+            &lt;div class&#x3D;&quot;metronome&quot;&gt;
+              &lt;div class&#x3D;&quot;metronome-bullet&quot;&gt;
+                &lt;h1 id&#x3D;&quot;metronome-label&quot; *ngIf&#x3D;&quot;beat$|async as beat&quot;&gt;
+                  {{ beat.beat &gt;&#x3D; 0 ? (beat.beat + 1): &#x27;&amp;nbsp;&#x27;}}
+                &lt;/h1&gt;
+                &lt;semaphore-light [currentAction]&#x3D;&quot;currentAction&quot;&gt;&lt;/semaphore-light&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;ng-container *ngIf&#x3D;&quot;mode &#x3D;&#x3D;&#x3D; &#x27;tuner&#x27;&quot;&gt;
+              &lt;div class&#x3D;&quot;chromatic-tuner&quot;&gt;
+                &lt;chromatic-tuner [refFrequencyValue$]&#x3D;&quot;refFrequencyValue$&quot;&gt;&lt;/chromatic-tuner&gt;
+              &lt;/div&gt;
+            &lt;/ng-container&gt;
+            &lt;ng-container *ngIf&#x3D;&quot;mode &#x3D;&#x3D;&#x3D; &#x27;trumpet&#x27;&quot;&gt;
+              &lt;div class&#x3D;&quot;trumpet&quot;&gt;
+                &lt;trumpet-diagram [trumpetButtons]&#x3D;&quot;trumpetBtns&quot;&gt;&lt;/trumpet-diagram&gt;
+              &lt;/div&gt;
+            &lt;/ng-container&gt;
+
+          &lt;/div&gt;
+          &lt;!--MIDDLE--&gt;
+          &lt;div class&#x3D;&quot;middle&quot; *ngIf&#x3D;&quot;isPlaying()&quot;&gt;
+            &lt;div class&#x3D;&quot;score&quot;&gt;
+              &lt;score-view id&#x3D;&quot;score-image&quot; [score]&#x3D;&quot;score&quot;&gt;&lt;/score-view&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;bottom&quot; *ngIf&#x3D;&quot;!isPlaying()&quot;&gt;
+          &lt;div class&#x3D;&quot;controls controls-margin&quot;&gt;
+            &lt;!--TEMPO--&gt;
+            &lt;div class&#x3D;&quot;tempo-wrapper&quot;&gt;
+                &lt;tempo-selector *ngIf&#x3D;&quot;tempo$ | async as tempo&quot; 
+                  [tempo]&#x3D;&quot;tempo&quot; 
+                  (change)&#x3D;&quot;changeTempo($event)&quot;
+                &gt;&lt;/tempo-selector&gt;              
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;low-note-wrapper&quot;&gt;
+              &lt;note-selector 
+                label&#x3D;&quot;Low Note:&quot;
+                [note]&#x3D;&quot;lowNote&quot; 
+                [useFlatsAndSharps]&#x3D;&quot;useFlatsAndSharps&quot;
+                (change)&#x3D;&quot;changeLowNote($event)&quot;
+              &gt;&lt;/note-selector&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;high-note-wrapper&quot;&gt;
+              &lt;note-selector 
+                label&#x3D;&quot;High Note:&quot;
+                [note]&#x3D;&quot;highNote&quot;
+                [useFlatsAndSharps]&#x3D;&quot;useFlatsAndSharps&quot;
+                (change)&#x3D;&quot;changeHighNote($event)&quot;
+              &gt;&lt;/note-selector&gt;
+            &lt;/div&gt;
+
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  &lt;/ion-content&gt;
+
+  &lt;ion-footer&gt;
+    &lt;ion-button (click)&#x3D;&quot;startStop()&quot; expand&#x3D;&quot;block&quot;&gt;
+      {{isPlaying() ? &#x27;Stop&#x27;:&#x27;Start&#x27;}}
+    &lt;/ion-button&gt;
+  &lt;/ion-footer&gt;
+
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>home.page.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">ion-modal {
+  --height: auto;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 5px;
+  margin: 0px 8px 0px 8px;
+  border-radius: 6px 6px 0px 0px;
+}
+
+.middle {
+  background-color: white;
+  padding: 5px;
+  margin: auto;
+  border-radius: 0px 0px 6px 6px;
+  display: flex;
+  justify-content: center;
+}
+
+.metronome {
+  grid-area: metronome;
+}
+
+.button1 {
+  padding-left: 0%;
+}
+
+.metronome-bullet {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  // color: white;
+  color: black;
+  width: 150px;
+  // aleksandra add code
+  min-height: 250px;
+  //aleksandra done
+
+  /*animation*/
+  // background: linear-gradient(-45deg, #fead26, #9f6a11);
+  // border: 3px solid #fead26;
+  background-size: 400% 400%;
+  animation: gradient 2s ease infinite;
+}
+
+.wrapper {
+  //background-color: red;
+  width: 650px;
+  height: 460px;
+  overflow: hidden;
+  transform-origin: top left;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.metronome-bullet h1 {
+  margin: 0;
+  margin-bottom: 0.2em;
+  font-size: 3em;
+}
+
+.metronome-bullet h3 {
+  margin: 0;
+  font-size: 1em;
+  text-transform: uppercase;
+}
+
+.trumpet {
+  grid-area: trumpet;
+  display: flex;
+  padding: 1em;
+  align-items: center;
+  justify-content: center;
+  max-width: 400px;
+}
+
+@media (min-width: 700px) {
+  .chromatic-tuner ::ng-deep .chromatic-tuner {
+    padding-left: 15%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transform: scale(1.2);
+  }
+
+  .chromatic-tuner ::ng-deep .numeric-values {
+    position: absolute;
+    padding-left: 90%;
+    color: black;
+    transform: scale(1.5);
+  }
+}
+
+@media (min-width: 665px) and (max-width: 700px) {
+  .chromatic-tuner ::ng-deep .chromatic-tuner {
+    display: flex;
+    flex-direction: row;
+    transform: scale(1.04);
+  }
+
+  .chromatic-tuner ::ng-deep .numeric-values {
+    position: absolute;
+    padding-top: 60%;
+    padding-left: 100%;
+    color: black;
+    transform: scale(1.2);
+  }
+}
+
+@media (max-width: 664px) {
+  .chromatic-tuner ::ng-deep .chromatic-tuner {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    transform: scale(1);
+  }
+
+  .chromatic-tuner ::ng-deep .numeric-values {
+    position: absolute;
+    padding-top: 80%;
+    padding-left: 70%;
+    color: black;
+  }
+}
+
+ion-segment {
+  transform: scale(0.85);
+  bottom: 2px;
+  left: 17px;
+}
+
+ion-segment-button {
+  min-width: fit-content;
+}
+
+.score {
+  margin-top: -20px;
+  grid-area: score;
+  text-align: center;
+
+  app-score {
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 600px;
+  }
+}
+
+.bottom {
+  //display: grid;
+  //grid-template-columns: 1fr 1fr 1fr;
+  //grid-template-rows: 1fr 1.3fr;
+  //gap: 0px 0px;
+  //grid-auto-flow: row;
+  //grid-template-areas:
+  /*    &quot;controls controls controls&quot;
+    &quot;controls controls controls&quot;
+    &quot;start-stop start-stop start-stop&quot;;*/
+  //grid-area: bottom;
+}
+
+.start-stop {
+  grid-area: start-stop;
+}
+
+.start-btn {
+  background-color: #009dda;
+  border: 0;
+  border-radius: 4px;
+  padding: 0.6em;
+  font-size: 1.1em;
+  color: white;
+  margin-top: 1em;
+  text-transform: uppercase;
+}
+
+.start-btn:hover {
+  background-color: #008dc2;
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  //grid-area: controls;
+  background-color: gray;
+  padding: 10px;
+  margin: 6px;
+  border-radius: 6px;
+  justify-content: center;
+}
+
+.controls button {
+  /*width: 75%;*/
+  font-size: 2em;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  color: #e64c4c;
+}
+
+.controls button:hover {
+  color: #c73b3b;
+}
+
+.controls .tempo-wrapper button {
+  color: #fead26;
+}
+
+.controls .tempo-wrapper button:hover {
+  color: #ce8b1c;
+}
+
+.up-tempo,
+.down-tempo,
+.up-low-note,
+.down-low-note,
+.up-high-note,
+.down-high-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tempo-wrapper,
+.low-note-wrapper,
+.high-note-wrapper {
+  //flex: 1;
+  //border-right: 1px solid lightgray;
+  padding: 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.high-note-wrapper {
+  border-right: 0px;
+}
+
+.start-stop button {
+  width: 100%;
+}
+
+#action {
+  font-size: small;
+  text-align: center;
+}
+
+#trumpet-position {
+  width: 100%;
+}
+
+#score-image {
+  width: 100%;
+  //margin: 10px;
+  border-radius: 6px;
+}
+
+#low-note {
+  width: 100%;
+}
+
+#high-note {
+  width: 100%;
+}
+
+// aleksandra add code
+
+@media screen and (orientation: landscape) {
+  #container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transform-origin: center center;
+  }
+
+  .top-middle-container {
+    width: 100%;
+  }
+
+  // .bottom {
+  //   width: 50%;
+  // }
+
+  .controls {
+    //flex-direction: column;
+    gap: 10px;
+    margin-top: 0px;
+  }
+
+  @media screen and (max-height: 600px) {
+    .landscape-d-none {
+      display: none;
+    }
+    .controls-margin {
+      margin-top: 40px;
+    }
+    .top-middle-container {
+      display: flex;
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><ion-menu contentId="main-content" menuId="settingsMenu">  <ion-header>    <ion-toolbar>      <ion-title>Options</ion-title>    </ion-toolbar>  </ion-header>  <ion-content class="ion-padding">    <ion-list>      <ion-item [disabled]="isPlaying()">        <ion-label>Mode</ion-label>        <ion-segment (ionChange)="switchMode($event)" mode="ios" value="{{mode}}">          <ion-segment-button value="trumpet">            <ion-label>TRUMPET</ion-label>          </ion-segment-button>          <ion-segment-button value="tuner">            <ion-label>TUNER</ion-label>          </ion-segment-button>        </ion-segment>      </ion-item>      <ion-item button (click)="openPicker(\'frequency\')" [disabled]="isPlaying()">        <ion-label>A4</ion-label>        <ion-note slot="end">{{ refFrequencyValue$ }} Hz</ion-note>      </ion-item>      <ion-item>        <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)"          [disabled]="isPlaying()">          <b>&flat; &amp; &sharp;</b>        </ion-toggle>      </ion-item>      <ion-item>        <ion-toggle [checked]="useDynamics" (ionChange)="switchUseDynamics($event)" [disabled]="isPlaying()">          Dynamics        </ion-toggle>      </ion-item>    </ion-list>  </ion-content></ion-menu><div class="ion-page" id="main-content"><!--  <ion-header>    <ion-toolbar>      <ion-buttons slot="start">        <ion-menu-button></ion-menu-button>      </ion-buttons>      <ion-title>        &lt;!&ndash; <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">        <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> &ndash;&gt;      </ion-title>      <ion-buttons slot="end">        <ion-buttons (click)="goToProfile()">          <ion-icon name="person-circle-outline" style="font-size: 32px;"></ion-icon>        </ion-buttons>      </ion-buttons>    </ion-toolbar>  </ion-header>-->  <ion-content [fullscreen]="true">    <div id="container">      <div class="wrapper" id="wrapper">        <div class="top-middle-container">          <div class="top" [ngClass]="!isPlaying()?\'landscape-d-none\':\'\'">            <div class="metronome">              <div class="metronome-bullet">                <h1 id="metronome-label" *ngIf="beat$|async as beat">                  {{ beat.beat >= 0 ? (beat.beat + 1): \'&nbsp;\'}}                </h1>                <semaphore-light [currentAction]="currentAction"></semaphore-light>              </div>            </div>            <ng-container *ngIf="mode === \'tuner\'">              <div class="chromatic-tuner">                <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>              </div>            </ng-container>            <ng-container *ngIf="mode === \'trumpet\'">              <div class="trumpet">                <trumpet-diagram [trumpetButtons]="trumpetBtns"></trumpet-diagram>              </div>            </ng-container>          </div>          <!--MIDDLE-->          <div class="middle" *ngIf="isPlaying()">            <div class="score">              <score-view id="score-image" [score]="score"></score-view>            </div>          </div>        </div>        <div class="bottom" *ngIf="!isPlaying()">          <div class="controls controls-margin">            <!--TEMPO-->            <div class="tempo-wrapper">                <tempo-selector *ngIf="tempo$ | async as tempo"                   [tempo]="tempo"                   (change)="changeTempo($event)"                ></tempo-selector>                          </div>            <div class="low-note-wrapper">              <note-selector                 label="Low Note:"                [note]="lowNote"                 [useFlatsAndSharps]="useFlatsAndSharps"                (change)="changeLowNote($event)"              ></note-selector>            </div>            <div class="high-note-wrapper">              <note-selector                 label="High Note:"                [note]="highNote"                [useFlatsAndSharps]="useFlatsAndSharps"                (change)="changeHighNote($event)"              ></note-selector>            </div>          </div>        </div>      </div>    </div>  </ion-content>  <ion-footer>    <ion-button (click)="startStop()" expand="block">      {{isPlaying() ? \'Stop\':\'Start\'}}    </ion-button>  </ion-footer></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChromaticTunerComponent', 'selector': 'chromatic-tuner'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'NoteSelectorComponent', 'selector': 'note-selector'},{'name': 'PitchComponent', 'selector': 'app-pitchlite'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'RegisterPage', 'selector': 'app-register'},{'name': 'ScoreViewComponent', 'selector': 'score-view'},{'name': 'ScrollImageComponent', 'selector': 'scroll-image-component'},{'name': 'SemaphoreLightComponent', 'selector': 'semaphore-light'},{'name': 'SigninPage', 'selector': 'app-signin'},{'name': 'SignupPage', 'selector': 'app-signup'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TempoSelectorComponent', 'selector': 'tempo-selector'},{'name': 'TrumpetDiagramComponent', 'selector': 'trumpet-diagram'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'HomePage'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'HomePage.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

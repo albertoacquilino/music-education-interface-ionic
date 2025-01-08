@@ -1,0 +1,49 @@
+.chromatic-tuner {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    overflow: hidden;
+}
+
+.chromatic-tuner ::ng-deep .tuner {
+    transform: scale(1.5);
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    position: relative;
+}
+
+.chromatic-tuner ::ng-deep .numeric-values {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 70px;
+    height: 40px;
+    line-height: 40px;
+}
+
+@media (max-width: 768px) {
+    .chromatic-tuner ::ng-deep .tuner {
+        transform: scale(1.3);
+    }
+
+    .chromatic-tuner ::ng-deep .numeric-values {
+        margin-top: 70px;
+        height: 36px;
+        line-height: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chromatic-tuner ::ng-deep .tuner {
+        margin-top: -20%;
+    }
+
+    .chromatic-tuner ::ng-deep .numeric-values {
+        height: 24px;
+        line-height: 24px;
+    }
+}

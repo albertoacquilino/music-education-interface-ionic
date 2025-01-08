@@ -1,0 +1,133 @@
+<ion-content class="content">
+  <div class="flex-center">
+    <ion-card class="custom-card">
+      <ion-card-header class="card-header">
+        <ion-card-title style="color: white;">Register</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list style="background-color: black;">
+          <ion-item class="custom-item">
+            <ion-input label="User ID" labelPlacement="floating" [(ngModel)]="userId" [disabled]="true"></ion-input>
+          </ion-item>
+          <ion-item class="custom-item">
+            <ion-input type="number" label="Age" labelPlacement="floating" [(ngModel)]="age"></ion-input>
+          </ion-item>
+          <ion-item class="custom-item">
+            <ion-select label="Progression Speed" interface="action-sheet" [(ngModel)]="progressionSpeed">
+              <ion-select-option>10 min/day</ion-select-option>
+              <ion-select-option>20 min/day</ion-select-option>
+              <ion-select-option>30 min/day</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item class="custom-item" lines="none">
+            <ion-label>I am a...</ion-label>
+          </ion-item>
+          <ion-item class="custom-item">
+            <ion-radio-group (ionChange)="handleChange($event)">
+              <ion-item *ngFor="let role of roles; trackBy: trackItems" class="radio-item">
+                <ion-radio [value]="role" labelPlacement="end" justify="start">{{role.name}}</ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-item>
+          <ng-container *ngIf="role === 'Learner' || role === 'Both'">
+            <ion-item class="custom-item" lines="none">
+              <ion-label>Learning Mode</ion-label>
+            </ion-item>
+            <ion-item class="custom-item">
+              <ion-radio-group [(ngModel)]="learningMode">
+                <ion-item class="radio-item">
+                  <ion-radio value="autodidact" labelPlacement="end" justify="start">Autodidact</ion-radio>
+                </ion-item>
+                <ion-item class="radio-item">
+                  <ion-radio value="teacher-guided" labelPlacement="end" justify="start">Teacher-guided</ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </ion-item>
+          </ng-container>
+          <ion-item lines="none" class="custom-item terms-item">
+            <ion-label>
+              By checking this box, you are agreeing to our <a (click)="openTermsModal()" color="primary"
+                (click)="$event.stopPropagation()" style="text-decoration: underline; cursor: pointer;">Terms and
+                Conditions</a>
+            </ion-label>
+            <ion-checkbox [(ngModel)]="termsAccepted" style="margin-left: 5px;"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+        <ion-button expand="full" (click)="register()" [disabled]="!isFormValid"
+          class="custom-button">SUBMIT</ion-button>
+      </ion-card-content>
+    </ion-card>
+    <ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="closeTermsModal()"
+      style="--background: white; --color: black;">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title><strong>Terms and Conditions</strong></ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="closeTermsModal()">Close</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content style="padding: 16px; --background: white; --color: black;">
+          <div style="color: black; padding: 10px; line-height: 1.6;">
+            <strong>Privacy Policy</strong><br>
+            The HarmonyHub web application is committed to protecting your privacy. This Privacy Policy outlines how we
+            handle your information and what measures we take to ensure your data is secure.<br><br>
+            <strong>Information Collection and Use</strong><br>
+            The HarmonyHub web application is designed to help users learn to play a musical instrument through
+            interactive feedback. To provide this service, the application may collect the following types of
+            information:<br>
+            <ul style="margin-left: 10px;">
+              <li><strong>Audio Recording:</strong></li> The application records audio to analyze the correctness of the
+              notes played (e.g., pitch). This data is processed in real-time to provide immediate feedback on your
+              performance. The audio recordings are not stored on our servers.<br>
+              <li><strong>User Data:</strong></li> If you log in using your email and accept the terms and conditions,
+              the
+              application will save data related to your performance, such as the correctness of the notes played and
+              the
+              number of errors. This data is linked to your email address and is stored on a Firebase database. It may
+              be
+              used for analysis and to track your progress over time.
+            </ul>
+            <strong>User Consent</strong><br>
+            By logging in with your email and using the HarmonyHub web application, you explicitly consent to the
+            collection,
+            storage, and processing of your data as outlined in this Privacy Policy.<br><br>
+            <strong>Third-Party Services</strong><br>
+            We use Firebase to store and manage your data. Firebase is a service provided by Google, and your data may
+            be
+            subject to Google's data security and privacy practices. You can review Firebase’s Privacy Policy at the
+            following
+            link: <a href="https://firebase.google.com/support/privacy" target="_blank"
+              style="color: blue; text-decoration: underline;">Firebase Privacy Policy</a>.<br><br>
+            <strong>Data Security</strong><br>
+            We take appropriate security measures to protect your personal data from unauthorized access, disclosure,
+            alteration, or destruction. While we strive to use commercially acceptable means to protect your data, no
+            method
+            of transmission over the Internet or electronic storage is completely secure, and we cannot guarantee
+            absolute
+            security.<br><br>
+            <strong>User Rights</strong><br>
+            You have the right to access, correct, or delete the personal data we have collected about you. If you wish
+            to
+            exercise any of these rights, please contact us at albertoacquilino_at_gmail.com.<br><br>
+            <strong>Data Retention</strong><br>
+            We retain your performance data linked to your email for as long as your account is active or as needed to
+            provide
+            you with our services. If you request deletion of your data, we will remove it from our systems within a
+            reasonable
+            timeframe.<br><br>
+            <strong>Changes to This Privacy Policy</strong><br>
+            This Privacy Policy may be updated from time to time to reflect changes in our practices or for other
+            operational,
+            legal, or regulatory reasons. By continuing to use the application, you agree to the updated policy.<br><br>
+            <strong>Contact Us</strong><br>
+            If you have any questions or concerns about this Privacy Policy, please contact us at
+            albertoacquilino_at_gmail.com.
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+  </div>
+</ion-content>

@@ -1,6 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+/**
+ * SemaphoreLightComponent is responsible for displaying a semaphore light interface.
+ * 
+ * @example
+ * <semaphore-light [currentAction]="currentAction"></semaphore-light>
+ */
 @Component({
   selector: 'semaphore-light',
   templateUrl: './semaphore-light.component.html',
@@ -13,7 +19,7 @@ export class SemaphoreLightComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   isActive(action: string): boolean {
     return this.currentAction === action;

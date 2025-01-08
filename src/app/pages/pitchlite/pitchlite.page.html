@@ -1,0 +1,21 @@
+<!--<ion-header>
+  <ion-toolbar>
+    <ion-title>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-buttons (click)="goToProfile()">
+        <ion-icon name="person-circle-outline" style="font-size: 32px;"></ion-icon>
+      </ion-buttons>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>-->
+<ion-content [fullscreen]="true" scrollY="false">
+  <div class="chromatic-tuner">
+    <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>
+  </div>
+</ion-content>
+<!-- <ion-footer>
+  <ion-button (click)="startStop()" expand="block">
+    {{detecting ? 'Stop':'Start'}}
+  </ion-button>
+</ion-footer> -->

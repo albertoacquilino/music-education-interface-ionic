@@ -2,12 +2,6 @@ ion-modal {
   --height: auto;
 }
 
-// ion-content{
-//   --ion-background-color:white;
-//   --ion-text-color: black;
-// }
-
-
 .top {
   display: flex;
   align-items: center;
@@ -19,14 +13,20 @@ ion-modal {
 }
 
 .middle {
-    background-color: white;
-    padding: 5px;
-    margin: 0px 8px 16px 8px;
-    border-radius: 0px 0px 6px 6px;
+  background-color: white;
+  padding: 5px;
+  margin: auto;
+  border-radius: 0px 0px 6px 6px;
+  display: flex;
+  justify-content: center;
 }
 
 .metronome {
   grid-area: metronome;
+}
+
+.button1 {
+  padding-left: 0%;
 }
 
 .metronome-bullet {
@@ -50,13 +50,23 @@ ion-modal {
   animation: gradient 2s ease infinite;
 }
 
+.wrapper {
+  //background-color: red;
+  width: 650px;
+  height: 460px;
+  overflow: hidden;
+  transform-origin: top left;
+}
+
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -64,7 +74,7 @@ ion-modal {
 
 .metronome-bullet h1 {
   margin: 0;
-  margin-bottom: .2em;
+  margin-bottom: 0.2em;
   font-size: 3em;
 }
 
@@ -83,10 +93,70 @@ ion-modal {
   max-width: 400px;
 }
 
+@media (min-width: 700px) {
+  .chromatic-tuner ::ng-deep .chromatic-tuner {
+    padding-left: 15%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transform: scale(1.2);
+  }
+
+  .chromatic-tuner ::ng-deep .numeric-values {
+    position: absolute;
+    padding-left: 90%;
+    color: black;
+    transform: scale(1.5);
+  }
+}
+
+@media (min-width: 665px) and (max-width: 700px) {
+  .chromatic-tuner ::ng-deep .chromatic-tuner {
+    display: flex;
+    flex-direction: row;
+    transform: scale(1.04);
+  }
+
+  .chromatic-tuner ::ng-deep .numeric-values {
+    position: absolute;
+    padding-top: 60%;
+    padding-left: 100%;
+    color: black;
+    transform: scale(1.2);
+  }
+}
+
+@media (max-width: 664px) {
+  .chromatic-tuner ::ng-deep .chromatic-tuner {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    transform: scale(1);
+  }
+
+  .chromatic-tuner ::ng-deep .numeric-values {
+    position: absolute;
+    padding-top: 80%;
+    padding-left: 70%;
+    color: black;
+  }
+}
+
+ion-segment {
+  transform: scale(0.85);
+  bottom: 2px;
+  left: 17px;
+}
+
+ion-segment-button {
+  min-width: fit-content;
+}
 
 .score {
+  margin-top: -20px;
   grid-area: score;
   text-align: center;
+
   app-score {
     min-width: 100px;
     min-height: 100px;
@@ -95,18 +165,17 @@ ion-modal {
 }
 
 .bottom {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1.3fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
+  //display: grid;
+  //grid-template-columns: 1fr 1fr 1fr;
+  //grid-template-rows: 1fr 1.3fr;
+  //gap: 0px 0px;
+  //grid-auto-flow: row;
+  //grid-template-areas:
+  /*    "controls controls controls"
     "controls controls controls"
-    "controls controls controls"
-    "start-stop start-stop start-stop";
-  grid-area: bottom;
+    "start-stop start-stop start-stop";*/
+  //grid-area: bottom;
 }
-
 
 .start-stop {
   grid-area: start-stop;
@@ -122,18 +191,20 @@ ion-modal {
   margin-top: 1em;
   text-transform: uppercase;
 }
+
 .start-btn:hover {
   background-color: #008dc2;
   cursor: pointer;
 }
 
 .controls {
-    display: flex;
-    grid-area: controls;
-    background-color: gray;
-    padding: 10px;
-    margin: 6px;
-    border-radius: 6px;
+  display: flex;
+  //grid-area: controls;
+  background-color: gray;
+  padding: 10px;
+  margin: 6px;
+  border-radius: 6px;
+  justify-content: center;
 }
 
 .controls button {
@@ -152,31 +223,26 @@ ion-modal {
 .controls .tempo-wrapper button {
   color: #fead26;
 }
+
 .controls .tempo-wrapper button:hover {
   color: #ce8b1c;
 }
 
-
-.up-tempo, .down-tempo, .up-low-note, .down-low-note, .up-high-note, .down-high-note {
+.up-tempo,
+.down-tempo,
+.up-low-note,
+.down-low-note,
+.up-high-note,
+.down-high-note {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.tempo h1 {
-  font-size: 1.5em;
-  text-align: center;
-}
-
-.tempo {
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tempo-wrapper, .low-note-wrapper, .high-note-wrapper {
-  flex: 1;
+.tempo-wrapper,
+.low-note-wrapper,
+.high-note-wrapper {
+  //flex: 1;
   //border-right: 1px solid lightgray;
   padding: 0 8px;
   display: flex;
@@ -197,34 +263,23 @@ ion-modal {
   font-size: small;
   text-align: center;
 }
+
 #trumpet-position {
   width: 100%;
 }
 
 #score-image {
   width: 100%;
-  margin: 10px;
+  //margin: 10px;
   border-radius: 6px;
 }
+
 #low-note {
   width: 100%;
 }
+
 #high-note {
   width: 100%;
-}
-
-.simulate-input {
-  background-color: #ececec;
-  border: 1px solid lightgrey;
-  border-radius: 6px;
-  padding: 10px 10px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: black;
-  max-width: 165px;
-  max-height: 165px;
 }
 
 // aleksandra add code
@@ -232,9 +287,10 @@ ion-modal {
 @media screen and (orientation: landscape) {
   #container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    transform-origin: center center;
   }
 
   .top-middle-container {
@@ -246,9 +302,20 @@ ion-modal {
   // }
 
   .controls {
-    flex-direction: column;
+    //flex-direction: column;
     gap: 10px;
     margin-top: 0px;
-}
-}
+  }
 
+  @media screen and (max-height: 600px) {
+    .landscape-d-none {
+      display: none;
+    }
+    .controls-margin {
+      margin-top: 40px;
+    }
+    .top-middle-container {
+      display: flex;
+    }
+  }
+}

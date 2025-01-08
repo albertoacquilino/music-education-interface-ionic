@@ -16,14 +16,20 @@ export type Activity = {
   lowNote: number;
   highNote: number;
   useFlatsAndSharps: boolean;
-  hideTrumpet: boolean;
   useDynamics: boolean;
   startTime: Date;
   endTime?: Date;
   device: DeviceInfo;
   action?: 'finished' | 'interrupted';
   duration?: number;
-  group?: string | null;
-  user?: string | null;
+  collectedMeansObject?: { [key: string]: number[] }
+};
 
+export type User = {
+  email: string;
+  userId: string;
+  age: number;
+  progressionSpeed: string;
+  role: string;
+  learningMode?: string;
 };

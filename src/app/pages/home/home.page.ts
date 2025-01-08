@@ -1,25 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonicModule, PickerController } from '@ionic/angular';
 
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { Mute } from '@capgo/capacitor-mute';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-
-import { CommonModule } from '@angular/common';
-import { Mute } from '@capgo/capacitor-mute';
 import { range } from 'lodash';
 import { Observable, interval, tap } from 'rxjs';
-import { ScoreComponent } from 'src/app/components/score/score.component';
+import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
+import { NoteSelectorComponent } from 'src/app/components/note-selector/note-selector.component';
+import { ScoreViewComponent } from 'src/app/components/score/score.component';
+import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
+import { TempoSelectorComponent } from 'src/app/components/tempo-selector/tempo-selector.component';
+import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
+import { AppBeat } from 'src/app/models/appbeat.types';
 import { Score } from 'src/app/models/score.types';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { RegistrationService } from 'src/app/services/registration.service';
+import { PitchService } from 'src/app/services/pitch.service';
+import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SoundsService } from 'src/app/services/sounds.service';
+import { TabsService } from 'src/app/services/tabs.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
-import { ScrollImageComponent } from '../../components/scroll-image-selector/scroll-image-selector.component';
-import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXTEMPO, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from '../../constants';
+import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from '../../constants';
 import { BeatService } from '../../services/beat.service';
-import { AppBeat } from 'src/app/models/appbeat.types';
-import { SemaphoreLightComponent } from 'src/app/components/semaphore-light/semaphore-light.component';
-import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trumpet-diagram.component';
 
 
 @Component({
@@ -27,22 +31,30 @@ import { TrumpetDiagramComponent } from 'src/app/components/trumpet-diagram/trum
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, ScoreComponent, CommonModule, SemaphoreLightComponent, TrumpetDiagramComponent],
+  imports: [
+    IonicModule, FontAwesomeModule,
+    ScoreViewComponent,
+    CommonModule, SemaphoreLightComponent,
+    TrumpetDiagramComponent, TempoSelectorComponent, NoteSelectorComponent,
+    ChromaticTunerComponent],
 })
 /**
  * HomePage class represents the home page of the music education interface.
  */
-export class HomePage {
+export class HomePage implements OnInit {
+  @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
+
+  /**
+  * Indicates the mode - tuner or trumpet
+  */
+
+  mode = 'trumpet';
 
   /**
    * Indicates whether the mute alert has been triggered.
    */
   muteAlert = false;
 
-  /**
-   * Indicates whether to show trumpet hints.
-   */
-  hideTrumpet = false;
 
   /**
    * Indicates whether to use flats and sharps.
@@ -135,22 +147,38 @@ export class HomePage {
   playing$!: Observable<boolean>;
 
   /**
+   * The observable for the reference Frequency.
+   */
+
+  refFrequencyValue$!: number;
+
+  /**
+   * An array to get all the notes played.
+   */
+
+  collectedMeansObject: { [key: string]: number[] } = {};
+
+
+
+  /**
    * Creates an instance of HomePage.
    * @param _picker - The picker controller.
    * @param _tempo - The beat service.
    * @param _sounds - The sounds service.
    * @param firebase - The Firebase service.
-   * @param _registration - The registration service.
    * @param alertController - The alert controller.
+   * @param refFrequencyService : The Reference Frequency Service
    */
   constructor(
     private _picker: PickerController,
     private _tempo: BeatService,
     private _sounds: SoundsService,
     public firebase: FirebaseService,
-    private _registration: RegistrationService,
-    private alertController: AlertController
-    //private _pitch: PitchService
+    private alertController: AlertController,
+    private refFrequencyService: RefFreqService,
+    private tabsService: TabsService,
+    private pitchService: PitchService,
+    private router: Router,
   ) {
     this.beat$ = this._tempo.tick$.pipe(
       tap((tempo: AppBeat) => this.intervalHandler(tempo))
@@ -158,6 +186,31 @@ export class HomePage {
     this.playing$ = this._tempo.playing$.asObservable();
 
     interval(1000).subscribe(async () => this.checkMuted());
+  }
+
+  ngOnInit(): void {
+    console.log(localStorage.getItem('LoggedInUser'));
+    this.refFrequencyService.getRefFrequency().subscribe(value => {
+      this.refFrequencyValue$ = value;
+    });
+    this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
+    this.useDynamics = this.retrieveAndParseFromLocalStorage('useDynamics', false);
+    this.lowNote = this.retrieveAndParseFromLocalStorage('lowNote', INITIAL_NOTE);
+    this.highNote = this.retrieveAndParseFromLocalStorage('highNote', INITIAL_NOTE);
+  }
+
+  ionViewDidEnter(): void {
+
+  }
+
+  ionViewWillLeave(): void {
+    this._tempo.stop();
+    if (this.mode == "tuner") this.chromaticTuner.stop();
+  }
+
+  retrieveAndParseFromLocalStorage(key: string, defaultValue: any): any {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : defaultValue;
   }
 
   /**
@@ -184,13 +237,17 @@ export class HomePage {
   }
 
   /**
-   * Switches the trumpet hints.
+   * Switches the mode.
    * @param event - The event.
    * @returns void
    */
-  switchTrumpetHints(event: any) {
+
+  switchMode(event: any) {
+    if (this.mode == 'tuner') {
+      this.chromaticTuner.stop();
+    }
+    this.mode = event.detail.value;
     console.log(event);
-    this.hideTrumpet = event.detail.checked;
   }
 
   /**
@@ -199,8 +256,9 @@ export class HomePage {
    * @returns void
    */
   switchUseFlatsAndSharps(event: any) {
-    console.log(event);
     this.useFlatsAndSharps = event.detail.checked;
+    localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
+    console.log(event);
     if (!this.useFlatsAndSharps) {
       // check that low and high notes are not on accidentals
       // if they are, move them up by a half step
@@ -215,12 +273,12 @@ export class HomePage {
 
   switchUseDynamics(event: any) {
     this.useDynamics = event.detail.checked;
+    localStorage.setItem('useDynamics', JSON.stringify(this.useDynamics));
     if (!this.useDynamics) {
       this.score = scoreFromNote(NOTES[this.currentNote][0]);
       this._sounds.setVolume(1.0);
     }
   }
-
   /**
    * Changes the low note.
    * @param index - The index.
@@ -236,6 +294,7 @@ export class HomePage {
     if (this.lowNote > this.highNote) {
       this.highNote = this.lowNote;
     }
+    this.saveNotes();
   }
 
   /**
@@ -254,8 +313,12 @@ export class HomePage {
     if (this.highNote < this.lowNote) {
       this.lowNote = this.highNote;
     }
+    this.saveNotes();
   }
-
+  saveNotes() {
+    localStorage.setItem('lowNote', this.lowNote.toString());
+    localStorage.setItem('highNote', this.highNote.toString());
+  }
   /**
    * Updates the position of the trumpet image based on the given note.
    * @param note - The note to update the trumpet position to.
@@ -316,18 +379,42 @@ export class HomePage {
       }
 
       switch (tempo.measure) {
-        case 0: this.currentAction = "Rest"; break;
-        case 1: this.currentAction = "Listen"; break;
-        case 2: this.currentAction = "Play"; break;
+        case 0:
+          this.currentAction = "Rest";
+          if (this.mode == 'tuner') {
+            const meansArray = this.chromaticTuner.stop();
+            this.collectedMeansObject = {
+              ...this.collectedMeansObject,
+              [Object.keys(this.collectedMeansObject).length + 1]: meansArray
+            };
+          }
+          break;
+        case 1:
+          this.currentAction = "Listen";
+          break;
+        case 2:
+          this.currentAction = "Play";
+          if (this.mode == 'tuner') {
+            this.chromaticTuner.start();
+          }
+          break;
+      }
+
+      if (this.mode == 'trumpet') {
+        switch (tempo.measure) {
+          // case 0: this.pitchService.disconnect(); break;
+          // case 2: this.pitchService.connect();
+        }
       }
     }
+
     if (tempo.cycle === MAXCYCLES) {
-      this.firebase.saveStop('finished');
+      this.firebase.saveStop('finished', this.collectedMeansObject);
       console.log('finished');
+      console.log('Collected Means', this.collectedMeansObject);
+      this.tabsService.setDisabled(false);
     }
-
   }
-
   /**
    * Toggles between starting and stopping the tempo.
    * If the tempo is currently playing, it will stop it.
@@ -337,8 +424,10 @@ export class HomePage {
   startStop() {
     if (this._tempo.playing$.value) {
       this.stop();
+      this.tabsService.setDisabled(false);
     } else {
       this.start();
+      this.tabsService.setDisabled(true);
     }
   }
 
@@ -347,13 +436,13 @@ export class HomePage {
    * @returns void
    */
   start() {
+    this.collectedMeansObject = {};
     this._tempo.start();
     this.firebase.saveStart(
       this.tempo$.value,
       this.lowNote,
       this.highNote,
       this.useFlatsAndSharps,
-      this.hideTrumpet,
       this.useDynamics);
   }
 
@@ -363,11 +452,20 @@ export class HomePage {
    */
   stop() {
     this._tempo.stop();
-    // stop everything playing in the audio context
+    if (this.mode == 'tuner') {
+      const meansArray = this.chromaticTuner.stop();
+      this.collectedMeansObject = {
+        ...this.collectedMeansObject,
+        [Object.keys(this.collectedMeansObject).length + 1]: meansArray
+      };
+      console.log('Collected Means', this.collectedMeansObject);
+    }
+    else if (this.mode == 'trumpet') {
+      // this.pitchService.disconnect();
+    }
     Howler.stop();
-    this.firebase.saveStop('interrupted');
+    this.firebase.saveStop('interrupted', this.collectedMeansObject);
   }
-
 
   /**
    * Returns the path to the image file for the given note.
@@ -386,34 +484,40 @@ export class HomePage {
     return this._tempo.playing$.value;
   }
 
-
-  /**
-   * Opens a tempo picker dialog for selecting a new tempo.
-   * If the tempo is currently playing, the dialog will not be opened.
-   */
-  async openTempoPicker() {
-    if (this._tempo.playing$.value) {
+  async openPicker(type: 'frequency' | 'tempo') {
+    // Check if the picker should be opened
+    if (this.isPlaying()) {
       return;
     }
 
     // create list of options to be selected
     let options: { value: number, text: string }[];
-
     let selectedIndex = 0;
     let selectedValue: number;
+    let rangeValues: number[] = [];
+    let unit: string;
 
+    if (type === 'frequency') {
+      selectedValue = this.refFrequencyValue$;
+      rangeValues = range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1);
+      unit = 'Hz';
+    } else if (type === 'tempo') {
+      selectedValue = this.tempo$.value;
+      rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
+      unit = 'bpm';
+    }
 
-    selectedValue = this.tempo$.value;
-    options = range(MINTEMPO, MAXTEMPO + 1, 5).map(v => ({
-      value: v,
-      text: `${v} bpm`
+    options = rangeValues.map(value => ({
+      value: value,
+      text: `${value} ${unit}`
     }));
 
-    selectedIndex = options.findIndex(v => v.value == selectedValue);
+    selectedIndex = options.findIndex(option => option.value === selectedValue);
+
     const picker = await this._picker.create({
       columns: [
         {
-          name: 'tempo',
+          name: type,
           options: options,
           selectedIndex: selectedIndex
         },
@@ -427,7 +531,13 @@ export class HomePage {
         {
           text: 'Confirm',
           handler: (value) => {
-            this._tempo.setTempo(value['tempo'].value);
+            if (type === 'frequency') {
+              this.refFrequencyValue$ = value[type].value;
+              this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
+              this.mode = 'trumpet';
+            } else if (type === 'tempo') {
+              this._tempo.setTempo(value[type].value);
+            }
           }
         },
       ],
@@ -436,6 +546,11 @@ export class HomePage {
     await picker.present();
 
   }
+
+  changeTempo(tempo: number) {
+    this._tempo.setTempo(tempo);
+  }
+
 
   /**
    * Determines whether the modal can be dismissed or not.
@@ -447,13 +562,49 @@ export class HomePage {
     return role !== 'gesture';
   }
 
-  /**
-   * Opens the registration modal asynchronously.
-   * @returns A promise that resolves when the modal is opened.
-   */
-  async openRegistrationModal() {
-    await this._registration.openModal();
+  goToProfile() {
+    this.router.navigate(['/profile']);
   }
 
+  scaleContent() {
+    const container = document.getElementById('wrapper');
+
+    // Dimensioni di base del contenitore
+    const baseWidth = container!.offsetWidth;
+    const baseHeight = container!.offsetHeight;
+
+    // Dimensioni della finestra (viewport)
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calcola il fattore di scala per adattare sia larghezza che altezza
+    const scaleX = viewportWidth / baseWidth;
+    const scaleY = viewportHeight / baseHeight * 0.8;
+
+    // Prendi il fattore di scala minimo tra larghezza e altezza
+    let scale = Math.min(scaleX, scaleY);
+
+    //lascia un margine di almeno 20%
+    //scale = scale * 0.95;
+
+    // Applica il fattore di scala al contenitore
+    container!.style.transform = `scale(${scale})`;
+
+    // Posizionamento centrale del contenitore
+    container!.style.position = 'absolute';
+    container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
+    container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
+  }
+
+
+  //on component load, scale the content
+  ngAfterViewInit() {
+    //on event resize, scale the content
+    window.addEventListener('resize', () => this.scaleContent());
+    window.addEventListener('load', () => this.scaleContent());
+
+    // 
+    setTimeout(() => this.scaleContent(), 250);
+  }
 
 }

@@ -10,15 +10,21 @@ import { generateNotes } from 'src/app/utils/score.utils';
 import { RenderContext, Renderer } from 'vexflow';
 
 
-
+/**
+ * ScoreComponent is responsible for displaying a score interface.
+ * It allows users to view a musical score and updates the score when changes are made.
+ * 
+ * @example
+ * <score-view [score]="score"></score-view>
+ */
 @Component({
-  selector: 'app-score',
+  selector: 'score-view',
   template: `<div id="score" style="background-color: white;"></div>`,
-  styleUrls: ['./score.component.scss'],
+  styleUrls: [],
   standalone: true,
   imports: [CommonModule]
 })
-export class ScoreComponent implements AfterViewInit {
+export class ScoreViewComponent implements AfterViewInit {
   private size$ = new BehaviorSubject<{ width: number, height: number }>({ width: 0, height: 0 });
 
   private score$ = new BehaviorSubject<Score | null>(null);
@@ -69,7 +75,7 @@ export class ScoreComponent implements AfterViewInit {
     }
     this._renderer = new Flow.Renderer(div as HTMLDivElement, Flow.Renderer.Backends.SVG);
     this._context = this._renderer.getContext();
-    
+
 
     combineLatest([this.size$, this.score$]).pipe(
       filter(([_, score]) => score !== null),
@@ -130,7 +136,7 @@ export class ScoreComponent implements AfterViewInit {
             shift_x: (-measureWidth / 2) + 10,
           });
 
-          
+
 
 
         }

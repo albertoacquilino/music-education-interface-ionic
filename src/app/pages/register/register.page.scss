@@ -1,0 +1,122 @@
+.content {
+  --background: linear-gradient(135deg, #1c1c1c, #484848);
+
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .custom-card {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 16px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    background-color: #2e2e2e;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-header {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-bottom: 16px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  ion-card-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .custom-item {
+    --background: black;
+    --border-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    margin-bottom: 16px;
+    background-color: black;
+    --ion-background-color: black;
+    --ion-item-background: black;
+  }
+
+  .custom-item:hover,
+  .custom-item:hover ion-select,
+  .custom-item:hover ion-select-option {
+    --background: black;
+    color: #ffffff;
+    background-color: black;
+    --ion-background-color: black;
+    --ion-item-background: black;
+  }
+
+  .radio-item {
+    --color: #ddd;
+    transition: transform 0.2s ease;
+  }
+
+  ion-radio::part(container) {
+    --color-checked: #0054e9;
+    --color: #777;
+    --border-radius: 50%;
+    transition: transform 0.2s ease;
+  }
+
+  .radio-item:active {
+    transform: scale(1.05);
+  }
+
+  .terms-item {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    --background: black;
+    --border-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    background-color: black;
+    --ion-background-color: black;
+    --ion-item-background: black;
+  }
+
+  .terms-item:hover,
+  .terms-item:hover ion-label {
+    --background: black;
+    color: #ffffff;
+    background-color: black;
+    --ion-background-color: black;
+    --ion-item-background: black;
+  }
+
+  .terms-item ion-checkbox {
+    --color: white;
+    --background: black;
+    --border-color: white;
+  }
+
+  .custom-button {
+    --background: #0054e9;
+    --background-activated: #003bb5;
+    --border-radius: 10px;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+
+
+
+  @media (max-width: 600px) {
+    .custom-card {
+      max-width: 90%;
+      padding: 16px;
+    }
+
+    .card-header {
+      font-size: 1.2rem;
+    }
+  }
+}

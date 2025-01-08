@@ -4,7 +4,8 @@ import "firebase/firestore";
 import { Device } from '@capacitor/device';
 import { DocumentReference, addDoc, collection, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 import { Injectable } from "@angular/core";
-import { Activity, StudyGroup } from "../models/firebase.types";
+import { User, Activity } from "../models/firebase.types";
+import { query, where } from "@angular/fire/firestore";
 
 
 const firebaseConfig = {
@@ -29,8 +30,6 @@ const db = getFirestore(app);
 })
 export class FirebaseService {
   currentActivity!: Activity;
-  group = localStorage.getItem('group') || null;
-  user = localStorage.getItem('user') || null;
 
   constructor() {
     this.uploadSavedActivities();
@@ -50,7 +49,6 @@ export class FirebaseService {
     lowNote: number,
     highNote: number,
     useFlatsAndSharps: boolean,
-    hideTrumpet: boolean,
     useDynamics: boolean
   ) {
     const startTime = new Date();
@@ -63,7 +61,6 @@ export class FirebaseService {
       lowNote,
       highNote,
       useFlatsAndSharps,
-      hideTrumpet,
       startTime,
       useDynamics,
       device: {
@@ -72,8 +69,6 @@ export class FirebaseService {
         platform: deviceInfo.platform,
         osVersion: deviceInfo.osVersion,
       },
-      group: this.group,
-      user: this.user,
     };
 
     this.saveToLocalStorage(this.currentActivity);
@@ -83,13 +78,14 @@ export class FirebaseService {
    * Saves the current activity and uploads it to Firebase.
    * @param action - The action performed on the activity ('finished' or 'interrupted').
    */
-  public async saveStop(action: 'finished' | 'interrupted') {
+  public async saveStop(action: 'finished' | 'interrupted', collectedMeansObject: { [key: string]: number[] }) {
     const endTime = new Date();
     this.currentActivity = {
       ...this.currentActivity,
       action,
       endTime,
-      duration: (endTime.getTime() - this.currentActivity.startTime.getTime()) / 1000
+      duration: (endTime.getTime() - this.currentActivity.startTime.getTime()) / 1000,
+      collectedMeansObject,
     };
 
     this.updateInLocalStorage(this.currentActivity);
@@ -105,37 +101,29 @@ export class FirebaseService {
   }
 
 
-  /**
-   * Registers a user to a study group with the given password.
-   * @param {string} groupPwd - The password of the study group to register to.
-   * @param {string} user - The name of the user to register.
-   * @returns {Promise<StudyGroup|null>} - A Promise that resolves to the StudyGroup object if the registration is successful, or null if the group password is invalid.
-   */
-  public async registerToGroup(groupPwd: string, user: string): Promise<StudyGroup | null> {
-    const querySnapshot = await getDocs(collection(db, "groups"));
-    const groups = querySnapshot.docs.map(doc => doc.data());
-    const group = groups.find(g => g['password'] === groupPwd);
-    if (!group) {
-      return null;
+  public async registerUser(user: User): Promise<DocumentReference> {
+    try {
+      const userDocRef = await addDoc(collection(db, 'user_info'), user);
+      console.log('User registered with ID:', userDocRef.id);
+      return userDocRef;
+
+    } catch (e) {
+      console.log('Error', e);
+      throw e;
     }
-    // set group to local storage
-    localStorage.setItem('group', group['name']);
-    localStorage.setItem('user', user);
-    this.group = group['name'];
-    this.user = user;
-    return group as StudyGroup;
   }
 
-
-  /**
-   * Removes group and user data from local storage and sets group and user properties to null.   
-   */
-  clearRegistration(): void {
-    localStorage.removeItem('group');
-    localStorage.removeItem('user');
-    this.group = null;
-    this.user = null;
+  public async checkUserExists(userId: string): Promise<boolean> {
+    try {
+      const q = query(collection(db, 'user_info'), where('userId', '==', userId));
+      const querySnapshot = await getDocs(q);
+      return !querySnapshot.empty;  // Returns true if user exists
+    } catch (e) {
+      console.error('Error checking user existence:', e);
+      throw e;
+    }
   }
+
 
   /**
    * Saves an activity to the Firestore database.

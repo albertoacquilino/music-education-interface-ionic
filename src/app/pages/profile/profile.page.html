@@ -1,0 +1,28 @@
+<ion-header>
+    <ion-toolbar>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="profile-container">
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Profile</ion-card-title>
+                <div class="profile-img-container">
+                    <ion-img [src]="ProfileImg || 'assets/images/user.png'" class="profile-img"></ion-img>
+                </div>
+            </ion-card-header>
+            <ion-card-content>
+
+                <div class="profile-details">
+                    <h2 *ngIf="displayName">Display Name: {{ displayName }}</h2>
+                    <h2>UserID: {{ UserID }}</h2>
+                    <h2>Email: {{ emailAddress }}</h2>
+                </div>
+                <div class="button-container">
+                    <ion-button (click)="goBack()">Go Back</ion-button>
+                    <ion-button (click)="signOut()">Sign Out</ion-button>
+                </div>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>

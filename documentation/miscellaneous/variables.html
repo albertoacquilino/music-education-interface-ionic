@@ -1,0 +1,1367 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>music-education-interface-ionic documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">music-education-interface-ionic documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-variables">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Variables</li>
+</ol>
+
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#app" title="src/app/services/firebase.service.ts" ><b>app</b>&nbsp;&nbsp;&nbsp;(src/.../firebase.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#authGuard" title="src/app/guards/auth.guards.ts" ><b>authGuard</b>&nbsp;&nbsp;&nbsp;(src/.../auth.guards.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#baseNotes" title="src/app/components/chromatic-tuner/chromatic-tuner.component.ts" ><b>baseNotes</b>&nbsp;&nbsp;&nbsp;(src/.../chromatic-tuner.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BEAT_SOUNDS" title="src/app/services/sounds.service.ts" ><b>BEAT_SOUNDS</b>&nbsp;&nbsp;&nbsp;(src/.../sounds.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#bigWindow" title="src/app/services/pitch.service.ts" ><b>bigWindow</b>&nbsp;&nbsp;&nbsp;(src/.../pitch.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#config" title="capacitor.config.ts" ><b>config</b>&nbsp;&nbsp;&nbsp;(capacitor.config.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#db" title="src/app/services/firebase.service.ts" ><b>db</b>&nbsp;&nbsp;&nbsp;(src/.../firebase.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DEFAULT_FREQUENCY" title="src/app/services/ref-freq.service.ts" ><b>DEFAULT_FREQUENCY</b>&nbsp;&nbsp;&nbsp;(src/.../ref-freq.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DEFAULT_TEMPO" title="src/app/services/beat.service.ts" ><b>DEFAULT_TEMPO</b>&nbsp;&nbsp;&nbsp;(src/.../beat.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DYNAMICS" title="src/app/constants.ts" ><b>DYNAMICS</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#environment" title="src/environments/environment.prod.ts" ><b>environment</b>&nbsp;&nbsp;&nbsp;(src/.../environment.prod.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#environment" title="src/environments/environment.ts" ><b>environment</b>&nbsp;&nbsp;&nbsp;(src/.../environment.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#firebaseConfig" title="src/app/services/firebase.service.ts" ><b>firebaseConfig</b>&nbsp;&nbsp;&nbsp;(src/.../firebase.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#google" title="src/app/services/auth.service.ts" ><b>google</b>&nbsp;&nbsp;&nbsp;(src/.../auth.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#google" title="src/app/pages/signin/signin.page.ts" ><b>google</b>&nbsp;&nbsp;&nbsp;(src/.../signin.page.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#google" title="src/app/pages/signup/signup.page.ts" ><b>google</b>&nbsp;&nbsp;&nbsp;(src/.../signup.page.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#INITIAL_NOTE" title="src/app/constants.ts" ><b>INITIAL_NOTE</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#maxCents" title="src/app/components/chromatic-tuner/chromatic-tuner.component.ts" ><b>maxCents</b>&nbsp;&nbsp;&nbsp;(src/.../chromatic-tuner.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MAXCYCLES" title="src/app/constants.ts" ><b>MAXCYCLES</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MAXNOTE" title="src/app/constants.ts" ><b>MAXNOTE</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MAXREFFREQUENCY" title="src/app/constants.ts" ><b>MAXREFFREQUENCY</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MAXTEMPO" title="src/app/constants.ts" ><b>MAXTEMPO</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#minCents" title="src/app/components/chromatic-tuner/chromatic-tuner.component.ts" ><b>minCents</b>&nbsp;&nbsp;&nbsp;(src/.../chromatic-tuner.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MINNOTE" title="src/app/constants.ts" ><b>MINNOTE</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#minPitch" title="src/app/services/pitch.service.ts" ><b>minPitch</b>&nbsp;&nbsp;&nbsp;(src/.../pitch.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MINREFFREQUENCY" title="src/app/constants.ts" ><b>MINREFFREQUENCY</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MINTEMPO" title="src/app/constants.ts" ><b>MINTEMPO</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NOTES" title="src/app/constants.ts" ><b>NOTES</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#POSITIONS" title="src/app/constants.ts" ><b>POSITIONS</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#smallWindow" title="src/app/services/pitch.service.ts" ><b>smallWindow</b>&nbsp;&nbsp;&nbsp;(src/.../pitch.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TICK_SOUND" title="src/app/components/scroll-image-selector/scroll-image-selector.component.ts" ><b>TICK_SOUND</b>&nbsp;&nbsp;&nbsp;(src/.../scroll-image-selector.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TRUMPET_BTN" title="src/app/constants.ts" ><b>TRUMPET_BTN</b>&nbsp;&nbsp;&nbsp;(src/.../constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#useYin" title="src/app/services/pitch.service.ts" ><b>useYin</b>&nbsp;&nbsp;&nbsp;(src/.../pitch.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#workletChunkSize" title="src/app/services/pitch.service.ts" ><b>workletChunkSize</b>&nbsp;&nbsp;&nbsp;(src/.../pitch.service.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>src/app/services/firebase.service.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="app"></a>
+                    <span class="name">
+                        <span ><b>app</b></span>
+                        <a href="#app"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>initializeApp(firebaseConfig)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="db"></a>
+                    <span class="name">
+                        <span ><b>db</b></span>
+                        <a href="#db"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>getFirestore(app)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="firebaseConfig"></a>
+                    <span class="name">
+                        <span ><b>firebaseConfig</b></span>
+                        <a href="#firebaseConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  apiKey: &quot;AIzaSyDSpKBGWsrGNkocpyN_ledyIomcGJ14Pto&quot;,
+  authDomain: &quot;mei-trumpet.firebaseapp.com&quot;,
+  projectId: &quot;mei-trumpet&quot;,
+  storageBucket: &quot;mei-trumpet.appspot.com&quot;,
+  messagingSenderId: &quot;874766472837&quot;,
+  appId: &quot;1:874766472837:web:87d898a7b07de47e097bec&quot;,
+  measurementId: &quot;G-150GS2FPPB&quot;
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/guards/auth.guards.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authGuard"></a>
+                    <span class="name">
+                        <span ><b>authGuard</b></span>
+                        <a href="#authGuard"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {
+    const router &#x3D; inject(Router);
+    const userInfo &#x3D; localStorage.getItem(&#x27;LoggedInUser&#x27;);
+    if (userInfo) {
+        router.navigate([&#x27;/home&#x27;]);
+        return false;
+    }
+    return true;
+    
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/components/chromatic-tuner/chromatic-tuner.component.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="baseNotes"></a>
+                    <span class="name">
+                        <span ><b>baseNotes</b></span>
+                        <a href="#baseNotes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    &quot;A0&quot;: { &quot;freq&quot;: 27.5, &quot;key&quot;: 1 }, &quot;A#0/Bb0&quot;: { &quot;freq&quot;: 29.14, &quot;key&quot;: 2 }, &quot;B0&quot;: { &quot;freq&quot;: 30.87, &quot;key&quot;: 3 },
+    &quot;C1&quot;: { &quot;freq&quot;: 32.7, &quot;key&quot;: 4 }, &quot;C#1/Db1&quot;: { &quot;freq&quot;: 34.65, &quot;key&quot;: 5 }, &quot;D1&quot;: { &quot;freq&quot;: 36.71, &quot;key&quot;: 6 },
+    &quot;D#1/Eb1&quot;: { &quot;freq&quot;: 38.89, &quot;key&quot;: 7 }, &quot;E1&quot;: { &quot;freq&quot;: 41.2, &quot;key&quot;: 8 }, &quot;F1&quot;: { &quot;freq&quot;: 43.65, &quot;key&quot;: 9 },
+    &quot;F#1/Gb1&quot;: { &quot;freq&quot;: 46.25, &quot;key&quot;: 10 }, &quot;G1&quot;: { &quot;freq&quot;: 49, &quot;key&quot;: 11 }, &quot;G#1/Ab1&quot;: { &quot;freq&quot;: 51.91, &quot;key&quot;: 12 },
+    &quot;A1&quot;: { &quot;freq&quot;: 55, &quot;key&quot;: 13 }, &quot;A#1/Bb1&quot;: { &quot;freq&quot;: 58.27, &quot;key&quot;: 14 }, &quot;B1&quot;: { &quot;freq&quot;: 61.74, &quot;key&quot;: 15 },
+    &quot;C2&quot;: { &quot;freq&quot;: 65.41, &quot;key&quot;: 16 }, &quot;C#2/Db2&quot;: { &quot;freq&quot;: 69.3, &quot;key&quot;: 17 }, &quot;D2&quot;: { &quot;freq&quot;: 73.42, &quot;key&quot;: 18 },
+    &quot;D#2/Eb2&quot;: { &quot;freq&quot;: 77.78, &quot;key&quot;: 19 }, &quot;E2&quot;: { &quot;freq&quot;: 82.41, &quot;key&quot;: 20 }, &quot;F2&quot;: { &quot;freq&quot;: 87.31, &quot;key&quot;: 21 },
+    &quot;F#2/Gb2&quot;: { &quot;freq&quot;: 92.5, &quot;key&quot;: 22 }, &quot;G2&quot;: { &quot;freq&quot;: 98, &quot;key&quot;: 23 }, &quot;G#2/Ab2&quot;: { &quot;freq&quot;: 103.83, &quot;key&quot;: 24 },
+    &quot;A2&quot;: { &quot;freq&quot;: 110, &quot;key&quot;: 25 }, &quot;A#2/Bb2&quot;: { &quot;freq&quot;: 116.54, &quot;key&quot;: 26 }, &quot;B2&quot;: { &quot;freq&quot;: 123.47, &quot;key&quot;: 27 },
+    &quot;C3&quot;: { &quot;freq&quot;: 130.81, &quot;key&quot;: 28 }, &quot;C#3/Db3&quot;: { &quot;freq&quot;: 138.59, &quot;key&quot;: 29 }, &quot;D3&quot;: { &quot;freq&quot;: 146.83, &quot;key&quot;: 30 },
+    &quot;D#3/Eb3&quot;: { &quot;freq&quot;: 155.56, &quot;key&quot;: 31 }, &quot;E3&quot;: { &quot;freq&quot;: 164.81, &quot;key&quot;: 32 }, &quot;F3&quot;: { &quot;freq&quot;: 174.61, &quot;key&quot;: 33 },
+    &quot;F#3/Gb3&quot;: { &quot;freq&quot;: 185, &quot;key&quot;: 34 }, &quot;G3&quot;: { &quot;freq&quot;: 196, &quot;key&quot;: 35 }, &quot;G#3/Ab3&quot;: { &quot;freq&quot;: 207.65, &quot;key&quot;: 36 },
+    &quot;A3&quot;: { &quot;freq&quot;: 220, &quot;key&quot;: 37 }, &quot;A#3/Bb3&quot;: { &quot;freq&quot;: 233.08, &quot;key&quot;: 38 }, &quot;B3&quot;: { &quot;freq&quot;: 246.94, &quot;key&quot;: 39 },
+    &quot;C4&quot;: { &quot;freq&quot;: 261.63, &quot;key&quot;: 40 }, &quot;C#4/Db4&quot;: { &quot;freq&quot;: 277.18, &quot;key&quot;: 41 }, &quot;D4&quot;: { &quot;freq&quot;: 293.66, &quot;key&quot;: 42 },
+    &quot;D#4/Eb4&quot;: { &quot;freq&quot;: 311.13, &quot;key&quot;: 43 }, &quot;E4&quot;: { &quot;freq&quot;: 329.63, &quot;key&quot;: 44 }, &quot;F4&quot;: { &quot;freq&quot;: 349.23, &quot;key&quot;: 45 },
+    &quot;F#4/Gb4&quot;: { &quot;freq&quot;: 369.99, &quot;key&quot;: 46 }, &quot;G4&quot;: { &quot;freq&quot;: 392, &quot;key&quot;: 47 }, &quot;G#4/Ab4&quot;: { &quot;freq&quot;: 415.3, &quot;key&quot;: 48 },
+    &quot;A4&quot;: { &quot;freq&quot;: 440, &quot;key&quot;: 49 }, &quot;A#4/Bb4&quot;: { &quot;freq&quot;: 466.16, &quot;key&quot;: 50 }, &quot;B4&quot;: { &quot;freq&quot;: 493.88, &quot;key&quot;: 51 },
+    &quot;C5&quot;: { &quot;freq&quot;: 523.25, &quot;key&quot;: 52 }, &quot;C#5/Db5&quot;: { &quot;freq&quot;: 554.37, &quot;key&quot;: 53 }, &quot;D5&quot;: { &quot;freq&quot;: 587.33, &quot;key&quot;: 54 },
+    &quot;D#5/Eb5&quot;: { &quot;freq&quot;: 622.25, &quot;key&quot;: 55 }, &quot;E5&quot;: { &quot;freq&quot;: 659.25, &quot;key&quot;: 56 }, &quot;F5&quot;: { &quot;freq&quot;: 698.46, &quot;key&quot;: 57 },
+    &quot;F#5/Gb5&quot;: { &quot;freq&quot;: 739.99, &quot;key&quot;: 58 }, &quot;G5&quot;: { &quot;freq&quot;: 783.99, &quot;key&quot;: 59 }, &quot;G#5/Ab5&quot;: { &quot;freq&quot;: 830.61, &quot;key&quot;: 60 },
+    &quot;A5&quot;: { &quot;freq&quot;: 880, &quot;key&quot;: 61 }, &quot;A#5/Bb5&quot;: { &quot;freq&quot;: 932.33, &quot;key&quot;: 62 }, &quot;B5&quot;: { &quot;freq&quot;: 987.77, &quot;key&quot;: 63 },
+    &quot;C6&quot;: { &quot;freq&quot;: 1046.5, &quot;key&quot;: 64 }, &quot;C#6/Db6&quot;: { &quot;freq&quot;: 1108.73, &quot;key&quot;: 65 }, &quot;D6&quot;: { &quot;freq&quot;: 1174.66, &quot;key&quot;: 66 },
+    &quot;D#6/Eb6&quot;: { &quot;freq&quot;: 1244.51, &quot;key&quot;: 67 }, &quot;E6&quot;: { &quot;freq&quot;: 1318.51, &quot;key&quot;: 68 }, &quot;F6&quot;: { &quot;freq&quot;: 1396.91, &quot;key&quot;: 69 },
+    &quot;F#6/Gb6&quot;: { &quot;freq&quot;: 1479.98, &quot;key&quot;: 70 }, &quot;G6&quot;: { &quot;freq&quot;: 1567.98, &quot;key&quot;: 71 }, &quot;G#6/Ab6&quot;: { &quot;freq&quot;: 1661.22, &quot;key&quot;: 72 },
+    &quot;A6&quot;: { &quot;freq&quot;: 1760, &quot;key&quot;: 73 }, &quot;A#6/Bb6&quot;: { &quot;freq&quot;: 1864.66, &quot;key&quot;: 74 }, &quot;B6&quot;: { &quot;freq&quot;: 1975.53, &quot;key&quot;: 75 },
+    &quot;C7&quot;: { &quot;freq&quot;: 2093, &quot;key&quot;: 76 }, &quot;C#7/Db7&quot;: { &quot;freq&quot;: 2217.46, &quot;key&quot;: 77 }, &quot;D7&quot;: { &quot;freq&quot;: 2349.32, &quot;key&quot;: 78 },
+    &quot;D#7/Eb7&quot;: { &quot;freq&quot;: 2489.02, &quot;key&quot;: 79 }, &quot;E7&quot;: { &quot;freq&quot;: 2637.02, &quot;key&quot;: 80 }, &quot;F7&quot;: { &quot;freq&quot;: 2793.83, &quot;key&quot;: 81 },
+    &quot;F#7/Gb7&quot;: { &quot;freq&quot;: 2959.96, &quot;key&quot;: 82 }, &quot;G7&quot;: { &quot;freq&quot;: 3135.96, &quot;key&quot;: 83 }, &quot;G#7/Ab7&quot;: { &quot;freq&quot;: 3322.44, &quot;key&quot;: 84 },
+    &quot;A7&quot;: { &quot;freq&quot;: 3520, &quot;key&quot;: 85 }, &quot;A#7/Bb7&quot;: { &quot;freq&quot;: 3729.31, &quot;key&quot;: 86 }, &quot;B7&quot;: { &quot;freq&quot;: 3951.07, &quot;key&quot;: 87 },
+    &quot;C8&quot;: { &quot;freq&quot;: 4186.01, &quot;key&quot;: 88 }, &quot;C#8/Db8&quot;: { &quot;freq&quot;: 4434.92, &quot;key&quot;: 89 }, &quot;D8&quot;: { &quot;freq&quot;: 4698.63, &quot;key&quot;: 90 },
+    &quot;D#8/Eb8&quot;: { &quot;freq&quot;: 4978.03, &quot;key&quot;: 91 }, &quot;E8&quot;: { &quot;freq&quot;: 5274.04, &quot;key&quot;: 92 }, &quot;F8&quot;: { &quot;freq&quot;: 5587.65, &quot;key&quot;: 93 },
+    &quot;F#8/Gb8&quot;: { &quot;freq&quot;: 5919.91, &quot;key&quot;: 94 }, &quot;G8&quot;: { &quot;freq&quot;: 6271.93, &quot;key&quot;: 95 }, &quot;G#8/Ab8&quot;: { &quot;freq&quot;: 6644.88, &quot;key&quot;: 96 },
+    &quot;A8&quot;: { &quot;freq&quot;: 7040, &quot;key&quot;: 97 }, &quot;A#8/Bb8&quot;: { &quot;freq&quot;: 7458.62, &quot;key&quot;: 98 }, &quot;B8&quot;: { &quot;freq&quot;: 7902.13, &quot;key&quot;: 99 }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="maxCents"></a>
+                    <span class="name">
+                        <span ><b>maxCents</b></span>
+                        <a href="#maxCents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>40</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="minCents"></a>
+                    <span class="name">
+                        <span ><b>minCents</b></span>
+                        <a href="#minCents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>-40</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/services/sounds.service.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BEAT_SOUNDS"></a>
+                    <span class="name">
+                        <span ><b>BEAT_SOUNDS</b></span>
+                        <a href="#BEAT_SOUNDS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    new Howl({ src: [&#x27;assets/sounds/tick_strong.wav&#x27;] }),
+    new Howl({ src: [&#x27;assets/sounds/tick_weak.wav&#x27;] }),
+    new Howl({ src: [&#x27;assets/sounds/tick_weak.wav&#x27;] }),
+    new Howl({ src: [&#x27;assets/sounds/tick_weak.wav&#x27;] })
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/services/pitch.service.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="bigWindow"></a>
+                    <span class="name">
+                        <span ><b>bigWindow</b></span>
+                        <a href="#bigWindow"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>4096</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="minPitch"></a>
+                    <span class="name">
+                        <span ><b>minPitch</b></span>
+                        <a href="#minPitch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>140</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="smallWindow"></a>
+                    <span class="name">
+                        <span ><b>smallWindow</b></span>
+                        <a href="#smallWindow"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>512</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="useYin"></a>
+                    <span class="name">
+                        <span ><b>useYin</b></span>
+                        <a href="#useYin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workletChunkSize"></a>
+                    <span class="name">
+                        <span ><b>workletChunkSize</b></span>
+                        <a href="#workletChunkSize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>128</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>capacitor.config.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="config"></a>
+                    <span class="name">
+                        <span ><b>config</b></span>
+                        <a href="#config"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>CapacitorConfig</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  appId: &#x27;com.meiteam.trumpet&#x27;,
+  appName: &#x27;MEI-Trumpet&#x27;,
+  webDir: &#x27;www&#x27;,
+  server: {
+    androidScheme: &#x27;https&#x27;
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/services/ref-freq.service.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DEFAULT_FREQUENCY"></a>
+                    <span class="name">
+                        <span ><b>DEFAULT_FREQUENCY</b></span>
+                        <a href="#DEFAULT_FREQUENCY"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>440</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/services/beat.service.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DEFAULT_TEMPO"></a>
+                    <span class="name">
+                        <span ><b>DEFAULT_TEMPO</b></span>
+                        <a href="#DEFAULT_TEMPO"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>80</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/constants.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DYNAMICS"></a>
+                    <span class="name">
+                        <span ><b>DYNAMICS</b></span>
+                        <a href="#DYNAMICS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { label: &#x27;p&#x27;, volume: 0.15 },
+    { label: &#x27;mf&#x27;, volume: 0.4 },
+    { label: &#x27;f&#x27;, volume: 1.0 },
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="INITIAL_NOTE"></a>
+                    <span class="name">
+                        <span ><b>INITIAL_NOTE</b></span>
+                        <a href="#INITIAL_NOTE"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>13</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MAXCYCLES"></a>
+                    <span class="name">
+                        <span ><b>MAXCYCLES</b></span>
+                        <a href="#MAXCYCLES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>12</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MAXNOTE"></a>
+                    <span class="name">
+                        <span ><b>MAXNOTE</b></span>
+                        <a href="#MAXNOTE"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>30</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MAXREFFREQUENCY"></a>
+                    <span class="name">
+                        <span ><b>MAXREFFREQUENCY</b></span>
+                        <a href="#MAXREFFREQUENCY"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>450</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MAXTEMPO"></a>
+                    <span class="name">
+                        <span ><b>MAXTEMPO</b></span>
+                        <a href="#MAXTEMPO"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>180</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MINNOTE"></a>
+                    <span class="name">
+                        <span ><b>MINNOTE</b></span>
+                        <a href="#MINNOTE"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MINREFFREQUENCY"></a>
+                    <span class="name">
+                        <span ><b>MINREFFREQUENCY</b></span>
+                        <a href="#MINREFFREQUENCY"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>430</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MINTEMPO"></a>
+                    <span class="name">
+                        <span ><b>MINTEMPO</b></span>
+                        <a href="#MINTEMPO"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>40</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NOTES"></a>
+                    <span class="name">
+                        <span ><b>NOTES</b></span>
+                        <a href="#NOTES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    [&#x27;F1s&#x27;, &#x27;G1f&#x27;],
+    [&#x27;G1&#x27;],
+    [&#x27;G1s&#x27;, &#x27;A1f&#x27;],
+    [&#x27;A1&#x27;],
+    [&#x27;B1f&#x27;, &#x27;A1s&#x27;],
+    [&#x27;B1&#x27;],
+    [&#x27;C2&#x27;],
+    [&#x27;C2s&#x27;, &#x27;D2f&#x27;],
+    [&#x27;D2&#x27;],
+    [&#x27;E2f&#x27;, &#x27;D2s&#x27;],
+    [&#x27;E2&#x27;],
+    [&#x27;F2&#x27;],
+    [&#x27;F2s&#x27;, &#x27;G2f&#x27;],
+    [&#x27;G2&#x27;],
+    [&#x27;G2s&#x27;, &#x27;A2f&#x27;],
+    [&#x27;A2&#x27;],
+    [&#x27;B2f&#x27;, &#x27;A2s&#x27;],
+    [&#x27;B2&#x27;],
+    [&#x27;C3&#x27;],
+    [&#x27;C3s&#x27;, &#x27;D3f&#x27;],
+    [&#x27;D3&#x27;],
+    [&#x27;E3f&#x27;, &#x27;D3s&#x27;],
+    [&#x27;E3&#x27;],
+    [&#x27;F3&#x27;],
+    [&#x27;F3s&#x27;, &#x27;G3f&#x27;],
+    [&#x27;G3&#x27;],
+    [&#x27;G3s&#x27;, &#x27;A3f&#x27;],
+    [&#x27;A3&#x27;],
+    [&#x27;B3f&#x27;, &#x27;A3s&#x27;],
+    [&#x27;B3&#x27;],
+    [&#x27;C4&#x27;],
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="POSITIONS"></a>
+                    <span class="name">
+                        <span ><b>POSITIONS</b></span>
+                        <a href="#POSITIONS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    &#x27;pos_7&#x27;,
+    &#x27;pos_6&#x27;,
+    &#x27;pos_5&#x27;,
+    &#x27;pos_4&#x27;,
+    &#x27;pos_3&#x27;,
+    &#x27;pos_2&#x27;,
+    &#x27;pos_1&#x27;,
+
+    &#x27;pos_7a&#x27;,
+    &#x27;pos_6a&#x27;,
+    &#x27;pos_5&#x27;,
+    &#x27;pos_4&#x27;,
+    &#x27;pos_3&#x27;,
+    &#x27;pos_2&#x27;,
+    &#x27;pos_1&#x27;,
+
+    &#x27;pos_5&#x27;,
+    &#x27;pos_4&#x27;,
+    &#x27;pos_3&#x27;,
+    &#x27;pos_2&#x27;,
+    &#x27;pos_1&#x27;,
+    &#x27;pos_4&#x27;,
+    &#x27;pos_3&#x27;,
+    &#x27;pos_2&#x27;,
+    &#x27;pos_1&#x27;,
+
+    &#x27;pos_3&#x27;,
+    &#x27;pos_2&#x27;,
+    &#x27;pos_1&#x27;,
+
+    &#x27;pos_5&#x27;,
+    &#x27;pos_4&#x27;,
+    &#x27;pos_3&#x27;,
+    &#x27;pos_2&#x27;,
+    &#x27;pos_1&#x27;,
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TRUMPET_BTN"></a>
+                    <span class="name">
+                        <span ><b>TRUMPET_BTN</b></span>
+                        <a href="#TRUMPET_BTN"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    [1, 2, 3],
+    [1, 3],
+    [2, 3],
+    [1, 2],
+    [1],
+    [2],
+    [],
+
+    [0, 1, 2, 3],
+    [0, 1, 3],
+    [2, 3],
+    [1, 2],
+    [1],
+    [2],
+    [],
+
+    [2, 3],
+    [1, 2],
+    [1],
+    [2],
+    [],
+    [1, 2],
+    [1],
+    [2],
+    [],
+
+    [1],
+    [2],
+    [],
+
+    [2, 3],
+    [1, 2],
+    [1],
+    [2],
+    [],
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/environments/environment.prod.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="environment"></a>
+                    <span class="name">
+                        <span ><b>environment</b></span>
+                        <a href="#environment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  production: true,
+  firebaseConfig: {
+    apiKey: &quot;AIzaSyDSpKBGWsrGNkocpyN_ledyIomcGJ14Pto&quot;,
+    authDomain: &quot;mei-trumpet.firebaseapp.com&quot;,
+    projectId: &quot;mei-trumpet&quot;,
+    storageBucket: &quot;mei-trumpet.appspot.com&quot;,
+    messagingSenderId: &quot;874766472837&quot;,
+    appId: &quot;1:874766472837:web:87d898a7b07de47e097bec&quot;,
+    measurementId: &quot;G-150GS2FPPB&quot;
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/environments/environment.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="environment"></a>
+                    <span class="name">
+                        <span ><b>environment</b></span>
+                        <a href="#environment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  production: false,
+  firebaseConfig: {
+    apiKey: &quot;AIzaSyDSpKBGWsrGNkocpyN_ledyIomcGJ14Pto&quot;,
+    authDomain: &quot;mei-trumpet.firebaseapp.com&quot;,
+    projectId: &quot;mei-trumpet&quot;,
+    storageBucket: &quot;mei-trumpet.appspot.com&quot;,
+    messagingSenderId: &quot;874766472837&quot;,
+    appId: &quot;1:874766472837:web:87d898a7b07de47e097bec&quot;,
+    measurementId: &quot;G-150GS2FPPB&quot;
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/services/auth.service.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="google"></a>
+                    <span class="name">
+                        <span ><b>google</b></span>
+                        <a href="#google"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/pages/signin/signin.page.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="google"></a>
+                    <span class="name">
+                        <span ><b>google</b></span>
+                        <a href="#google"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/pages/signup/signup.page.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="google"></a>
+                    <span class="name">
+                        <span ><b>google</b></span>
+                        <a href="#google"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/components/scroll-image-selector/scroll-image-selector.component.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TICK_SOUND"></a>
+                    <span class="name">
+                        <span ><b>TICK_SOUND</b></span>
+                        <a href="#TICK_SOUND"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Howl({ src: [&#x27;assets/sounds/tick_weak.wav&#x27;] })</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-variables';
+            var COMPODOC_CURRENT_PAGE_URL = 'variables.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
