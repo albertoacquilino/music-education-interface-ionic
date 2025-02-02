@@ -224,7 +224,7 @@ export class ChromaticTunerComponent implements OnInit {
         scale = scale * 0.8;
 
         // Applica il fattore di scala al contenitore
-        container!.style.transform = `scale(${scale})`;
+        // container!.style.transform = `scale(${scale})`;
 
     }
 

@@ -93,53 +93,13 @@ ion-modal {
   max-width: 400px;
 }
 
-@media (min-width: 700px) {
-  .chromatic-tuner ::ng-deep .chromatic-tuner {
-    padding-left: 15%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    transform: scale(1.2);
-  }
-
-  .chromatic-tuner ::ng-deep .numeric-values {
-    position: absolute;
-    padding-left: 90%;
-    color: black;
-    transform: scale(1.5);
-  }
-}
-
-@media (min-width: 665px) and (max-width: 700px) {
-  .chromatic-tuner ::ng-deep .chromatic-tuner {
-    display: flex;
-    flex-direction: row;
-    transform: scale(1.04);
-  }
-
-  .chromatic-tuner ::ng-deep .numeric-values {
-    position: absolute;
-    padding-top: 60%;
-    padding-left: 100%;
-    color: black;
-    transform: scale(1.2);
-  }
-}
-
-@media (max-width: 664px) {
-  .chromatic-tuner ::ng-deep .chromatic-tuner {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    transform: scale(1);
-  }
-
-  .chromatic-tuner ::ng-deep .numeric-values {
-    position: absolute;
-    padding-top: 80%;
-    padding-left: 70%;
-    color: black;
-  }
+.chromatic-tuner {
+  grid-area: chromatic-tuner;
+  display: flex;
+  padding: 1em;
+  align-items: center;
+  justify-content: center;
+  max-width: 400px;
 }
 
 ion-segment {
