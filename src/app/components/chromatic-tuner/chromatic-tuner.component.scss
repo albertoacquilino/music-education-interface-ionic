@@ -3,3 +3,14 @@
   /* Center of the circle */
   transition: transform 0.3s ease;
 }
+
+.tuner-img {
+  width: 100%;
+}
+
+@media screen and (orientation: landscape) {
+  .tuner-img {
+      width: 250px;
+      height: auto;
+  }
+}
