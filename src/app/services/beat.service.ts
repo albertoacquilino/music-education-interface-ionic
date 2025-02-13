@@ -1,3 +1,11 @@
+/**
+ * This file is part of the Music Education Interface project.
+ * Copyright (C) 2025 Alberto Acquilino
+ *
+ * Licensed under the GNU Affero General Public License v3.0.
+ * See the LICENSE file for more details.
+ */
+
 import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, TimeInterval } from 'rxjs';
 import { interval, take } from 'rxjs';
