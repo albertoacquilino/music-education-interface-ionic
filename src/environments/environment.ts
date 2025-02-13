@@ -1,3 +1,12 @@
+/**
+ * This file is part of the Music Education Interface project.
+ * Copyright (C) 2025 Alberto Acquilino
+ *
+ * Licensed under the GNU Affero General Public License v3.0.
+ * See the LICENSE file for more details.
+ */
+
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
