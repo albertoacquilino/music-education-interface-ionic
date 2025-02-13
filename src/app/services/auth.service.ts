@@ -1,3 +1,11 @@
+/**
+ * This file is part of the Music Education Interface project.
+ * Copyright (C) 2025 Alberto Acquilino
+ *
+ * Licensed under the GNU Affero General Public License v3.0.
+ * See the LICENSE file for more details.
+ */
+
 declare var google: any;
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, UserCredential, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
