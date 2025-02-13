@@ -1,3 +1,11 @@
+/**
+ * This file is part of the Music Education Interface project.
+ * Copyright (C) 2025 Alberto Acquilino
+ *
+ * Licensed under the GNU Affero General Public License v3.0.
+ * See the LICENSE file for more details.
+ */
+
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonicModule, ViewDidEnter, ViewDidLeave } from '@ionic/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
