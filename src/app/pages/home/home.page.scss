@@ -44,24 +44,16 @@ ion-modal {
   align-items: center;
   justify-content: center;
   border-radius: 18px;
-  // color: white;
   color: black;
   width: 150px;
-  // aleksandra add code
   min-height: 250px;
-  //aleksandra done
-
-  /*animation*/
-  // background: linear-gradient(-45deg, #fead26, #9f6a11);
-  // border: 3px solid #fead26;
   background-size: 400% 400%;
   animation: gradient 2s ease infinite;
 }
 
 .wrapper {
-  //background-color: red;
-  width: 650px;
-  height: 460px;
+  width: 100%;
+  height: auto;
   overflow: hidden;
   transform-origin: top left;
 }
@@ -70,11 +62,9 @@ ion-modal {
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
@@ -120,29 +110,23 @@ ion-segment-button {
   min-width: fit-content;
 }
 
+/* CHANGED: Add margin-top + black border around the staff */
 .score {
-  margin-top: -20px;
-  grid-area: score;
+  margin-top: 1.5rem !important;    /* ADDED: bring staff lower */
+  border: 2px solid black;         /* ADDED: black border box */
+  border-radius: 6px;              /* ADDED */
+  padding: 1rem;                   /* ADDED: so staff has some space inside */
+  background-color: white;         /* ADDED: inside the black border */
   text-align: center;
 
-  app-score {
-    min-width: 100px;
-    min-height: 100px;
-    max-width: 600px;
-  }
+  width: 100%;
+  max-width: 600px;
+  margin: 1.5rem auto 0 auto;      /* keep it centered horizontally */
+  grid-area: score;
 }
 
 .bottom {
-  //display: grid;
-  //grid-template-columns: 1fr 1fr 1fr;
-  //grid-template-rows: 1fr 1.3fr;
-  //gap: 0px 0px;
-  //grid-auto-flow: row;
-  //grid-template-areas:
-  /*    "controls controls controls"
-    "controls controls controls"
-    "start-stop start-stop start-stop";*/
-  //grid-area: bottom;
+  /* any styling for bottom area if needed */
 }
 
 .start-stop {
@@ -167,7 +151,6 @@ ion-segment-button {
 
 .controls {
   display: flex;
-  //grid-area: controls;
   background-color: gray;
   padding: 10px;
   margin: 6px;
@@ -176,7 +159,6 @@ ion-segment-button {
 }
 
 .controls button {
-  /*width: 75%;*/
   font-size: 2em;
   background-color: transparent;
   border: 0;
@@ -210,8 +192,6 @@ ion-segment-button {
 .tempo-wrapper,
 .low-note-wrapper,
 .high-note-wrapper {
-  //flex: 1;
-  //border-right: 1px solid lightgray;
   padding: 0 8px;
   display: flex;
   flex-direction: column;
@@ -238,7 +218,6 @@ ion-segment-button {
 
 #score-image {
   width: 100%;
-  //margin: 10px;
   border-radius: 6px;
 }
 
@@ -250,29 +229,34 @@ ion-segment-button {
   width: 100%;
 }
 
-// aleksandra add code
+/*
+  Container for top + middle to stack in portrait, row in landscape
+*/
+.top-middle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: white;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 0 8px;
+}
 
 @media screen and (orientation: landscape) {
-  #container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    transform-origin: center center;
-  }
-
   .top-middle-container {
-    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 
-  // .bottom {
-  //   width: 50%;
-  // }
+  .top {
+    margin-bottom: 0;
+    margin-right: 1rem;
+  }
 
-  .controls {
-    //flex-direction: column;
-    gap: 10px;
-    margin-top: 0px;
+  .middle {
+    margin-top: 0;
   }
 
   @media screen and (max-height: 600px) {

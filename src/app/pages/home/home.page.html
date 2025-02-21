@@ -33,7 +33,7 @@
 
       <ion-item>
         <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)"
-          [disabled]="isPlaying()">
+                    [disabled]="isPlaying()">
           <b>&flat; &amp; &sharp;</b>
         </ion-toggle>
       </ion-item>
@@ -44,36 +44,43 @@
         </ion-toggle>
       </ion-item>
     </ion-list>
-
   </ion-content>
 </ion-menu>
+
 <div class="ion-page" id="main-content">
-<!--  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>
-        &lt;!&ndash; <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
-        <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> &ndash;&gt;
-      </ion-title>
-      <ion-buttons slot="end">
-        <ion-buttons (click)="goToProfile()">
-          <ion-icon name="person-circle-outline" style="font-size: 32px;"></ion-icon>
+
+  <!--
+
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
         </ion-buttons>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>-->
+        <ion-title>
+          <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
+          <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> --
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-buttons (click)="goToProfile()">
+            <ion-icon name="person-circle-outline" style="font-size: 32px;"></ion-icon>
+          </ion-buttons>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+  -->
 
   <ion-content [fullscreen]="true">
     <div id="container">
+      <!-- WRAPPER for entire view -->
       <div class="wrapper" id="wrapper">
+
+        <!-- TOP + MIDDLE in same container so we can flex them -->
         <div class="top-middle-container">
-          <div class="top" [ngClass]="!isPlaying()?'landscape-d-none':''">
+          <div class="top" [ngClass]="!isPlaying() ? 'landscape-d-none' : ''">
             <div class="metronome">
               <div class="metronome-bullet">
                 <h1 id="metronome-label" *ngIf="beat$|async as beat">
-                  {{ beat.beat >= 0 ? (beat.beat + 1): '&nbsp;'}}
+                  {{ beat.beat >= 0 ? (beat.beat + 1) : '&nbsp;' }}
                 </h1>
                 <semaphore-light [currentAction]="currentAction"></semaphore-light>
               </div>
@@ -88,55 +95,55 @@
                 <trumpet-diagram [trumpetButtons]="trumpetBtns"></trumpet-diagram>
               </div>
             </ng-container>
-
           </div>
-          <!--MIDDLE-->
+
+          <!-- MIDDLE -->
           <div class="middle" *ngIf="isPlaying()">
-            <div class="score">
+            <div class="score" id="score-wrapper">
               <score-view id="score-image" [score]="score"></score-view>
             </div>
           </div>
         </div>
 
+        <!-- BOTTOM -->
         <div class="bottom" *ngIf="!isPlaying()">
           <div class="controls controls-margin">
-            <!--TEMPO-->
+            <!-- TEMPO -->
             <div class="tempo-wrapper">
-                <tempo-selector *ngIf="tempo$ | async as tempo" 
-                  [tempo]="tempo" 
-                  (change)="changeTempo($event)"
-                ></tempo-selector>              
+              <tempo-selector
+                *ngIf="tempo$ | async as tempo"
+                [tempo]="tempo"
+                (change)="changeTempo($event)"
+              ></tempo-selector>
             </div>
 
             <div class="low-note-wrapper">
-              <note-selector 
+              <note-selector
                 label="Low Note:"
-                [note]="lowNote" 
+                [note]="lowNote"
                 [useFlatsAndSharps]="useFlatsAndSharps"
                 (change)="changeLowNote($event)"
               ></note-selector>
             </div>
 
             <div class="high-note-wrapper">
-              <note-selector 
+              <note-selector
                 label="High Note:"
                 [note]="highNote"
                 [useFlatsAndSharps]="useFlatsAndSharps"
                 (change)="changeHighNote($event)"
               ></note-selector>
             </div>
-
           </div>
         </div>
-      </div>
 
-    </div>
+      </div> <!-- end .wrapper -->
+    </div> <!-- end #container -->
   </ion-content>
 
   <ion-footer>
     <ion-button (click)="startStop()" expand="block">
-      {{isPlaying() ? 'Stop':'Start'}}
+      {{ isPlaying() ? 'Stop' : 'Start' }}
     </ion-button>
   </ion-footer>
-
 </div>
