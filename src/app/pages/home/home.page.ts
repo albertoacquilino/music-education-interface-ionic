@@ -611,7 +611,7 @@ export class HomePage implements OnInit {
     window.addEventListener('resize', () => this.scaleContent());
     window.addEventListener('load', () => this.scaleContent());
 
-    // 
+    //
     setTimeout(() => this.scaleContent(), 250);
   }
 

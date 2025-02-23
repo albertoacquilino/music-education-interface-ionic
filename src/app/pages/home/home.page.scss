@@ -46,7 +46,13 @@ ion-modal {
   border-radius: 18px;
   color: black;
   width: 150px;
+  // aleksandra add code
   min-height: 250px;
+  //aleksandra done
+
+  /*animation*/
+  // background: linear-gradient(-45deg, #fead26, #9f6a11);
+  // border: 3px solid #fead26;
   background-size: 400% 400%;
   animation: gradient 2s ease infinite;
 }
@@ -112,20 +118,30 @@ ion-segment-button {
 
 /* CHANGED: Add margin-top + black border around the staff */
 .score {
-  margin-top: 1.5rem !important;    /* ADDED: bring staff lower */
-  border: 2px solid black;         /* ADDED: black border box */
-  border-radius: 6px;              /* ADDED */
-  padding: 1rem;                   /* ADDED: so staff has some space inside */
-  background-color: white;         /* ADDED: inside the black border */
+  margin-top: 1.5rem !important; /* ADDED: bring staff lower */
+  border: 2px solid black;       /* ADDED: black border box */
+  border-radius: 6px;            /* ADDED */
+  padding: 1rem;                 /* ADDED: so staff has some space inside */
+  background-color: white;       /* ADDED: inside the black border */
   text-align: center;
 
   width: 100%;
   max-width: 600px;
-  margin: 1.5rem auto 0 auto;      /* keep it centered horizontally */
+  margin: 1.5rem auto 0 auto;    /* keep it centered horizontally */
   grid-area: score;
 }
 
 .bottom {
+  //display: grid;
+  //grid-template-columns: 1fr 1fr 1fr;
+  //grid-template-rows: 1fr 1.3fr;
+  //gap: 0px 0px;
+  //grid-auto-flow: row;
+  //grid-template-areas:
+  /*    "controls controls controls"
+    "controls controls controls"
+    "start-stop start-stop start-stop";*/
+  //grid-area: bottom;
   /* any styling for bottom area if needed */
 }
 
@@ -151,6 +167,7 @@ ion-segment-button {
 
 .controls {
   display: flex;
+  //grid-area: controls;
   background-color: gray;
   padding: 10px;
   margin: 6px;
@@ -159,6 +176,7 @@ ion-segment-button {
 }
 
 .controls button {
+  /*width: 75%;*/
   font-size: 2em;
   background-color: transparent;
   border: 0;
@@ -192,6 +210,8 @@ ion-segment-button {
 .tempo-wrapper,
 .low-note-wrapper,
 .high-note-wrapper {
+  //flex: 1;
+  //border-right: 1px solid lightgray;
   padding: 0 8px;
   display: flex;
   flex-direction: column;
@@ -218,6 +238,7 @@ ion-segment-button {
 
 #score-image {
   width: 100%;
+  //margin: 10px;
   border-radius: 6px;
 }
 
@@ -228,6 +249,7 @@ ion-segment-button {
 #high-note {
   width: 100%;
 }
+// aleksandra add code
 
 /*
   Container for top + middle to stack in portrait, row in landscape
@@ -243,6 +265,9 @@ ion-segment-button {
   margin: 0 8px;
 }
 
+/*
+  When in landscape mode, place .top + .middle side by side
+*/
 @media screen and (orientation: landscape) {
   .top-middle-container {
     flex-direction: row;
@@ -258,16 +283,20 @@ ion-segment-button {
   .middle {
     margin-top: 0;
   }
+}
 
-  @media screen and (max-height: 600px) {
-    .landscape-d-none {
-      display: none;
-    }
-    .controls-margin {
-      margin-top: 40px;
-    }
-    .top-middle-container {
-      display: flex;
-    }
+/*
+  If screen height is very small, hide .landscape-d-none, etc.
+  This media query is now separate, not nested, for correct SCSS alignment
+*/
+@media screen and (max-height: 600px) {
+  .landscape-d-none {
+    display: none;
+  }
+  .controls-margin {
+    margin-top: 40px;
+  }
+  .top-middle-container {
+    display: flex;
   }
 }

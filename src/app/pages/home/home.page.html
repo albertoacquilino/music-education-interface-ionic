@@ -1,7 +1,6 @@
 <!--
   This file is part of the Music Education Interface project.
   Copyright (C) 2025 Alberto Acquilino
-
   Licensed under the GNU Affero General Public License v3.0.
   See the LICENSE file for more details.
 -->
@@ -25,7 +24,6 @@
           </ion-segment-button>
         </ion-segment>
       </ion-item>
-
       <ion-item button (click)="openPicker('frequency')" [disabled]="isPlaying()">
         <ion-label>A4</ion-label>
         <ion-note slot="end">{{ refFrequencyValue$ }} Hz</ion-note>
@@ -37,7 +35,6 @@
           <b>&flat; &amp; &sharp;</b>
         </ion-toggle>
       </ion-item>
-
       <ion-item>
         <ion-toggle [checked]="useDynamics" (ionChange)="switchUseDynamics($event)" [disabled]="isPlaying()">
           Dynamics
@@ -50,6 +47,8 @@
 <div class="ion-page" id="main-content">
 
   <!--
+    Entire <ion-header> block is now commented out
+    so Angular does NOT see partial open/close tags:
 
     <ion-header>
       <ion-toolbar>
@@ -57,8 +56,18 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>
+          &lt;!-- <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
+          <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> --&gt;
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-buttons (click)="goToProfile()">
+            <ion-icon name="person-circle-outline" style="font-size: 32px;"></ion-icon>
+          </ion-buttons>
+        </ion-buttons>
+
+        <ion-title>
           <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
-          <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> --
+          <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white">
         </ion-title>
         <ion-buttons slot="end">
           <ion-buttons (click)="goToProfile()">
@@ -79,7 +88,7 @@
           <div class="top" [ngClass]="!isPlaying() ? 'landscape-d-none' : ''">
             <div class="metronome">
               <div class="metronome-bullet">
-                <h1 id="metronome-label" *ngIf="beat$|async as beat">
+                <h1 id="metronome-label" *ngIf="beat$ | async as beat">
                   {{ beat.beat >= 0 ? (beat.beat + 1) : '&nbsp;' }}
                 </h1>
                 <semaphore-light [currentAction]="currentAction"></semaphore-light>
@@ -146,4 +155,5 @@
       {{ isPlaying() ? 'Stop' : 'Start' }}
     </ion-button>
   </ion-footer>
+
 </div>

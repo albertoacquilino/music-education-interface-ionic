@@ -21,7 +21,7 @@ import { RenderContext, Renderer } from 'vexflow';
 /**
  * ScoreComponent is responsible for displaying a score interface.
  * It allows users to view a musical score and updates the score when changes are made.
- * 
+ *
  * @example
  * <score-view [score]="score"></score-view>
  */
@@ -61,7 +61,7 @@ export class ScoreViewComponent implements AfterViewInit {
 
   /**
    * Updates the size of the score component.
-   * 
+   *
    * @param size - The new width and height of the score component.
    */
   updateSize(size: { width: number, height: number }) {
@@ -105,7 +105,7 @@ export class ScoreViewComponent implements AfterViewInit {
 
   /**
    * Updates the score with the given Score object.
-   * 
+   *
    * @param score - The Score object containing the measures, clef, key signature, time signature, dynamic, and dynamic position.
    */
   updateScore(score: Score) {
