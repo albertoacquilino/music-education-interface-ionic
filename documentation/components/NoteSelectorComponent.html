@@ -697,7 +697,7 @@ It allows users to select musical notes and emits changes when a note is selecte
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>NOTES.map(note &#x3D;&gt; &#x60;assets/images/notes_images/_${note[0]}.svg&#x60;)</code>
+                        <i>Default value : </i><code>NOTES.map(note &#x3D;&gt; &#x60;assets/images/trumpet_notes_images/_${note[0]}.svg&#x60;)</code>
                     </td>
                 </tr>
                     <tr>
@@ -786,7 +786,7 @@ export class NoteSelectorComponent implements OnInit {
   @Input() useFlatsAndSharps: boolean &#x3D; true;
   @Output() change: EventEmitter&lt;number&gt; &#x3D; new EventEmitter&lt;number&gt;();
 
-  noteImages &#x3D; NOTES.map(note &#x3D;&gt; &#x60;assets/images/notes_images/_${note[0]}.svg&#x60;);
+  noteImages &#x3D; NOTES.map(note &#x3D;&gt; &#x60;assets/images/trumpet_notes_images/_${note[0]}.svg&#x60;);
 
   constructor() { }
 

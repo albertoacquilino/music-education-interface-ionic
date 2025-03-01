@@ -77,7 +77,7 @@ export class NoteSelectorComponent implements OnInit {
   @Input() useFlatsAndSharps: boolean = true;
   @Output() change: EventEmitter<number> = new EventEmitter<number>();
 
-  noteImages = NOTES.map(note => `assets/images/notes_images/_${note[0]}.svg`);
+  noteImages = NOTES.map(note => `assets/images/trumpet_notes_images/_${note[0]}.svg`);
 
   constructor() { }
 

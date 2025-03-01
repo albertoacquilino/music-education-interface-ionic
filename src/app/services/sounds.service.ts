@@ -65,7 +65,7 @@ export class SoundsService {
             const note = NOTES[i];
             const soundFile = note[0];
 
-            const audio = new Howl({ src: [`assets/sounds/note_sounds/${soundFile}.wav`] });
+            const audio = new Howl({ src: [`assets/sounds/trumpet_note_sounds/${soundFile}.wav`] });
             this.preloadedNotes.push(audio);
         }
     }
