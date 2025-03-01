@@ -2598,7 +2598,7 @@ If the tempo is currently stopped, it will start it.</p>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>NOTES.map(note &#x3D;&gt; &#x60;assets/images/notes_images/_${note[0]}.svg&#x60;)</code>
+                        <i>Default value : </i><code>NOTES.map(note &#x3D;&gt; &#x60;assets/images/trumpet_notes_images/_${note[0]}.svg&#x60;)</code>
                     </td>
                 </tr>
                     <tr>
@@ -3063,7 +3063,7 @@ export class HomePage implements OnInit {
   /**
    * The note images.
    */
-  noteImages &#x3D; NOTES.map(note &#x3D;&gt; &#x60;assets/images/notes_images/_${note[0]}.svg&#x60;);
+  noteImages &#x3D; NOTES.map(note &#x3D;&gt; &#x60;assets/images/trumpet_notes_images/_${note[0]}.svg&#x60;);
 
   /**
    * The observable for the beat.
@@ -3402,7 +3402,7 @@ export class HomePage implements OnInit {
    * @returns The path to the image file.
    */
   getNoteImg(note: number): string {
-    return &#x60;assets/images/notes_images/_${NOTES[note][0]}.png&#x60;;
+    return &#x60;assets/images/trumpet_notes_images/_${NOTES[note][0]}.png&#x60;;
   }
 
   /**

@@ -142,7 +142,7 @@ export class HomePage implements OnInit {
   /**
    * The note images.
    */
-  noteImages = NOTES.map(note => `assets/images/notes_images/_${note[0]}.svg`);
+  noteImages = NOTES.map(note => `assets/images/trumpet_notes_images/_${note[0]}.svg`);
 
   /**
    * The observable for the beat.
@@ -481,7 +481,7 @@ export class HomePage implements OnInit {
    * @returns The path to the image file.
    */
   getNoteImg(note: number): string {
-    return `assets/images/notes_images/_${NOTES[note][0]}.png`;
+    return `assets/images/trumpet_notes_images/_${NOTES[note][0]}.png`;
   }
 
   /**
