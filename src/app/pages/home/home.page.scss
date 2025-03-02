@@ -1,10 +1,10 @@
 /*
- * This file is part of the Music Education Interface project.
- * Copyright (C) 2025 Alberto Acquilino
- *
- * Licensed under the GNU Affero General Public License v3.0.
- * See the LICENSE file for more details.
- */
+  This file is part of the Music Education Interface project.
+  Copyright (C) 2025 Alberto Acquilino
+
+  Licensed under the GNU Affero General Public License v3.0.
+  See the LICENSE file for more details.
+*/
 
 ion-modal {
   --height: auto;
@@ -44,7 +44,6 @@ ion-modal {
   align-items: center;
   justify-content: center;
   border-radius: 18px;
-  // color: white;
   color: black;
   width: 150px;
   // aleksandra add code
@@ -59,9 +58,8 @@ ion-modal {
 }
 
 .wrapper {
-  //background-color: red;
-  width: 650px;
-  height: 460px;
+  width: 100%;
+  height: auto;
   overflow: hidden;
   transform-origin: top left;
 }
@@ -70,11 +68,9 @@ ion-modal {
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
@@ -120,16 +116,20 @@ ion-segment-button {
   min-width: fit-content;
 }
 
+/*
+  The .score class to position and style the staff box
+*/
 .score {
-  margin-top: -20px;
-  grid-area: score;
+  margin-top: 1.5rem !important;
+  border: 2px solid black;
+  border-radius: 6px;
+  padding: 1rem;
+  background-color: white;
   text-align: center;
-
-  app-score {
-    min-width: 100px;
-    min-height: 100px;
-    max-width: 600px;
-  }
+  width: 100%;
+  max-width: 600px;
+  margin: 1.5rem auto 0 auto;
+  grid-area: score;
 }
 
 .bottom {
@@ -143,6 +143,7 @@ ion-segment-button {
     "controls controls controls"
     "start-stop start-stop start-stop";*/
   //grid-area: bottom;
+  /* any styling for bottom area if needed */
 }
 
 .start-stop {
@@ -249,41 +250,160 @@ ion-segment-button {
 #high-note {
   width: 100%;
 }
-
 // aleksandra add code
 
+/*
+  Container for top + middle to stack in portrait, row in landscape
+*/
+.top-middle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: white;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 0 8px;
+}
+
 @media screen and (orientation: landscape) {
-  #container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    transform-origin: center center;
-  }
-
   .top-middle-container {
-    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 
-  // .bottom {
-  //   width: 50%;
-  // }
-
-  .controls {
-    //flex-direction: column;
-    gap: 10px;
-    margin-top: 0px;
+  .top {
+    margin-bottom: 0;
+    margin-right: 1rem;
   }
 
-  @media screen and (max-height: 600px) {
-    .landscape-d-none {
-      display: none;
-    }
-    .controls-margin {
-      margin-top: 40px;
-    }
-    .top-middle-container {
-      display: flex;
-    }
+  .middle {
+    margin-top: 0;
   }
+}
+
+@media screen and (max-height: 600px) {
+  .landscape-d-none {
+    display: none;
+  }
+  .controls-margin {
+    margin-top: 40px;
+  }
+  .top-middle-container {
+    display: flex;
+  }
+}
+
+/* changed */
+::ng-deep {
+  /* define theme classes on <body> */
+  body.grey-theme {
+    --ion-background-color: #616161 !important;
+    --ion-text-color: #ffffff !important;
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.tan-theme {
+    --ion-background-color: #d2b48c !important;
+    --ion-text-color: #4a4a4a !important;
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.white-theme {
+    --ion-background-color: #ffffff !important;
+    --ion-text-color: #000000 !important;
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.amber-theme {
+    --ion-background-color: #fff8e1 !important;
+    --ion-text-color: #4a4a4a !important;
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  /* container overrides for all themes */
+  body.grey-theme ion-content,
+  body.grey-theme ion-header,
+  body.grey-theme ion-page,
+  body.grey-theme ion-toolbar,
+  body.grey-theme ion-menu,
+  body.grey-theme .top-middle-container,
+  body.grey-theme .top,
+  body.grey-theme .middle {
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.tan-theme ion-content,
+  body.tan-theme ion-header,
+  body.tan-theme ion-page,
+  body.tan-theme ion-toolbar,
+  body.tan-theme ion-menu,
+  body.tan-theme .top-middle-container,
+  body.tan-theme .top,
+  body.tan-theme .middle {
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.white-theme ion-content,
+  body.white-theme ion-header,
+  body.white-theme ion-page,
+  body.white-theme ion-toolbar,
+  body.white-theme ion-menu,
+  body.white-theme .top-middle-container,
+  body.white-theme .top,
+  body.white-theme .middle {
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.amber-theme ion-content,
+  body.amber-theme ion-header,
+  body.amber-theme ion-page,
+  body.amber-theme ion-toolbar,
+  body.amber-theme ion-menu,
+  body.amber-theme .top-middle-container,
+  body.amber-theme .top,
+  body.amber-theme .middle {
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+}
+
+/* updated */
+.theme-boxes {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem 0 1rem 1rem;
+}
+
+.color-box {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #000;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.grey-box {
+  background-color: #616161;
+}
+
+.tan-box {
+  background-color: #d2b48c;
+}
+
+.white-box {
+  background-color: #ffffff;
+}
+
+.amber-box {
+  background-color: #fff8e1;
 }
