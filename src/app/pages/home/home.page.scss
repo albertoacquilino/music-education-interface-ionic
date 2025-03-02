@@ -1,10 +1,10 @@
 /*
- * This file is part of the Music Education Interface project.
- * Copyright (C) 2025 Alberto Acquilino
- *
- * Licensed under the GNU Affero General Public License v3.0.
- * See the LICENSE file for more details.
- */
+  This file is part of the Music Education Interface project.
+  Copyright (C) 2025 Alberto Acquilino
+
+  Licensed under the GNU Affero General Public License v3.0.
+  See the LICENSE file for more details.
+*/
 
 ion-modal {
   --height: auto;
@@ -116,18 +116,19 @@ ion-segment-button {
   min-width: fit-content;
 }
 
-/* CHANGED: Add margin-top + black border around the staff */
+/*
+  The .score class to position and style the staff box
+*/
 .score {
-  margin-top: 1.5rem !important; /* ADDED: bring staff lower */
-  border: 2px solid black;       /* ADDED: black border box */
-  border-radius: 6px;            /* ADDED */
-  padding: 1rem;                 /* ADDED: so staff has some space inside */
-  background-color: white;       /* ADDED: inside the black border */
+  margin-top: 1.5rem !important;
+  border: 2px solid black;
+  border-radius: 6px;
+  padding: 1rem;
+  background-color: white;
   text-align: center;
-
   width: 100%;
   max-width: 600px;
-  margin: 1.5rem auto 0 auto;    /* keep it centered horizontally */
+  margin: 1.5rem auto 0 auto;
   grid-area: score;
 }
 
@@ -292,4 +293,117 @@ ion-segment-button {
   .top-middle-container {
     display: flex;
   }
+}
+
+/* changed */
+::ng-deep {
+  /* define theme classes on <body> */
+  body.grey-theme {
+    --ion-background-color: #616161 !important;
+    --ion-text-color: #ffffff !important;
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.tan-theme {
+    --ion-background-color: #d2b48c !important;
+    --ion-text-color: #4a4a4a !important;
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.white-theme {
+    --ion-background-color: #ffffff !important;
+    --ion-text-color: #000000 !important;
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.amber-theme {
+    --ion-background-color: #fff8e1 !important;
+    --ion-text-color: #4a4a4a !important;
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  /* container overrides for all themes */
+  body.grey-theme ion-content,
+  body.grey-theme ion-header,
+  body.grey-theme ion-page,
+  body.grey-theme ion-toolbar,
+  body.grey-theme ion-menu,
+  body.grey-theme .top-middle-container,
+  body.grey-theme .top,
+  body.grey-theme .middle {
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.tan-theme ion-content,
+  body.tan-theme ion-header,
+  body.tan-theme ion-page,
+  body.tan-theme ion-toolbar,
+  body.tan-theme ion-menu,
+  body.tan-theme .top-middle-container,
+  body.tan-theme .top,
+  body.tan-theme .middle {
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.white-theme ion-content,
+  body.white-theme ion-header,
+  body.white-theme ion-page,
+  body.white-theme ion-toolbar,
+  body.white-theme ion-menu,
+  body.white-theme .top-middle-container,
+  body.white-theme .top,
+  body.white-theme .middle {
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+
+  body.amber-theme ion-content,
+  body.amber-theme ion-header,
+  body.amber-theme ion-page,
+  body.amber-theme ion-toolbar,
+  body.amber-theme ion-menu,
+  body.amber-theme .top-middle-container,
+  body.amber-theme .top,
+  body.amber-theme .middle {
+    background-color: var(--ion-background-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+}
+
+/* updated */
+.theme-boxes {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem 0 1rem 1rem;
+}
+
+.color-box {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #000;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.grey-box {
+  background-color: #616161;
+}
+
+.tan-box {
+  background-color: #d2b48c;
+}
+
+.white-box {
+  background-color: #ffffff;
+}
+
+.amber-box {
+  background-color: #fff8e1;
 }

@@ -16,6 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { range } from 'lodash';
 import { Observable, interval, tap } from 'rxjs';
+
 import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
 import { NoteSelectorComponent } from 'src/app/components/note-selector/note-selector.component';
 import { ScoreViewComponent } from 'src/app/components/score/score.component';
@@ -30,6 +31,7 @@ import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { TabsService } from 'src/app/services/tabs.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
+
 import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from '../../constants';
 import { BeatService } from '../../services/beat.service';
 
@@ -53,9 +55,8 @@ export class HomePage implements OnInit {
   @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
 
   /**
-  * Indicates the mode - tuner or trumpet
-  */
-
+   * Indicates the mode - tuner or trumpet
+   */
   mode = 'trumpet';
 
   /**
@@ -63,14 +64,13 @@ export class HomePage implements OnInit {
    */
   muteAlert = false;
 
-
   /**
    * Indicates whether to use flats and sharps.
    */
   useFlatsAndSharps = false;
 
   /**
-   * Indicats wheter or not dynamics are enabled.
+   * Indicates whether or not dynamics are enabled.
    */
   useDynamics = false;
 
@@ -127,12 +127,12 @@ export class HomePage implements OnInit {
   /**
    * The trumpet position.
    */
-  trumpetPosition = "assets/images/trumpet_positions/pos_1.png"
+  trumpetPosition = 'assets/images/trumpet_positions/pos_1.png';
 
   /**
    * The score image.
    */
-  scoreImage = "assets/images/score_images/G2.svg";
+  scoreImage = 'assets/images/score_images/G2.svg';
 
   /**
    * The trumpet buttons. For each note, the buttons that should be highlighted.
@@ -157,16 +157,17 @@ export class HomePage implements OnInit {
   /**
    * The observable for the reference Frequency.
    */
-
   refFrequencyValue$!: number;
 
   /**
    * An array to get all the notes played.
    */
-
   collectedMeansObject: { [key: string]: number[] } = {};
 
-
+  /**
+   * A property to store the currently active theme
+   */
+  currentTheme: string = 'default'; // so TS doesn't complain
 
   /**
    * Creates an instance of HomePage.
@@ -175,7 +176,7 @@ export class HomePage implements OnInit {
    * @param _sounds - The sounds service.
    * @param firebase - The Firebase service.
    * @param alertController - The alert controller.
-   * @param refFrequencyService : The Reference Frequency Service
+   * @param refFrequencyService - The Reference Frequency Service
    */
   constructor(
     private _picker: PickerController,
@@ -193,12 +194,13 @@ export class HomePage implements OnInit {
     );
     this.playing$ = this._tempo.playing$.asObservable();
 
+    // Check if device is muted every second
     interval(1000).subscribe(async () => this.checkMuted());
   }
 
   ngOnInit(): void {
     console.log(localStorage.getItem('LoggedInUser'));
-    this.refFrequencyService.getRefFrequency().subscribe(value => {
+    this.refFrequencyService.getRefFrequency().subscribe((value: number) => {
       this.refFrequencyValue$ = value;
     });
     this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
@@ -207,13 +209,13 @@ export class HomePage implements OnInit {
     this.highNote = this.retrieveAndParseFromLocalStorage('highNote', INITIAL_NOTE);
   }
 
-  ionViewDidEnter(): void {
-
-  }
+  ionViewDidEnter(): void {}
 
   ionViewWillLeave(): void {
     this._tempo.stop();
-    if (this.mode == "tuner") this.chromaticTuner.stop();
+    if (this.mode === 'tuner') {
+      this.chromaticTuner.stop();
+    }
   }
 
   retrieveAndParseFromLocalStorage(key: string, defaultValue: any): any {
@@ -223,12 +225,10 @@ export class HomePage implements OnInit {
 
   /**
    * Checks if the device is muted and displays an alert if it is.
-   * @returns void
    */
   async checkMuted() {
     try {
       const muted = await Mute.isMuted();
-
       if (!muted.value || this.muteAlert) {
         return;
       }
@@ -240,40 +240,30 @@ export class HomePage implements OnInit {
       });
       alert.present();
     } catch (e) {
+      // optional catch
     }
-
   }
 
   /**
-   * Switches the mode.
-   * @param event - The event.
-   * @returns void
+   * Switches the mode (tuner or trumpet)
    */
-
   switchMode(event: any) {
-    if (this.mode == 'tuner') {
+    if (this.mode === 'tuner') {
       this.chromaticTuner.stop();
     }
     this.mode = event.detail.value;
-    console.log(event);
+    console.log('Mode switched to:', this.mode);
   }
 
-  /**
-   * Switches the use of flats and sharps.
-   * @param event - The event.
-   * @returns void
-   */
   switchUseFlatsAndSharps(event: any) {
     this.useFlatsAndSharps = event.detail.checked;
     localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
-    console.log(event);
     if (!this.useFlatsAndSharps) {
-      // check that low and high notes are not on accidentals
-      // if they are, move them up by a half step
-      if (NOTES[this.lowNote].length == 2) {
+      // check that low/high notes not accidentals
+      if (NOTES[this.lowNote].length === 2) {
         this.lowNote++;
       }
-      if (NOTES[this.highNote].length == 2) {
+      if (NOTES[this.highNote].length === 2) {
         this.highNote++;
       }
     }
@@ -287,15 +277,11 @@ export class HomePage implements OnInit {
       this._sounds.setVolume(1.0);
     }
   }
-  /**
-   * Changes the low note.
-   * @param index - The index.
-   * @returns void
-   */
+
   changeLowNote(index: number) {
     this.lowNote = index;
     if (!this.useFlatsAndSharps) {
-      if (NOTES[this.lowNote].length == 2) {
+      if (NOTES[this.lowNote].length === 2) {
         this.lowNote++;
       }
     }
@@ -305,81 +291,59 @@ export class HomePage implements OnInit {
     this.saveNotes();
   }
 
-  /**
-   * Changes the high note.
-   * @param index - The index.
-   * @returns void
-   */
   changeHighNote(index: number) {
     this.highNote = index;
     if (!this.useFlatsAndSharps) {
-      if (NOTES[this.highNote].length == 2) {
+      if (NOTES[this.highNote].length === 2) {
         this.highNote--;
       }
     }
-
     if (this.highNote < this.lowNote) {
       this.lowNote = this.highNote;
     }
     this.saveNotes();
   }
+
   saveNotes() {
     localStorage.setItem('lowNote', this.lowNote.toString());
     localStorage.setItem('highNote', this.highNote.toString());
   }
-  /**
-   * Updates the position of the trumpet image based on the given note.
-   * @param note - The note to update the trumpet position to.
-   * @returns void
-   */
+
   updateTrumpetPosition(note: number) {
     const trumpetImg = POSITIONS[note];
     this.trumpetBtns = TRUMPET_BTN[note];
     this.trumpetPosition = `assets/images/trumpet_positions/${trumpetImg}.png`;
   }
 
-  /**
-   * Updates the score image based on the given note.
-   * @param noteNumber - The index of the note to use for updating the score image.
-   * @returns void
-   */
   updateScore(noteNumber: number) {
-    const _notes = NOTES[noteNumber];
-    const scoreImage = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
-    this.scoreImage = `assets/images/score_images/${scoreImage}.svg`
-
+    const possibleNotes = NOTES[noteNumber];
+    const noteStr = possibleNotes.length === 1
+      ? possibleNotes[0]
+      : possibleNotes[Math.floor(Math.random() * 2)];
+    this.scoreImage = `assets/images/score_images/${noteStr}.svg`;
 
     if (this.useDynamics) {
       const dynamic = DYNAMICS[Math.floor(Math.random() * DYNAMICS.length)];
       this._sounds.setVolume(dynamic.volume);
-      this.score = scoreFromNote(scoreImage, dynamic.label);
+      this.score = scoreFromNote(noteStr, dynamic.label);
     } else {
-      this.score = scoreFromNote(scoreImage);
+      this.score = scoreFromNote(noteStr);
     }
   }
 
-  /**
-   * Generates a random note within the range of lowNote and highNote.
-   * @returns {number} The generated note.
-   */
   nextNote() {
     const next = Math.round(Math.random() * (this.highNote - this.lowNote)) + this.lowNote;
     if (!this.useFlatsAndSharps) {
-      if (NOTES[next].length == 2) {
+      if (NOTES[next].length === 2) {
         return next + 1;
       }
     }
     return next;
   }
 
-  /**
-   * Handles the interval for the given tempo.
-   * @param {AppBeat} tempo - The tempo to handle the interval for.
-   * @returns void
-   */
   intervalHandler(tempo: AppBeat) {
-    if (tempo.beat == 0) {
-      if (tempo.measure == 0) {
+    if (tempo.beat === 0) {
+      if (tempo.measure === 0) {
         this.currentNote = this.nextNote();
         this._sounds.currentNote = this.currentNote;
         this.updateScore(this.currentNote);
@@ -388,8 +352,8 @@ export class HomePage implements OnInit {
 
       switch (tempo.measure) {
         case 0:
-          this.currentAction = "Rest";
-          if (this.mode == 'tuner') {
+          this.currentAction = 'Rest';
+          if (this.mode === 'tuner') {
             const meansArray = this.chromaticTuner.stop();
             this.collectedMeansObject = {
               ...this.collectedMeansObject,
@@ -398,21 +362,14 @@ export class HomePage implements OnInit {
           }
           break;
         case 1:
-          this.currentAction = "Listen";
+          this.currentAction = 'Listen';
           break;
         case 2:
-          this.currentAction = "Play";
-          if (this.mode == 'tuner') {
+          this.currentAction = 'Play';
+          if (this.mode === 'tuner') {
             this.chromaticTuner.start();
           }
           break;
-      }
-
-      if (this.mode == 'trumpet') {
-        switch (tempo.measure) {
-          // case 0: this.pitchService.disconnect(); break;
-          // case 2: this.pitchService.connect();
-        }
       }
     }
 
@@ -423,12 +380,7 @@ export class HomePage implements OnInit {
       this.tabsService.setDisabled(false);
     }
   }
-  /**
-   * Toggles between starting and stopping the tempo.
-   * If the tempo is currently playing, it will stop it.
-   * If the tempo is currently stopped, it will start it.
-   * @returns void
-   */
+
   startStop() {
     if (this._tempo.playing$.value) {
       this.stop();
@@ -439,10 +391,6 @@ export class HomePage implements OnInit {
     }
   }
 
-  /**
-   * Starts the tempo and saves the current state to Firebase.
-   * @returns void
-   */
   start() {
     this.collectedMeansObject = {};
     this._tempo.start();
@@ -451,55 +399,37 @@ export class HomePage implements OnInit {
       this.lowNote,
       this.highNote,
       this.useFlatsAndSharps,
-      this.useDynamics);
+      this.useDynamics
+    );
   }
 
-  /**
-   * Stops the tempo and all audio playback, and saves the stop event to Firebase.
-   * @returns void
-   */
   stop() {
     this._tempo.stop();
-    if (this.mode == 'tuner') {
+    if (this.mode === 'tuner') {
       const meansArray = this.chromaticTuner.stop();
       this.collectedMeansObject = {
         ...this.collectedMeansObject,
         [Object.keys(this.collectedMeansObject).length + 1]: meansArray
       };
-      console.log('Collected Means', this.collectedMeansObject);
-    }
-    else if (this.mode == 'trumpet') {
-      // this.pitchService.disconnect();
     }
     Howler.stop();
     this.firebase.saveStop('interrupted', this.collectedMeansObject);
   }
 
-  /**
-   * Returns the path to the image file for the given note.
-   * @param note - The note to get the image for.
-   * @returns The path to the image file.
-   */
   getNoteImg(note: number): string {
     return `assets/images/notes_images/_${NOTES[note][0]}.png`;
   }
 
-  /**
-   * Returns a boolean indicating whether the tempo is currently playing or not.
-   * @returns {boolean} A boolean indicating whether the tempo is currently playing or not.
-   */
   isPlaying(): boolean {
     return this._tempo.playing$.value;
   }
 
   async openPicker(type: 'frequency' | 'tempo') {
-    // Check if the picker should be opened
     if (this.isPlaying()) {
       return;
     }
 
-    // create list of options to be selected
-    let options: { value: number, text: string }[];
+    let options: { value: number; text: string }[] = [];
     let selectedIndex = 0;
     let selectedValue: number;
     let rangeValues: number[] = [];
@@ -509,64 +439,55 @@ export class HomePage implements OnInit {
       selectedValue = this.refFrequencyValue$;
       rangeValues = range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1);
       unit = 'Hz';
-    } else if (type === 'tempo') {
+    } else {
       selectedValue = this.tempo$.value;
       rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
       unit = 'bpm';
     }
 
-    options = rangeValues.map(value => ({
-      value: value,
-      text: `${value} ${unit}`
+    options = rangeValues.map(val => ({
+      value: val,
+      text: `${val} ${unit}`
     }));
 
-    selectedIndex = options.findIndex(option => option.value === selectedValue);
+    selectedIndex = options.findIndex(opt => opt.value === selectedValue);
 
     const picker = await this._picker.create({
       columns: [
         {
           name: type,
-          options: options,
-          selectedIndex: selectedIndex
-        },
+          options,
+          selectedIndex
+        }
       ],
-
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel',
+          role: 'cancel'
         },
         {
           text: 'Confirm',
-          handler: (value) => {
+          handler: (val) => {
             if (type === 'frequency') {
-              this.refFrequencyValue$ = value[type].value;
+              this.refFrequencyValue$ = val[type].value;
               this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
               this.mode = 'trumpet';
-            } else if (type === 'tempo') {
-              this._tempo.setTempo(value[type].value);
+            } else {
+              this._tempo.setTempo(val[type].value);
             }
           }
-        },
-      ],
+        }
+      ]
     });
 
     await picker.present();
-
   }
 
   changeTempo(tempo: number) {
     this._tempo.setTempo(tempo);
   }
 
-
-  /**
-   * Determines whether the modal can be dismissed or not.
-   * @param data Optional data passed to the modal.
-   * @param role Optional role of the modal.
-   * @returns A Promise that resolves to a boolean indicating whether the modal can be dismissed or not.
-   */
-  async canDismiss(data?: any, role?: string) {
+  async canDismiss(_data?: any, role?: string) {
     return role !== 'gesture';
   }
 
@@ -576,43 +497,41 @@ export class HomePage implements OnInit {
 
   scaleContent() {
     const container = document.getElementById('wrapper');
-
-    // Dimensioni di base del contenitore
-    const baseWidth = container!.offsetWidth;
-    const baseHeight = container!.offsetHeight;
-
-    // Dimensioni della finestra (viewport)
+    if (!container) return;
+    const baseWidth = container.offsetWidth;
+    const baseHeight = container.offsetHeight;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-
-    // Calcola il fattore di scala per adattare sia larghezza che altezza
     const scaleX = viewportWidth / baseWidth;
-    const scaleY = viewportHeight / baseHeight * 0.8;
-
-    // Prendi il fattore di scala minimo tra larghezza e altezza
-    let scale = Math.min(scaleX, scaleY);
-
-    //lascia un margine di almeno 20%
-    //scale = scale * 0.95;
-
-    // Applica il fattore di scala al contenitore
-    container!.style.transform = `scale(${scale})`;
-
-    // Posizionamento centrale del contenitore
-    container!.style.position = 'absolute';
-    container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
-    container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
+    const scaleY = (viewportHeight / baseHeight) * 0.8;
+    const scale = Math.min(scaleX, scaleY);
+    container.style.transform = `scale(${scale})`;
+    container.style.position = 'absolute';
+    container.style.left = `calc(50% - ${(baseWidth * scale) / 2}px)`;
+    container.style.top = `calc(50% - ${(baseHeight * scale) / 2}px)`;
   }
 
-
-  //on component load, scale the content
   ngAfterViewInit() {
-    //on event resize, scale the content
     window.addEventListener('resize', () => this.scaleContent());
     window.addEventListener('load', () => this.scaleContent());
-
-    // 
     setTimeout(() => this.scaleContent(), 250);
   }
 
+  /**
+   * updated as user clicks one of the color boxes, so we apply that theme
+   */
+  applyTheme(theme: string) {
+    document.body.classList.remove('grey-theme', 'tan-theme', 'white-theme', 'amber-theme');
+    if (theme === 'grey') {
+      document.body.classList.add('grey-theme');
+    } else if (theme === 'tan') {
+      document.body.classList.add('tan-theme');
+    } else if (theme === 'white') {
+      document.body.classList.add('white-theme');
+    } else if (theme === 'amber') {
+      document.body.classList.add('amber-theme');
+    }
+    this.currentTheme = theme;
+    console.log('Theme changed to', theme);
+  }
 }

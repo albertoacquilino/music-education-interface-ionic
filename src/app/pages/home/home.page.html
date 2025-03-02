@@ -12,6 +12,7 @@
       <ion-title>Options</ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-content class="ion-padding">
     <ion-list>
       <ion-item [disabled]="isPlaying()">
@@ -44,6 +45,25 @@
         </ion-toggle>
       </ion-item>
     </ion-list>
+
+    <!-- CHANGED -->
+    <ion-label style="margin-top:1rem; font-weight:600;">Choose Theme:</ion-label>
+    <ion-row class="theme-boxes">
+      <ion-col size="2">
+        <div class="color-box grey-box" (click)="applyTheme('grey')"></div>
+      </ion-col>
+      <ion-col size="2">
+        <div class="color-box tan-box" (click)="applyTheme('tan')"></div>
+      </ion-col>
+      <ion-col size="2">
+        <div class="color-box white-box" (click)="applyTheme('white')"></div>
+      </ion-col>
+      <ion-col size="2">
+        <div class="color-box amber-box" (click)="applyTheme('amber')"></div>
+      </ion-col>
+    </ion-row>
+
+
   </ion-content>
 </ion-menu>
 
@@ -54,8 +74,8 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>
-          &lt;!&ndash; <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
-          <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> &ndash;&gt;
+          &lt;!-- <img src="assets/images/mei-logo.png" alt="logo" class="logo logo-black">
+          <img src="assets/images/mei-logo-white.png" alt="logo" class="logo logo-white"> --&gt;
         </ion-title>
         <ion-buttons slot="end">
           <ion-buttons (click)="goToProfile()">
