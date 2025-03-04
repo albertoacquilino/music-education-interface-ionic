@@ -188,6 +188,5 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
         element.scrollTo({ top: snapTo, behavior: 'smooth' });
     }
     
-    
 }
 
