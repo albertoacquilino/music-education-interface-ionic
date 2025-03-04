@@ -6,7 +6,7 @@
  * See the LICENSE file for more details.
  */
 
-ion-modal {
+ ion-modal {
   --height: auto;
 }
 
@@ -263,8 +263,9 @@ ion-segment-button {
 
   .top-middle-container {
     width: 100%;
-  }
 
+  }
+}
   // .bottom {
   //   width: 50%;
   // }
@@ -286,4 +287,80 @@ ion-segment-button {
       display: flex;
     }
   }
+
+//   .content-container {
+//     background-color: whitesmoke;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     height: 100%;
+//   }
+  
+//   .center-image {
+//     opacity:0.4;
+//     width: 600px; /* Adjust the size as needed */
+//     display: flex;
+//     transition: opacity 0.3s ease;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+// /* Space around the image */
+//   }
+  
+// .center-image:hover{
+//   opacity:1;
+// }
+// .p1 {
+//   font-family: 'Brush Script MT'; /* Ensure this font is available */
+//   text-align: center; /* Center the text */
+//   margin-top: 10px; /* Space above the text */
+//   margin-bottom: 200px; /* Space below the text */
+//   color: black; /* Text color */
+//   font-size: 10vw; /* Use viewport width for responsive font size */
+//   display: flex; /* Use flexbox for alignment */
+//   justify-content: center; /* Center the text horizontally */
+//   align-items: center; /* Center the text vertically */
+//   width: 100%; /* Full width of the container */
+//   white-space: nowrap; /* Prevent text from wrapping */
+//   overflow: hidden; /* Hide overflow */
+//   text-overflow: ellipsis; /* Add ellipsis for overflow text */
+// }
+
+.content-container {
+  background-color: whitesmoke; /* Background color for the container */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+  justify-content: center; /* Center children vertically */
+  height: 100%; /* Full height of the parent */
+  padding: 20px; /* Add some padding to avoid text being too close to edges */
+}
+
+.center-image {
+  opacity: 0.4; /* Initial opacity */
+  width: 80%; /* Use a percentage for responsiveness */
+  max-width: 600px; /* Maximum width for larger screens */
+  transition: opacity 0.3s ease; /* Smooth transition for opacity change */
+  margin-bottom: 10px; /* Space below the image */
+}
+
+.center-image:hover {
+  opacity: 1; /* Fully opaque on hover */
+}
+
+.p1 {
+  font-family: 'Brush Script MT'; /* Ensure this font is available */
+  text-align: center; /* Center the text */
+  margin-top: 0;
+  margin-bottom: 100px; /* Remove margins to keep text close to the image */
+  color: black; /* Text color */
+  font-size: 5vw; /* Use viewport width for responsive font size */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center the text horizontally */
+  align-items: center; /* Center the text vertically */
+  width: 100%; /* Ensure it takes full width */
 }
