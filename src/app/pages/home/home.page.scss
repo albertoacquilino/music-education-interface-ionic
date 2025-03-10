@@ -100,7 +100,15 @@ ion-modal {
   justify-content: center;
   max-width: 400px;
 }
-
+.clarinet {
+  grid-area: clarinet;
+  display: flex;
+  padding: 1em;
+  align-items: center;
+  justify-content: center;
+  max-width: 100px;
+  margin-left: 150px;
+}
 .chromatic-tuner {
   grid-area: chromatic-tuner;
   display: flex;
@@ -121,7 +129,8 @@ ion-segment-button {
 }
 
 .score {
-  margin-top: -20px;
+  margin-top:30px;
+  margin-bottom:10px;
   grid-area: score;
   text-align: center;
 
@@ -212,11 +221,13 @@ ion-segment-button {
 .high-note-wrapper {
   //flex: 1;
   //border-right: 1px solid lightgray;
-  padding: 0 8px;
+  // padding:0 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  //padding-top: 10px;
+  padding-right: 30px;
 }
 
 .high-note-wrapper {
@@ -235,11 +246,14 @@ ion-segment-button {
 #trumpet-position {
   width: 100%;
 }
+#clarinet-position{
+  width:10%;
+}
 
 #score-image {
   width: 100%;
   //margin: 10px;
-  border-radius: 6px;
+  border-radius:6px;
 }
 
 #low-note {

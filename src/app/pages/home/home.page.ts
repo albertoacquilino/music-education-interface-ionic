@@ -30,7 +30,7 @@ import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { TabsService } from 'src/app/services/tabs.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
-import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, NOTES, POSITIONS, TRUMPET_BTN } from '../../constants';
+import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, TRUMPET_NOTES, CLARINET_NOTES, POSITIONS, TRUMPET_BTN,CLARINET_POSITIONS } from '../../constants';
 import { BeatService } from '../../services/beat.service';
 
 
@@ -51,10 +51,11 @@ import { BeatService } from '../../services/beat.service';
  */
 export class HomePage implements OnInit {
   @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
-
   /**
   * Indicates the mode - tuner or trumpet
   */
+  selectedInstrument='trumpet';
+  NOTES: string[][]= TRUMPET_NOTES;
 
   mode = 'trumpet';
 
@@ -112,7 +113,7 @@ export class HomePage implements OnInit {
   /**
    * The score.
    */
-  score: Score = scoreFromNote(NOTES[this.currentNote][0]);
+  score: Score = scoreFromNote(this.NOTES[this.currentNote][0],this.selectedInstrument);
 
   /**
    * The audio nodes.
@@ -127,7 +128,9 @@ export class HomePage implements OnInit {
   /**
    * The trumpet position.
    */
-  trumpetPosition = "assets/images/trumpet_positions/pos_1.png"
+  trumpetPosition ="assets/images/trumpet_positions/pos_1.png";
+  clarinetPosition="assets/images/clarinet_positions/A3.svg";
+
 
   /**
    * The score image.
@@ -142,7 +145,7 @@ export class HomePage implements OnInit {
   /**
    * The note images.
    */
-  noteImages = NOTES.map(note => `assets/images/trumpet_notes_images/_${note[0]}.svg`);
+  noteImages: string[]=this.getNoteImages(); 
 
   /**
    * The observable for the beat.
@@ -178,6 +181,7 @@ export class HomePage implements OnInit {
    * @param refFrequencyService : The Reference Frequency Service
    */
   constructor(
+    private soundsService: SoundsService,
     private _picker: PickerController,
     private _tempo: BeatService,
     private _sounds: SoundsService,
@@ -188,6 +192,8 @@ export class HomePage implements OnInit {
     private pitchService: PitchService,
     private router: Router,
   ) {
+    this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
+  
     this.beat$ = this._tempo.tick$.pipe(
       tap((tempo: AppBeat) => this.intervalHandler(tempo))
     );
@@ -195,7 +201,19 @@ export class HomePage implements OnInit {
 
     interval(1000).subscribe(async () => this.checkMuted());
   }
+  private getNotesForInstrument(instrument: string | null): string[][] {
+    if (instrument === 'trumpet') {
+      return TRUMPET_NOTES; // Use trumpet notes
+    } else if (instrument === 'clarinet') {
+      return CLARINET_NOTES; // Use clarinet notes
+    }
+    return []; // Return an empty array if no valid instrument is selected
+  }
+  private getNoteImages(): string[] {
+    return this.NOTES.map(note => `assets/images/${this.selectedInstrument}_notes_images/_${note[0]}.svg`);
+  }
 
+  
   ngOnInit(): void {
     console.log(localStorage.getItem('LoggedInUser'));
     this.refFrequencyService.getRefFrequency().subscribe(value => {
@@ -220,7 +238,13 @@ export class HomePage implements OnInit {
     const storedValue = localStorage.getItem(key);
     return storedValue ? JSON.parse(storedValue) : defaultValue;
   }
-
+  selectInstrument(event: any) {
+    this.selectedInstrument = event.detail.value; // Store the selected instrument
+    console.log('Selected Instrument:', this.selectedInstrument);
+    this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
+    this.noteImages = this.getNoteImages(); 
+    this.soundsService.setInstrument(this.selectedInstrument);
+  }
   /**
    * Checks if the device is muted and displays an alert if it is.
    * @returns void
@@ -270,10 +294,10 @@ export class HomePage implements OnInit {
     if (!this.useFlatsAndSharps) {
       // check that low and high notes are not on accidentals
       // if they are, move them up by a half step
-      if (NOTES[this.lowNote].length == 2) {
+      if (this.NOTES[this.lowNote].length == 2) {
         this.lowNote++;
       }
-      if (NOTES[this.highNote].length == 2) {
+      if (this.NOTES[this.highNote].length == 2) {
         this.highNote++;
       }
     }
@@ -283,7 +307,7 @@ export class HomePage implements OnInit {
     this.useDynamics = event.detail.checked;
     localStorage.setItem('useDynamics', JSON.stringify(this.useDynamics));
     if (!this.useDynamics) {
-      this.score = scoreFromNote(NOTES[this.currentNote][0]);
+      this.score = scoreFromNote(this.NOTES[this.currentNote][0],this.selectedInstrument);
       this._sounds.setVolume(1.0);
     }
   }
@@ -295,7 +319,7 @@ export class HomePage implements OnInit {
   changeLowNote(index: number) {
     this.lowNote = index;
     if (!this.useFlatsAndSharps) {
-      if (NOTES[this.lowNote].length == 2) {
+      if (this.NOTES[this.lowNote].length == 2) {
         this.lowNote++;
       }
     }
@@ -313,7 +337,7 @@ export class HomePage implements OnInit {
   changeHighNote(index: number) {
     this.highNote = index;
     if (!this.useFlatsAndSharps) {
-      if (NOTES[this.highNote].length == 2) {
+      if (this.NOTES[this.highNote].length == 2) {
         this.highNote--;
       }
     }
@@ -337,14 +361,17 @@ export class HomePage implements OnInit {
     this.trumpetBtns = TRUMPET_BTN[note];
     this.trumpetPosition = `assets/images/trumpet_positions/${trumpetImg}.png`;
   }
-
+  updateClarinetPosition(note: number) {
+    const clarinetImg = CLARINET_POSITIONS[note];
+    this.clarinetPosition = `assets/images/clarinet_positions/${clarinetImg}.svg`;
+  }
   /**
    * Updates the score image based on the given note.
    * @param noteNumber - The index of the note to use for updating the score image.
    * @returns void
    */
   updateScore(noteNumber: number) {
-    const _notes = NOTES[noteNumber];
+    const _notes = this.NOTES[noteNumber];
     const scoreImage = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
     this.scoreImage = `assets/images/score_images/${scoreImage}.svg`
 
@@ -354,7 +381,7 @@ export class HomePage implements OnInit {
       this._sounds.setVolume(dynamic.volume);
       this.score = scoreFromNote(scoreImage, dynamic.label);
     } else {
-      this.score = scoreFromNote(scoreImage);
+      this.score = scoreFromNote(scoreImage,this.selectedInstrument);
     }
   }
 
@@ -365,7 +392,7 @@ export class HomePage implements OnInit {
   nextNote() {
     const next = Math.round(Math.random() * (this.highNote - this.lowNote)) + this.lowNote;
     if (!this.useFlatsAndSharps) {
-      if (NOTES[next].length == 2) {
+      if (this.NOTES[next].length == 2) {
         return next + 1;
       }
     }
@@ -383,7 +410,11 @@ export class HomePage implements OnInit {
         this.currentNote = this.nextNote();
         this._sounds.currentNote = this.currentNote;
         this.updateScore(this.currentNote);
+        if(this.selectedInstrument==="trumpet"){
         this.updateTrumpetPosition(this.currentNote);
+        }else if(this.selectedInstrument==="clarinet"){
+          this.updateClarinetPosition(this.currentNote);
+        }
       }
 
       switch (tempo.measure) {
@@ -480,9 +511,7 @@ export class HomePage implements OnInit {
    * @param note - The note to get the image for.
    * @returns The path to the image file.
    */
-  getNoteImg(note: number): string {
-    return `assets/images/trumpet_notes_images/_${NOTES[note][0]}.png`;
-  }
+
 
   /**
    * Returns a boolean indicating whether the tempo is currently playing or not.
@@ -491,7 +520,11 @@ export class HomePage implements OnInit {
   isPlaying(): boolean {
     return this._tempo.playing$.value;
   }
-
+  //return this.NOTES.map(note => `
+  getNoteImg(note: number): string {
+   return 'assets/images/${this.selectedInstrument}_notes_images/_${this.NOTES[note][0]}.png';
+    //return `assets/images/${this.NOTES}_notes_images/_${this.NOTES[note][0]}.png`;
+  }
   async openPicker(type: 'frequency' | 'tempo') {
     // Check if the picker should be opened
     if (this.isPlaying()) {
