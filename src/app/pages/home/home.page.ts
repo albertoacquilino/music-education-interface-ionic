@@ -64,7 +64,7 @@ export class HomePage implements OnInit {
    */
   muteAlert = false;
 
-
+  
   /**
    * Indicates whether to use flats and sharps.
    */
@@ -219,6 +219,15 @@ export class HomePage implements OnInit {
     this.refFrequencyService.getRefFrequency().subscribe(value => {
       this.refFrequencyValue$ = value;
     });
+    const savedInstrument = localStorage.getItem('selectedInstrument');
+
+  if (savedInstrument) {
+    this.selectedInstrument = savedInstrument;
+    this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
+    this.noteImages = this.getNoteImages();
+    this.soundsService.setInstrument(this.selectedInstrument);
+    this.mode = this.selectedInstrument;
+  }
     this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
     this.useDynamics = this.retrieveAndParseFromLocalStorage('useDynamics', false);
     this.lowNote = this.retrieveAndParseFromLocalStorage('lowNote', INITIAL_NOTE);
@@ -240,10 +249,22 @@ export class HomePage implements OnInit {
   }
   selectInstrument(event: any) {
     this.selectedInstrument = event.detail.value; // Store the selected instrument
+      this.mode = this.selectedInstrument;  // Set mode to the same value as selected instrument
     console.log('Selected Instrument:', this.selectedInstrument);
     this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
     this.noteImages = this.getNoteImages(); 
     this.soundsService.setInstrument(this.selectedInstrument);
+
+    // Save the current state to local storage
+  this.saveCurrentStateToLocalStorage();
+
+  }
+  private saveCurrentStateToLocalStorage() {
+    localStorage.setItem('selectedInstrument', this.selectedInstrument);
+    localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
+    localStorage.setItem('useDynamics', JSON.stringify(this.useDynamics));
+    localStorage.setItem('lowNote', this.lowNote.toString());
+    localStorage.setItem('highNote', this.highNote.toString());
   }
   /**
    * Checks if the device is muted and displays an alert if it is.

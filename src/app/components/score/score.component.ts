@@ -27,7 +27,7 @@ import { RenderContext, Renderer } from 'vexflow';
  */
 @Component({
   selector: 'score-view',
-  template: `<div id="score" style="background-color: white;"></div>`,
+  template: `<div id="score" style="background-color: white;transform: scale(0.9);"></div>`,
   styleUrls: [],
   standalone: true,
   imports: [CommonModule]
@@ -119,7 +119,7 @@ export class ScoreViewComponent implements AfterViewInit {
     for (const [index, measure] of score.measures.entries()) {
       // Measure 1
       if (staveMeasure === null) {
-        staveMeasure = new Flow.Stave(10, 0, measureWidth);
+        staveMeasure = new Flow.Stave(10, 20, measureWidth);
         if (score.clef) {
           staveMeasure.addClef(score.clef);
         }
@@ -130,7 +130,7 @@ export class ScoreViewComponent implements AfterViewInit {
           staveMeasure.addTimeSignature(score.timeSignature);
         }
       } else {
-        staveMeasure = new Flow.Stave(staveMeasure.getWidth() + staveMeasure.getX(), 0, measureWidth);
+        staveMeasure = new Flow.Stave(staveMeasure.getWidth() + staveMeasure.getX(), 20, measureWidth);
       }
 
       if (score.dynamic) {
