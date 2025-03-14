@@ -13,8 +13,6 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Mute } from '@capgo/capacitor-mute';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { range } from 'lodash';
 import { Observable, interval, tap } from 'rxjs';
 import { ChromaticTunerComponent } from 'src/app/components/chromatic-tuner/chromatic-tuner.component';
 import { NoteSelectorComponent } from 'src/app/components/note-selector/note-selector.component';
@@ -79,16 +77,6 @@ export class HomePage implements OnInit {
    * The audio context used for playing sounds.
    */
   audioContext = new AudioContext();
-
-  /**
-   * The FontAwesome icon for a circle chevron down.
-   */
-  faCircleChevronDown = faCircleChevronDown;
-
-  /**
-   * The FontAwesome icon for a circle chevron up.
-   */
-  faCircleChevronUp = faCircleChevronUp;
 
   /**
    * The observable for the tempo.
@@ -190,7 +178,7 @@ export class HomePage implements OnInit {
     private refFrequencyService: RefFreqService,
     private tabsService: TabsService,
     private pitchService: PitchService,
-    private router: Router,
+    private router: Router
   ) {
     this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
   
@@ -218,24 +206,63 @@ export class HomePage implements OnInit {
     console.log(localStorage.getItem('LoggedInUser'));
     this.refFrequencyService.getRefFrequency().subscribe(value => {
       this.refFrequencyValue$ = value;
+      localStorage.setItem('refFrequencyValue', value.toString());
     });
     const savedInstrument = localStorage.getItem('selectedInstrument');
 
-  if (savedInstrument) {
-    this.selectedInstrument = savedInstrument;
-    this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
-    this.noteImages = this.getNoteImages();
-    this.soundsService.setInstrument(this.selectedInstrument);
-    this.mode = this.selectedInstrument;
-  }
+    if (savedInstrument) {
+      this.selectedInstrument = savedInstrument;
+      this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
+      this.noteImages = this.getNoteImages();
+      this.soundsService.setInstrument(this.selectedInstrument);
+      this.mode = this.selectedInstrument;
+    }
+
+    // Load all settings from localStorage
     this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
     this.useDynamics = this.retrieveAndParseFromLocalStorage('useDynamics', false);
     this.lowNote = this.retrieveAndParseFromLocalStorage('lowNote', INITIAL_NOTE);
     this.highNote = this.retrieveAndParseFromLocalStorage('highNote', INITIAL_NOTE);
+    
+    // Check if we have a saved tempo and set it
+    const savedTempo = this.retrieveAndParseFromLocalStorage('tempo', null);
+    if (savedTempo !== null) {
+      this._tempo.setTempo(savedTempo);
+    }
   }
 
   ionViewDidEnter(): void {
-
+    // Set up event listener for select open/close
+    const selectElement = document.querySelector('.instrument-select');
+    const wrapperElement = document.querySelector('.gradient-select-wrapper');
+    
+    if (selectElement && wrapperElement) {
+      // Initial setup
+      const updateSelectedText = () => {
+        const selectedTextElement = document.querySelector('.selected-text');
+        if (selectedTextElement) {
+          const instrument = this.selectedInstrument;
+          selectedTextElement.textContent = instrument.charAt(0).toUpperCase() + instrument.slice(1);
+        }
+      };
+      
+      // Update on load
+      updateSelectedText();
+      
+      // Update on change
+      selectElement.addEventListener('ionChange', (event) => {
+        setTimeout(updateSelectedText, 50);
+      });
+      
+      // Toggle arrow on focus/blur
+      selectElement.addEventListener('ionFocus', () => {
+        wrapperElement.classList.add('select-expanded');
+      });
+      
+      selectElement.addEventListener('ionBlur', () => {
+        wrapperElement.classList.remove('select-expanded');
+      });
+    }
   }
 
   ionViewWillLeave(): void {
@@ -247,6 +274,7 @@ export class HomePage implements OnInit {
     const storedValue = localStorage.getItem(key);
     return storedValue ? JSON.parse(storedValue) : defaultValue;
   }
+  
   selectInstrument(event: any) {
     this.selectedInstrument = event.detail.value; // Store the selected instrument
       this.mode = this.selectedInstrument;  // Set mode to the same value as selected instrument
@@ -256,16 +284,35 @@ export class HomePage implements OnInit {
     this.soundsService.setInstrument(this.selectedInstrument);
 
     // Save the current state to local storage
-  this.saveCurrentStateToLocalStorage();
-
+    this.saveCurrentStateToLocalStorage();
   }
+  
   private saveCurrentStateToLocalStorage() {
     localStorage.setItem('selectedInstrument', this.selectedInstrument);
     localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
     localStorage.setItem('useDynamics', JSON.stringify(this.useDynamics));
     localStorage.setItem('lowNote', this.lowNote.toString());
     localStorage.setItem('highNote', this.highNote.toString());
+    localStorage.setItem('refFrequencyValue', this.refFrequencyValue$.toString());
+    localStorage.setItem('mode', this.mode);
+    this._tempo.tempo$.subscribe(tempo => {
+      localStorage.setItem('tempo', tempo.toString());
+    }).unsubscribe(); // Unsubscribe immediately after setting
   }
+  
+  // Temporary function to check if settings are saved
+  debugCheckSettings() {
+    console.log('Settings in localStorage:');
+    console.log('selectedInstrument:', localStorage.getItem('selectedInstrument'));
+    console.log('mode:', localStorage.getItem('mode'));
+    console.log('useFlatsAndSharps:', localStorage.getItem('useFlatsAndSharps'));
+    console.log('useDynamics:', localStorage.getItem('useDynamics'));
+    console.log('lowNote:', localStorage.getItem('lowNote'));
+    console.log('highNote:', localStorage.getItem('highNote'));
+    console.log('refFrequencyValue:', localStorage.getItem('refFrequencyValue'));
+    console.log('tempo:', localStorage.getItem('tempo'));
+  }
+  
   /**
    * Checks if the device is muted and displays an alert if it is.
    * @returns void
@@ -300,6 +347,18 @@ export class HomePage implements OnInit {
       this.chromaticTuner.stop();
     }
     this.mode = event.detail.value;
+    
+    // Update fingering position when switching back to instrument mode
+    if (this.mode === 'clarinet' && this.selectedInstrument === 'clarinet') {
+      // Update the clarinet position for the current note
+      this.updateClarinetPosition(this.currentNote);
+    } else if (this.mode === 'trumpet' && this.selectedInstrument === 'trumpet') {
+      // Update the trumpet position for the current note
+      this.updateTrumpetPosition(this.currentNote);
+    }
+    
+    // Save mode to localStorage
+    localStorage.setItem('mode', this.mode);
     console.log(event);
   }
 
@@ -561,11 +620,17 @@ export class HomePage implements OnInit {
 
     if (type === 'frequency') {
       selectedValue = this.refFrequencyValue$;
-      rangeValues = range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1);
+      // Generate frequency range manually instead of using range function
+      for (let i = MINREFFREQUENCY; i <= MAXREFFREQUENCY; i++) {
+        rangeValues.push(i);
+      }
       unit = 'Hz';
     } else if (type === 'tempo') {
       selectedValue = this.tempo$.value;
-      rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
+      // Generate tempo range manually instead of using range function
+      for (let i = MINTEMPO; i <= MAXTEMPO; i += 5) {
+        rangeValues.push(i);
+      }
       unit = 'bpm';
     }
 
@@ -597,6 +662,8 @@ export class HomePage implements OnInit {
               this.refFrequencyValue$ = value[type].value;
               this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
               this.mode = 'trumpet';
+              // Save all settings to localStorage
+              this.saveCurrentStateToLocalStorage();
             } else if (type === 'tempo') {
               this._tempo.setTempo(value[type].value);
             }
@@ -667,6 +734,23 @@ export class HomePage implements OnInit {
 
     // 
     setTimeout(() => this.scaleContent(), 250);
+  }
+
+  // Add this function to handle mode switching from the custom selector
+  switchToMode(newMode: string) {
+    if (this.isPlaying()) {
+      return;
+    }
+    
+    const event = {
+      detail: {
+        value: newMode
+      }
+    };
+    
+    this.switchMode(event);
+    // Save all settings to localStorage
+    this.saveCurrentStateToLocalStorage();
   }
 
 }

@@ -133,6 +133,7 @@ ion-segment-button {
   margin-bottom:10px;
   grid-area: score;
   text-align: center;
+  overflow: hidden;
 
   app-score {
     min-width: 100px;
@@ -301,3 +302,377 @@ ion-segment-button {
     }
   }
 }
+
+// Remove all the custom select styling, dark mode styles, and extra features
+.custom-select-item, .custom-select-wrapper, .select-indicator,
+.indicator-dot, .learning-tips, .mode-item, .custom-segment,
+.segment-button-custom, .frequency-item, .frequency-badge,
+.toggle-item, .practice-stats, .stats-grid, .stat-item,
+.stat-value, .stat-label, .dark-mode-item {
+  // Reset all custom styling
+}
+
+// Instrument select styling with blue gradient
+.fixed-label {
+  min-width: 140px;
+  font-weight: 500;
+  color: #424242;
+  margin-bottom: 2px;
+}
+
+.instrument-select-item {
+  padding: 12px;
+  background-color: #f5f7fa;
+  border-radius: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.selected-text {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: 500;
+  color: #2979ff;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.gradient-select-wrapper {
+  background: linear-gradient(135deg, #2979ff, #1e88e5);
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 2px;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  
+  /* Fixed, prominent arrow that's always visible */
+  &::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #2979ff;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #e3f2fd;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 10;
+    transition: transform 0.3s ease;
+  }
+  
+  &.select-expanded::after {
+    content: '▲';
+    background-color: #2979ff;
+    color: white;
+  }
+  
+  ion-select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background-color: white;
+    font-weight: 500;
+    color: transparent; /* Hide the default text */
+    margin: 0;
+    --padding-end: 36px;
+    --indicator-color: transparent !important;
+    
+    &::part(icon) {
+      opacity: 0;
+    }
+  }
+}
+
+/* Change arrow in Javascript instead of CSS for more reliability */
+.gradient-select-wrapper.select-expanded::after {
+  content: '▲';
+}
+
+/* Add this style to help debug and ensure proper arrow display */
+.instrument-select {
+  --padding-end: 36px !important;
+  
+  &::part(text) {
+    margin-right: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// New styles for other option items
+.option-item {
+  padding: 8px 12px;
+  background-color: #f5f7fa;
+  border-radius: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  
+  ion-label {
+    font-weight: 500;
+    color: #424242;
+  }
+}
+
+.option-control-wrapper {
+  width: 150px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.value-display {
+  padding: 8px 12px;
+  background-color: #e3f2fd;
+  border-radius: 6px;
+  color: #1976d2;
+  font-weight: 500;
+  min-width: 80px;
+  text-align: center;
+}
+
+.mode-segment {
+  background: #e3f2fd;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 2px;
+  width: 100%;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    height: calc(100% - 6px);
+    width: calc(50% - 6px);
+    background: linear-gradient(135deg, #2979ff, #1e88e5);
+    border-radius: 6px;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(41, 121, 255, 0.3);
+  }
+  
+  &[value="trumpet"]::before {
+    transform: translateX(0);
+  }
+  
+  &[value="clarinet"]::before {
+    transform: translateX(0);
+  }
+  
+  &[value="tuner"]::before {
+    transform: translateX(100%);
+  }
+  
+  ion-segment-button {
+    --background: transparent;
+    --background-checked: transparent;
+    --color: #757575;
+    --color-checked: white;
+    --indicator-color: transparent;
+    min-height: 36px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: 0;
+    position: relative;
+    overflow: visible;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+    
+    &::part(indicator) {
+      display: none;
+    }
+    
+    &.segment-button-checked {
+      transform: scale(1.02);
+      
+      ion-label {
+        color: white;
+        font-weight: 700;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}
+
+// Remove previous slide animation styles that might conflict
+.slide-animation {
+  transition: color 0.2s ease;
+}
+
+// Specialized animations for trumpet/clarinet/tuner modes
+ion-segment.mode-segment[value="trumpet"] {
+  &::before {
+    width: calc(33.33% - 6px);
+    transform: translateX(0);
+  }
+}
+
+ion-segment.mode-segment[value="clarinet"] {
+  &::before {
+    width: calc(33.33% - 6px);
+    transform: translateX(0);
+  }
+}
+
+ion-segment.mode-segment[value="tuner"] {
+  &::before {
+    width: calc(33.33% - 6px);
+    transform: translateX(calc(200%));
+  }
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.options-panel {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
+}
+
+.panel-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1976d2;
+  margin-top: 0;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #e3f2fd;
+  padding-bottom: 8px;
+}
+
+// Additional animation for segment transition
+ion-segment.mode-segment {
+  transition: background-position 0.5s ease;
+  background-size: 200% 100%;
+  background-position: right bottom;
+  
+  &:hover {
+    background-position: left bottom;
+  }
+}
+
+// Better select indicator animation
+.gradient-select-wrapper {
+  &::after {
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover::after {
+    transform: translateY(-50%) scale(1.2);
+  }
+}
+
+// New custom mode selector
+.custom-mode-selector {
+  display: flex;
+  background-color: #f5f7fa;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  padding: 3px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.mode-option {
+  flex: 1;
+  text-align: center;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #757575;
+  border-radius: 6px;
+  margin: 0 2px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  min-width: 70px;
+  white-space: nowrap;
+  
+  &:hover:not(.active) {
+    color: #2979ff;
+    background-color: rgba(41, 121, 255, 0.1);
+  }
+  
+  &.active {
+    background: linear-gradient(135deg, #2979ff, #1e88e5);
+    color: white;
+    font-weight: 700;
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid #1e88e5;
+      animation: arrowBounce 0.5s ease-in-out 0.2s;
+    }
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(5px) scale(0.95);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateX(-50%);
+  }
+  50% {
+    transform: translateX(-50%) translateY(3px);
+  }
+}
+
+.select-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
