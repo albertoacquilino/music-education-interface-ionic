@@ -8,15 +8,12 @@
 
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-
 import { Haptics } from '@capacitor/haptics';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
 import { CommonModule } from '@angular/common';
 import { Howl } from 'howler';
 
 const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
-
 
 @Component({
     selector: 'scroll-image-component',
@@ -28,10 +25,9 @@ const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
 
       <div class="scrollable" 
             #scrollContainer 
-            (scroll)="onScroll()">
-            <div *ngFor="let image of images;" class="scroll-element" [style.height]="scrollElementHeight + 'px'">
-                
-            </div>
+            (scroll)="onScroll()" 
+            (click)="onClick($event)">
+            <div *ngFor="let image of images;" class="scroll-element" [style.height]="scrollElementHeight + 'px'"></div>
             <div *ngFor="let i of images" class="scroll-element" [style.height]="scrollElementHeight + 'px'"></div>
       </div>
     </div>
@@ -39,8 +35,8 @@ const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
     styles: [`
     .container {
       position: relative;
-      height: 300px; /* Set the desired height */
-      width: 100%; /* Set the desired width */
+      height: 300px;
+      width: 100%;
       background-color: white;
       overscroll-behavior-y: contain;
     }
@@ -53,10 +49,11 @@ const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
       height: 100%;
       width: 100%;
       scroll-snap-type: y proximity;
+      cursor: pointer;
     }
 
-    .scroll-element{
-        width:100%;
+    .scroll-element {
+      width: 100%;
     }
 
     .image-container {
@@ -65,28 +62,27 @@ const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
       left: 0;
       height: 100%;
       width: 100%;
-      img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        object-fit: contain;
-      }
     }
 
+    .image-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
     `],
     standalone: true,
     imports: [IonicModule, CommonModule, FontAwesomeModule],
 })
-export class ScrollImageComponent implements AfterViewInit, OnChanges{
+export class ScrollImageComponent implements AfterViewInit, OnChanges {
     @Input() images: string[] = [];
     @Input() index: number = 0;
     @Input() scrollElementHeight: number = 30;
     @Output() indexChange: EventEmitter<number> = new EventEmitter<number>();
 
     image!: string;
-
     snapTimeout: ReturnType<typeof setTimeout> | null = null;
 
     @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
@@ -103,12 +99,9 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
 
     setScrollPositionFromIndex(idx: number) {
         const position = idx * this.scrollElementHeight;
-        console.log('scroll to', position);
         setTimeout(() => {
             this.scrollContainer.nativeElement.scrollTo({ top: position, behavior: 'auto' });    
         }, 100);
-        
-
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -121,17 +114,12 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
             }
         }
 
-        if(changes['images']){
+        if (changes['images']) {
             this.images = changes['images'].currentValue;
         }
     }
 
-    drag($event: any) {
-        console.log('dragging', $event);
-    }
-
     onScroll() {
-        // cancel timeout
         if (this.snapTimeout) {
             clearTimeout(this.snapTimeout);
             this.snapTimeout = null;
@@ -139,29 +127,45 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
 
         const element = this.scrollContainer.nativeElement;
         const scrollPosition = element.scrollTop;
-
-        console.log('scroll position', scrollPosition);
-
         let idx = Math.floor(scrollPosition / this.scrollElementHeight);
         idx = Math.min(idx, this.images.length - 1);
         idx = Math.max(idx, 0);
 
-        if(idx !== this.index) {
-            //TICK_SOUND.play();
+        if (idx !== this.index) {
             Haptics.selectionChanged();
         }
-        
+
         this.index = idx;
         this.image = this.images[this.index];
         this.indexChange.emit(this.index);
 
-        // set timeout to snap to the nearest note if inactive for 200msec
         this.snapTimeout = setTimeout(() => {
-            // snap to the nearest note
             const snapTo = idx * this.scrollElementHeight;
-            element.scrollTo({top: snapTo, behavior: 'smooth'});
+            element.scrollTo({ top: snapTo, behavior: 'smooth' });
             this.snapTimeout = null;
         }, 100);
     }
 
+    /**
+     * Handles clicks on the scrollable area to quickly select notes.
+     * Clicking at the top selects the first note, clicking at the bottom selects the last note,
+     * and clicking in between selects the closest corresponding note.
+     */
+    onClick(event: MouseEvent) {
+        const container = this.scrollContainer.nativeElement;
+        const clickY = event.clientY - container.getBoundingClientRect().top;
+        const containerHeight = container.clientHeight;
+
+        let idx: number;
+        if (clickY < containerHeight * 0.2) {
+            idx = 0; // Clicked near the top
+        } else if (clickY > containerHeight * 0.8) {
+            idx = this.images.length - 1; // Clicked near the bottom
+        } else {
+            idx = Math.round((clickY / containerHeight) * this.images.length);
+        }
+
+        this.setScrollPositionFromIndex(idx);
+        this.indexChange.emit(idx);
+    }
 }
