@@ -50,6 +50,7 @@ export class FirebaseService {
    * @param tempo - The tempo of the activity.
    * @param lowNote - The lowest note of the activity.
    * @param highNote - The highest note of the activity.
+   * @param refFrequencyValue,
    * @param useFlatsAndSharps - Whether to use flats and sharps in the activity.
    * @param showTrumpetHints - Whether to show trumpet hints in the activity.
    */
@@ -57,6 +58,7 @@ export class FirebaseService {
     tempo: number,
     lowNote: number,
     highNote: number,
+    refFrequencyValue:number,
     useFlatsAndSharps: boolean,
     useDynamics: boolean
   ) {
@@ -69,6 +71,7 @@ export class FirebaseService {
       tempo,
       lowNote,
       highNote,
+      refFrequencyValue,
       useFlatsAndSharps,
       startTime,
       useDynamics,
