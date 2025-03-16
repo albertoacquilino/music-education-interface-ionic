@@ -213,26 +213,51 @@ export class HomePage implements OnInit {
     return this.NOTES.map(note => `assets/images/${this.selectedInstrument}_notes_images/_${note[0]}.svg`);
   }
 
-  
   ngOnInit(): void {
-    console.log(localStorage.getItem('LoggedInUser'));
+    console.log(localStorage.getItem('LoggedInUser  '));
     this.refFrequencyService.getRefFrequency().subscribe(value => {
-      this.refFrequencyValue$ = value;
+        this.refFrequencyValue$ = value;
     });
+    this.loadStateFromLocalStorage();
+}
+
+private loadStateFromLocalStorage() {
+    const savedMode = localStorage.getItem('mode');
     const savedInstrument = localStorage.getItem('selectedInstrument');
 
-  if (savedInstrument) {
-    this.selectedInstrument = savedInstrument;
-    this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
-    this.noteImages = this.getNoteImages();
-    this.soundsService.setInstrument(this.selectedInstrument);
-    this.mode = this.selectedInstrument;
-  }
+    // Load the selected instrument and its settings
+    if (savedInstrument) {
+        this.selectedInstrument = savedInstrument;
+        this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
+        this.noteImages = this.getNoteImages();
+        this.soundsService.setInstrument(this.selectedInstrument);
+    }
+    // Load the mode
+    if (savedMode) {
+        this.mode = savedMode;
+    } else {
+        this.mode = this.selectedInstrument; // Default to the selected instrument if no saved mode
+    }
+
+    // Load settings based on the selected instrument
+    this.loadInstrumentSettings(this.selectedInstrument);
+
+    // Load common settings
     this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
     this.useDynamics = this.retrieveAndParseFromLocalStorage('useDynamics', false);
-    this.lowNote = this.retrieveAndParseFromLocalStorage('lowNote', INITIAL_NOTE);
-    this.highNote = this.retrieveAndParseFromLocalStorage('highNote', INITIAL_NOTE);
-  }
+}
+
+private loadInstrumentSettings(instrument: string) {
+    // Load low and high notes specific to the instrument
+    this.lowNote = this.retrieveAndParseFromLocalStorage(`${instrument}_lowNote`, INITIAL_NOTE);
+    this.highNote = this.retrieveAndParseFromLocalStorage(`${instrument}_highNote`, INITIAL_NOTE);
+    //tempo is common for both the instruments
+    const tempoSaved = this.retrieveAndParseFromLocalStorage('tempo', MINTEMPO);
+    if (tempoSaved !== MINTEMPO) {
+        this._tempo.setTempo(tempoSaved);
+    }
+}
+
 
   ionViewDidEnter(): void {
 
@@ -249,23 +274,30 @@ export class HomePage implements OnInit {
   }
   selectInstrument(event: any) {
     this.selectedInstrument = event.detail.value; // Store the selected instrument
-      this.mode = this.selectedInstrument;  // Set mode to the same value as selected instrument
+    this.mode = this.selectedInstrument; // Set mode to the same value as selected instrument
     console.log('Selected Instrument:', this.selectedInstrument);
     this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
-    this.noteImages = this.getNoteImages(); 
+    this.noteImages = this.getNoteImages();
     this.soundsService.setInstrument(this.selectedInstrument);
 
-    // Save the current state to local storage
-  this.saveCurrentStateToLocalStorage();
+    // Load settings for the newly selected instrument
+    this.loadInstrumentSettings(this.selectedInstrument);
 
-  }
-  private saveCurrentStateToLocalStorage() {
+    // Save the current state to local storage
+    this.saveCurrentStateToLocalStorage();
+}
+
+private saveCurrentStateToLocalStorage() {
     localStorage.setItem('selectedInstrument', this.selectedInstrument);
     localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
     localStorage.setItem('useDynamics', JSON.stringify(this.useDynamics));
-    localStorage.setItem('lowNote', this.lowNote.toString());
-    localStorage.setItem('highNote', this.highNote.toString());
-  }
+    localStorage.setItem(`${this.selectedInstrument}_lowNote`, this.lowNote.toString());
+    localStorage.setItem(`${this.selectedInstrument}_highNote`, this.highNote.toString());
+    localStorage.setItem('tempo', this._tempo.tempo$.value.toString()); // Save tempo for the selected instrument
+    localStorage.setItem('mode', this.mode);
+    localStorage.setItem('refFrequencyValue', this.refFrequencyValue$.toString());
+     // Save the current mode
+}
   /**
    * Checks if the device is muted and displays an alert if it is.
    * @returns void
@@ -300,6 +332,9 @@ export class HomePage implements OnInit {
       this.chromaticTuner.stop();
     }
     this.mode = event.detail.value;
+    // Save tuner settings to local storage if the mode is tuner
+
+      this.saveCurrentStateToLocalStorage();
     console.log(event);
   }
 
@@ -369,8 +404,8 @@ export class HomePage implements OnInit {
     this.saveNotes();
   }
   saveNotes() {
-    localStorage.setItem('lowNote', this.lowNote.toString());
-    localStorage.setItem('highNote', this.highNote.toString());
+    localStorage.setItem(`${this.selectedInstrument}_lowNote`, this.lowNote.toString());
+    localStorage.setItem(`${this.selectedInstrument}_highNote`, this.highNote.toString());
   }
   /**
    * Updates the position of the trumpet image based on the given note.
@@ -460,7 +495,7 @@ export class HomePage implements OnInit {
           break;
       }
 
-      if (this.mode == 'trumpet') {
+      if (this.mode == this.selectedInstrument) {
         switch (tempo.measure) {
           // case 0: this.pitchService.disconnect(); break;
           // case 2: this.pitchService.connect();
@@ -502,6 +537,7 @@ export class HomePage implements OnInit {
       this.tempo$.value,
       this.lowNote,
       this.highNote,
+      this.refFrequencyValue$,
       this.useFlatsAndSharps,
       this.useDynamics);
   }
@@ -520,7 +556,7 @@ export class HomePage implements OnInit {
       };
       console.log('Collected Means', this.collectedMeansObject);
     }
-    else if (this.mode == 'trumpet') {
+    else if (this.mode == this.selectedInstrument) {
       // this.pitchService.disconnect();
     }
     Howler.stop();
@@ -545,6 +581,18 @@ export class HomePage implements OnInit {
   getNoteImg(note: number): string {
    return 'assets/images/${this.selectedInstrument}_notes_images/_${this.NOTES[note][0]}.png';
     //return `assets/images/${this.NOTES}_notes_images/_${this.NOTES[note][0]}.png`;
+  }
+  switchToMode(mode_new: string) {
+    if (this.isPlaying()) {
+      return;
+    }
+    const event = {
+      detail: {
+        value: mode_new
+      }
+    };
+    this.switchMode(event);
+    this.saveCurrentStateToLocalStorage();
   }
   async openPicker(type: 'frequency' | 'tempo') {
     // Check if the picker should be opened
@@ -596,7 +644,12 @@ export class HomePage implements OnInit {
             if (type === 'frequency') {
               this.refFrequencyValue$ = value[type].value;
               this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
-              this.mode = 'trumpet';
+              if (this.mode==='tuner'){
+                this.mode='tuner';
+              }else{
+                this.mode = this.selectedInstrument;
+              }
+              this.saveCurrentStateToLocalStorage();
             } else if (type === 'tempo') {
               this._tempo.setTempo(value[type].value);
             }

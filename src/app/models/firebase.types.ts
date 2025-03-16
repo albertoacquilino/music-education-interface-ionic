@@ -22,6 +22,7 @@ export type Activity = {
   tempo: number;
   lowNote: number;
   highNote: number;
+  refFrequencyValue:number,
   useFlatsAndSharps: boolean;
   useDynamics: boolean;
   startTime: Date;
