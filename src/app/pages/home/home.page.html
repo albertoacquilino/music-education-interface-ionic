@@ -12,11 +12,12 @@
       <ion-title>Options</ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-content class="ion-padding">
     <ion-list>
       <ion-item [disabled]="isPlaying()">
         <ion-label>Mode</ion-label>
-        <ion-segment (ionChange)="switchMode($event)" mode="ios" value="{{mode}}">
+        <ion-segment (ionChange)="switchMode($event)" mode="ios" [value]="mode">
           <ion-segment-button value="trumpet">
             <ion-label>TRUMPET</ion-label>
           </ion-segment-button>
@@ -32,21 +33,54 @@
       </ion-item>
 
       <ion-item>
-        <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)"
-          [disabled]="isPlaying()">
+        <ion-toggle
+          [checked]="useFlatsAndSharps"
+          (ionChange)="switchUseFlatsAndSharps($event)"
+          [disabled]="isPlaying()"
+        >
           <b>&flat; &amp; &sharp;</b>
         </ion-toggle>
       </ion-item>
 
       <ion-item>
-        <ion-toggle [checked]="useDynamics" (ionChange)="switchUseDynamics($event)" [disabled]="isPlaying()">
+        <ion-toggle
+          [checked]="useDynamics"
+          (ionChange)="switchUseDynamics($event)"
+          [disabled]="isPlaying()"
+        >
           Dynamics
         </ion-toggle>
       </ion-item>
-    </ion-list>
 
+      <!-- the theme sectionnnn  Wanted to apply  -->
+      <ion-item>
+        <ion-label>Theme</ion-label>
+      </ion-item>
+
+      <ion-radio-group (ionChange)="onThemeSelect($event)">
+        <ion-item>
+          <ion-label>Default</ion-label>
+          <ion-radio slot="start" value="default"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Neon</ion-label>
+          <ion-radio slot="start" value="neon"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Amber</ion-label>
+          <ion-radio slot="start" value="amber"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Bubblegum</ion-label>
+          <ion-radio slot="start" value="bubblegum"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+      <!-- END THEME SELECTION UI -->
+
+    </ion-list>
   </ion-content>
 </ion-menu>
+
 <div class="ion-page" id="main-content">
 <!--  <ion-header>
     <ion-toolbar>

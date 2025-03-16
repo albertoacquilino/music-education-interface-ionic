@@ -21,27 +21,72 @@ import { KeepAwake } from '@capacitor-community/keep-awake';
   imports: [IonicModule],
 })
 export class AppComponent implements AfterViewInit {
-  constructor(private platform: Platform, private pitchService: PitchService) {
+  constructor(
+    private platform: Platform,
+    private pitchService: PitchService
+  ) {
     StatusBar.show();
+  }
+
+  /**
+   * Applies a theme class to the <body> element and
+   * stores the selected theme in localStorage.
+   *
+   * @param theme - e.g. 'default', 'neon', 'amber', 'bubblegum'
+   */
+  setTheme(theme: string) {
+
+    // Removing any    existing theme classes
+    document.body.classList.remove(
+      'theme-default',
+      'theme-neon',
+      'theme-amber',
+      'theme-bubblegum'
+    );
+
+    // If user picks 'default', skip adding a custom class
+   
+    if (theme !== 'default') {
+      document.body.classList.add(`theme-${theme}`);
+    }
+
+    // Save user choice in localStorage for future visits
+    localStorage.setItem('appTheme', theme);
   }
 
   async ngAfterViewInit() {
 
-    // keep the screen awake using plugin
+
+
+    // Keep the device screen awake
     await KeepAwake.keepAwake();
 
+
+
+    // Check microphone permissions on Android/iOS devices
     if (this.platform.is('android') || this.platform.is('ios')) {
       const checkPermissionsResult = await Microphone.checkPermissions();
       if (checkPermissionsResult.microphone === 'denied') {
         const requestPermissionsResult = await Microphone.requestPermissions();
         if (requestPermissionsResult.microphone === 'denied') {
-          alert('Microphone permissions denied: Some features may not work as expected');
+          alert(
+            'Microphone permissions denied: Some features may not work as expected'
+          );
           return;
         }
       }
     }
 
-    // start the pitch monitoring service
-    this.pitchService.connect()
+    
+
+    // pitch monitoring
+    this.pitchService.connect();
+
+
+
+    //                       Load the user's previously selected theme or default
+    const savedTheme = localStorage.getItem('appTheme') || 'default';
+
+          this.setTheme(savedTheme);
   }
 }

@@ -85,6 +85,33 @@
   --ion-color-light-tint: #f5f6f9;
 }
 
+// neon theme 
+.theme-neon {
+  --ion-color-primary: #0fffd4;
+  --ion-color-secondary: #0dff00;
+  --ion-color-tertiary: #fcff00;
+
+
+  --ion-color-primary-contrast: #000000;
+
+}
+
+// amber theme : 
+.theme-amber {
+  --ion-color-primary: #FFC107;
+  --ion-color-secondary: #FFD54F;
+  --ion-color-tertiary: #FFE082;
+}
+
+// bubble gum :
+.theme-bubblegum {
+  --ion-color-primary: #ff69b4;
+  --ion-color-secondary: #ffb6c1;
+  --ion-color-tertiary: #ffd1dc;
+}
+
+
+
 @media (prefers-color-scheme: dark) {
   /*
    * Dark Colors
