@@ -12,42 +12,94 @@
       <ion-title>Options</ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-content class="ion-padding">
     <ion-list>
+      <!-- Instrument Selection -->
       <ion-item [disabled]="isPlaying()">
-        <ion-label>Mode</ion-label>
-        <ion-segment (ionChange)="switchMode($event)" mode="ios" value="{{mode}}">
-          <ion-segment-button value="trumpet">
-            <ion-label>TRUMPET</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="tuner">
-            <ion-label>TUNER</ion-label>
-          </ion-segment-button>
-        </ion-segment>
+        <ion-label>Select Instrument</ion-label>
+        <ion-select
+          (ionChange)="selectInstrument($event)"
+          mode="ios"
+          [value]="selectedInstrument"
+          interface="popover"
+        >
+          <ion-select-option value="trumpet">
+            <ion-label>Trumpet</ion-label>
+          </ion-select-option>
+          <ion-select-option value="clarinet">
+            <ion-label>Clarinet</ion-label>
+          </ion-select-option>
+        </ion-select>
       </ion-item>
 
-      <ion-item button (click)="openPicker('frequency')" [disabled]="isPlaying()">
-        <ion-label>A4</ion-label>
-        <ion-note slot="end">{{ refFrequencyValue$ }} Hz</ion-note>
-      </ion-item>
+      <!-- Display options based on selected instrument -->
+      <ng-container *ngIf="selectedInstrument">
+        <ion-item [disabled]="isPlaying()">
+          <ion-label>Mode</ion-label>
+          <ion-segment (ionChange)="switchMode($event)" mode="ios" [value]="mode">
+            <ion-segment-button
+              *ngIf="selectedInstrument === 'trumpet'"
+              value="trumpet"
+            >
+              <ion-label>TRUMPET 🎺</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              *ngIf="selectedInstrument === 'clarinet'"
+              value="clarinet"
+            >
+              <ion-label>CLARINET 🪈</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tuner">
+              <ion-label>TUNER</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-item>
 
+        <ion-item button (click)="openPicker('frequency')" [disabled]="isPlaying()">
+          <ion-label>A4</ion-label>
+          <ion-note slot="end">{{ refFrequencyValue$ }} Hz</ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-toggle
+            [checked]="useFlatsAndSharps"
+            (ionChange)="switchUseFlatsAndSharps($event)"
+            [disabled]="isPlaying()"
+          >
+            <b>&flat; &amp; &sharp;</b>
+          </ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-toggle
+            [checked]="useDynamics"
+            (ionChange)="switchUseDynamics($event)"
+            [disabled]="isPlaying()"
+          >
+            Dynamics
+          </ion-toggle>
+        </ion-item>
+      </ng-container>
+
+      <!-- Theme Selection -->
       <ion-item>
-        <ion-toggle [checked]="useFlatsAndSharps" (ionChange)="switchUseFlatsAndSharps($event)"
-          [disabled]="isPlaying()">
-          <b>&flat; &amp; &sharp;</b>
-        </ion-toggle>
-      </ion-item>
-
-      <ion-item>
-        <ion-toggle [checked]="useDynamics" (ionChange)="switchUseDynamics($event)" [disabled]="isPlaying()">
-          Dynamics
-        </ion-toggle>
+        <ion-label>Theme</ion-label>
+        <ion-select
+          (ionChange)="selectTheme($event.detail.value)"
+          mode="ios"
+          [value]="selectedTheme"
+          interface="popover"
+        >
+          <ion-select-option value="tan">Tan</ion-select-option>
+          <ion-select-option value="white">White</ion-select-option>
+          <ion-select-option value="grey">Grey</ion-select-option>
+          <ion-select-option value="darkGrey">Dark Grey</ion-select-option>
+        </ion-select>
       </ion-item>
     </ion-list>
-
   </ion-content>
 </ion-menu>
-<div class="ion-page" id="main-content">
 <!--  <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -64,33 +116,45 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>-->
-
+<div class="ion-page" id="main-content">
   <ion-content [fullscreen]="true">
     <div id="container">
       <div class="wrapper" id="wrapper">
         <div class="top-middle-container">
-          <div class="top" [ngClass]="!isPlaying()?'landscape-d-none':''">
+          <!-- TOP -->
+          <div class="top" [ngClass]="!isPlaying() ? 'landscape-d-none' : ''">
             <div class="metronome">
               <div class="metronome-bullet">
-                <h1 id="metronome-label" *ngIf="beat$|async as beat">
-                  {{ beat.beat >= 0 ? (beat.beat + 1): '&nbsp;'}}
+                <h1 id="metronome-label" *ngIf="beat$ | async as beat">
+                  {{ beat.beat >= 0 ? (beat.beat + 1) : '&nbsp;' }}
                 </h1>
                 <semaphore-light [currentAction]="currentAction"></semaphore-light>
               </div>
             </div>
+
+            <!-- Tuner -->
             <ng-container *ngIf="mode === 'tuner'">
               <div class="chromatic-tuner">
                 <chromatic-tuner [refFrequencyValue$]="refFrequencyValue$"></chromatic-tuner>
               </div>
             </ng-container>
-            <ng-container *ngIf="mode === 'trumpet'">
+
+            <!-- Trumpet -->
+            <ng-container *ngIf="selectedInstrument === 'trumpet' && mode === 'trumpet'">
               <div class="trumpet">
                 <trumpet-diagram [trumpetButtons]="trumpetBtns"></trumpet-diagram>
               </div>
             </ng-container>
 
+            <!-- Clarinet -->
+            <ng-container *ngIf="selectedInstrument === 'clarinet' && mode === 'clarinet'">
+              <div class="clarinet">
+                <img [src]="clarinetPosition" alt="Clarinet Position" />
+              </div>
+            </ng-container>
           </div>
-          <!--MIDDLE-->
+
+          <!-- MIDDLE -->
           <div class="middle" *ngIf="isPlaying()">
             <div class="score">
               <score-view id="score-image" [score]="score"></score-view>
@@ -98,45 +162,46 @@
           </div>
         </div>
 
+        <!-- BOTTOM (only visible if not playing) -->
         <div class="bottom" *ngIf="!isPlaying()">
           <div class="controls controls-margin">
-            <!--TEMPO-->
+            <!-- TEMPO -->
             <div class="tempo-wrapper">
-                <tempo-selector *ngIf="tempo$ | async as tempo" 
-                  [tempo]="tempo" 
-                  (change)="changeTempo($event)"
-                ></tempo-selector>              
+              <tempo-selector
+                *ngIf="tempo$ | async as tempo"
+                [tempo]="tempo"
+                (change)="changeTempo($event)"
+              ></tempo-selector>
             </div>
 
             <div class="low-note-wrapper">
-              <note-selector 
+              <note-selector
                 label="Low Note:"
-                [note]="lowNote" 
+                [note]="lowNote"
+                [selectedInstrument]="selectedInstrument"
                 [useFlatsAndSharps]="useFlatsAndSharps"
                 (change)="changeLowNote($event)"
               ></note-selector>
             </div>
 
             <div class="high-note-wrapper">
-              <note-selector 
+              <note-selector
                 label="High Note:"
                 [note]="highNote"
+                [selectedInstrument]="selectedInstrument"
                 [useFlatsAndSharps]="useFlatsAndSharps"
                 (change)="changeHighNote($event)"
               ></note-selector>
             </div>
-
           </div>
         </div>
       </div>
-
     </div>
   </ion-content>
 
   <ion-footer>
     <ion-button (click)="startStop()" expand="block">
-      {{isPlaying() ? 'Stop':'Start'}}
+      {{ isPlaying() ? 'Stop' : 'Start' }}
     </ion-button>
   </ion-footer>
-
 </div>
