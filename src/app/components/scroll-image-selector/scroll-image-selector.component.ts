@@ -26,11 +26,12 @@ const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
         <img [src]="image">
       </div>
 
-      <div class="scrollable" 
-            #scrollContainer 
-            (scroll)="onScroll()">
+      <div class="scrollable"
+            #scrollContainer
+            (scroll)="onScroll()"
+            (click)="onClick($event)">
             <div *ngFor="let image of images;" class="scroll-element" [style.height]="scrollElementHeight + 'px'">
-                
+
             </div>
             <div *ngFor="let i of images" class="scroll-element" [style.height]="scrollElementHeight + 'px'"></div>
       </div>
@@ -105,9 +106,9 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
         const position = idx * this.scrollElementHeight;
         console.log('scroll to', position);
         setTimeout(() => {
-            this.scrollContainer.nativeElement.scrollTo({ top: position, behavior: 'auto' });    
+            this.scrollContainer.nativeElement.scrollTo({ top: position, behavior: 'auto' });
         }, 100);
-        
+
 
     }
 
@@ -150,12 +151,12 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
             //TICK_SOUND.play();
             Haptics.selectionChanged();
         }
-        
+
         this.index = idx;
         this.image = this.images[this.index];
         this.indexChange.emit(this.index);
 
-        // set timeout to snap to the nearest note if inactive for 200msec
+
         this.snapTimeout = setTimeout(() => {
             // snap to the nearest note
             const snapTo = idx * this.scrollElementHeight;
@@ -163,5 +164,27 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
             this.snapTimeout = null;
         }, 100);
     }
+    onClick(event: MouseEvent) {
+        const element = this.scrollContainer.nativeElement;
+        const containerHeight = element.clientHeight;
+        const clickPosition = event.clientY - element.getBoundingClientRect().top;
 
+
+        const idx = Math.round((1 - clickPosition / containerHeight) * (this.images.length -1));
+
+
+        const boundedIndex = Math.max(0, Math.min(this.images.length - 1, idx));
+
+        if (boundedIndex !== this.index) {
+            Haptics.selectionChanged();
+        }
+
+        this.index = boundedIndex;
+        this.image = this.images[this.index];
+        this.indexChange.emit(this.index);
+
+
+        const snapTo = boundedIndex * this.scrollElementHeight;
+        element.scrollTo({ top: snapTo, behavior: 'smooth' });
+    }
 }

@@ -21,13 +21,13 @@ import { RenderContext, Renderer } from 'vexflow';
 /**
  * ScoreComponent is responsible for displaying a score interface.
  * It allows users to view a musical score and updates the score when changes are made.
- * 
+ *
  * @example
  * <score-view [score]="score"></score-view>
  */
 @Component({
   selector: 'score-view',
-  template: `<div id="score" style="background-color: white;"></div>`,
+  template: `<div id="score" style="background-color: white;transform: scale(0.9);"></div>`,
   styleUrls: [],
   standalone: true,
   imports: [CommonModule]
@@ -61,7 +61,7 @@ export class ScoreViewComponent implements AfterViewInit {
 
   /**
    * Updates the size of the score component.
-   * 
+   *
    * @param size - The new width and height of the score component.
    */
   updateSize(size: { width: number, height: number }) {
@@ -105,7 +105,7 @@ export class ScoreViewComponent implements AfterViewInit {
 
   /**
    * Updates the score with the given Score object.
-   * 
+   *
    * @param score - The Score object containing the measures, clef, key signature, time signature, dynamic, and dynamic position.
    */
   updateScore(score: Score) {
@@ -119,7 +119,7 @@ export class ScoreViewComponent implements AfterViewInit {
     for (const [index, measure] of score.measures.entries()) {
       // Measure 1
       if (staveMeasure === null) {
-        staveMeasure = new Flow.Stave(10, 0, measureWidth);
+        staveMeasure = new Flow.Stave(10, 20, measureWidth);
         if (score.clef) {
           staveMeasure.addClef(score.clef);
         }
@@ -130,7 +130,7 @@ export class ScoreViewComponent implements AfterViewInit {
           staveMeasure.addTimeSignature(score.timeSignature);
         }
       } else {
-        staveMeasure = new Flow.Stave(staveMeasure.getWidth() + staveMeasure.getX(), 0, measureWidth);
+        staveMeasure = new Flow.Stave(staveMeasure.getWidth() + staveMeasure.getX(), 20, measureWidth);
       }
 
       if (score.dynamic) {

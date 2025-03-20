@@ -10,7 +10,7 @@ import { Injectable } from "@angular/core";
 import { BeatService } from "./beat.service";
 import { AppBeat } from '../models/appbeat.types';
 import { Howl } from "howler";
-import { NOTES } from "../constants";
+import { TRUMPET_NOTES, CLARINET_NOTES } from "../constants";
 
 export const BEAT_SOUNDS = [
     new Howl({ src: ['assets/sounds/tick_strong.wav'] }),
@@ -40,6 +40,7 @@ function playAndFade(audio: Howl, duration: number, volume: number = 1.0) {
     providedIn: 'root'
 })
 export class SoundsService {
+    private selectedInstrument: string = 'trumpet';
     private preloadedNotes: Howl[] = [];
     currentNote: number = 0;
     volume: number = 1.0;
@@ -57,27 +58,37 @@ export class SoundsService {
      * Preloads all the sounds used in the app.
      */
     private preloadSounds() {
+        const notesToLoad = this.selectedInstrument === 'trumpet' ? TRUMPET_NOTES : CLARINET_NOTES;
         for (let sound of BEAT_SOUNDS) {
             sound.load();
         }
-
-        for (let i = 0; i < NOTES.length; i++) {
-            const note = NOTES[i];
+        this.preloadedNotes = [];
+        for (let i = 0; i < notesToLoad.length; i++) {
+            const note = notesToLoad[i];
             const soundFile = note[0];
 
-            const audio = new Howl({ src: [`assets/sounds/trumpet_note_sounds/${soundFile}.wav`] });
+            const audio = new Howl({ src: [`assets/sounds/${this.selectedInstrument}_note_sounds/${soundFile}.wav`] });
             this.preloadedNotes.push(audio);
         }
     }
-
+    public setInstrument(instrument: string) {
+        this.selectedInstrument = instrument;
+        this.preloadSounds(); // Reload sounds for the new instrument
+    }
     /**
      * Plays the trumpet sound for the current note.
      * @param {number} currentNote - The current note index.
      */
-    playTrumpetSound(currentNote: number) {
+    playNoteSound(currentNote: number) {
         const audio = this.preloadedNotes[currentNote];
-        playAndFade(audio, 4 * 60000 / this._beat.tempo$.value, this.volume);
+        if (audio) {
+            playAndFade(audio, 4 * 60000 / this._beat.tempo$.value, this.volume);
+        }
     }
+    // playTrumpetSound(currentNote: number) {
+    //     const audio = this.preloadedNotes[currentNote];
+    //     playAndFade(audio, 4 * 60000 / this._beat.tempo$.value, this.volume);
+    // }
 
     /**
      * Plays the metronome sound for the given beat counter.
@@ -96,7 +107,7 @@ export class SoundsService {
 
         if (tempo.beat == 0) {
             if (tempo.measure == 1) {
-                this.playTrumpetSound(this.currentNote)
+                this.playNoteSound(this.currentNote)
             }
         }
     }

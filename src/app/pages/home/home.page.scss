@@ -6,22 +6,43 @@
  * See the LICENSE file for more details.
  */
 
+/*
+  In this approach, we do NOT rely on .tan, .grey, etc. classes.
+  We simply read the final --ion-background-color and --ion-text-color
+  that we set from TS and apply them with !important to override defaults.
+*/
+
+html,
+body,
+ion-app,
+.ion-page,
+ion-content,
+ion-menu,
+ion-header,
+ion-toolbar {
+  background-color: var(--ion-background-color) !important;
+  color: var(--ion-text-color) !important;
+}
+
 ion-modal {
   --height: auto;
 }
 
+/* THEME-DEPENDENT BACKGROUND/TEXT */
 .top {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background-color: var(--ion-background-color) !important;
+  color: var(--ion-text-color) !important;
   padding: 5px;
   margin: 0px 8px 0px 8px;
   border-radius: 6px 6px 0px 0px;
 }
 
 .middle {
-  background-color: white;
+  background-color: var(--ion-background-color) !important;
+  color: var(--ion-text-color) !important;
   padding: 5px;
   margin: auto;
   border-radius: 0px 0px 6px 6px;
@@ -44,37 +65,20 @@ ion-modal {
   align-items: center;
   justify-content: center;
   border-radius: 18px;
-  // color: white;
   color: black;
   width: 150px;
-  // aleksandra add code
   min-height: 250px;
-  //aleksandra done
-
-  /*animation*/
-  // background: linear-gradient(-45deg, #fead26, #9f6a11);
-  // border: 3px solid #fead26;
   background-size: 400% 400%;
   animation: gradient 2s ease infinite;
-}
-
-.wrapper {
-  //background-color: red;
-  width: 650px;
-  height: 460px;
-  overflow: hidden;
-  transform-origin: top left;
 }
 
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
@@ -92,6 +96,14 @@ ion-modal {
   text-transform: uppercase;
 }
 
+/* Changed overflow to visible so the border won't be clipped */
+.wrapper {
+  width: 650px;
+  height: 460px;
+  overflow: visible;
+  transform-origin: top left;
+}
+
 .trumpet {
   grid-area: trumpet;
   display: flex;
@@ -99,6 +111,16 @@ ion-modal {
   align-items: center;
   justify-content: center;
   max-width: 400px;
+}
+
+.clarinet {
+  grid-area: clarinet;
+  display: flex;
+  padding: 1em;
+  align-items: center;
+  justify-content: center;
+  max-width: 100px;
+  margin-left: 150px;
 }
 
 .chromatic-tuner {
@@ -120,35 +142,43 @@ ion-segment-button {
   min-width: fit-content;
 }
 
+/* The score area */
 .score {
-  margin-top: -20px;
+  /* Increased top margin to push the staff lower */
+  margin-top: 50px;
+  margin-bottom: 10px;
   grid-area: score;
   text-align: center;
 
-  app-score {
-    min-width: 100px;
-    min-height: 100px;
-    max-width: 600px;
-  }
+  /* Black border box around the staff */
+  border: 2px solid black;
+  border-radius: 6px;
+
+  /* Lowered the min-height */
+  min-height: 160px;
+
+  /* Make it wider, but never exceed the container width */
+  width: 90%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .bottom {
-  //display: grid;
-  //grid-template-columns: 1fr 1fr 1fr;
-  //grid-template-rows: 1fr 1.3fr;
-  //gap: 0px 0px;
-  //grid-auto-flow: row;
-  //grid-template-areas:
-  /*    "controls controls controls"
-    "controls controls controls"
-    "start-stop start-stop start-stop";*/
-  //grid-area: bottom;
+  /* original layout logic commented out:
+     display: grid;
+     grid-template-columns: 1fr 1fr 1fr;
+     grid-template-rows: 1fr 1.3fr;
+     gap: 0px 0px;
+     grid-auto-flow: row;
+  */
 }
 
 .start-stop {
   grid-area: start-stop;
 }
 
+/* Replaced the hardcoded background with theme variable */
 .start-btn {
   background-color: #009dda;
   border: 0;
@@ -165,10 +195,11 @@ ion-segment-button {
   cursor: pointer;
 }
 
+/* Also replaced the hardcoded grey background */
 .controls {
   display: flex;
-  //grid-area: controls;
-  background-color: gray;
+  background-color: var(--ion-background-color) !important;
+  color: var(--ion-text-color) !important;
   padding: 10px;
   margin: 6px;
   border-radius: 6px;
@@ -176,7 +207,6 @@ ion-segment-button {
 }
 
 .controls button {
-  /*width: 75%;*/
   font-size: 2em;
   background-color: transparent;
   border: 0;
@@ -210,13 +240,11 @@ ion-segment-button {
 .tempo-wrapper,
 .low-note-wrapper,
 .high-note-wrapper {
-  //flex: 1;
-  //border-right: 1px solid lightgray;
-  padding: 0 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-right: 30px;
 }
 
 .high-note-wrapper {
@@ -236,9 +264,12 @@ ion-segment-button {
   width: 100%;
 }
 
+#clarinet-position {
+  width: 10%;
+}
+
 #score-image {
   width: 100%;
-  //margin: 10px;
   border-radius: 6px;
 }
 
@@ -250,8 +281,7 @@ ion-segment-button {
   width: 100%;
 }
 
-// aleksandra add code
-
+/* Landscape adjustments */
 @media screen and (orientation: landscape) {
   #container {
     display: flex;
@@ -265,12 +295,7 @@ ion-segment-button {
     width: 100%;
   }
 
-  // .bottom {
-  //   width: 50%;
-  // }
-
   .controls {
-    //flex-direction: column;
     gap: 10px;
     margin-top: 0px;
   }

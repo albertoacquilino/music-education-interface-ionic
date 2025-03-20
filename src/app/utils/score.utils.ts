@@ -41,18 +41,27 @@ export function generateNotes(notes: string[], duration: string): StaveNote {
 
 /**
  * Converts a MEI note to a Score object.
- * 
+ *
  * @param meiNote - The MEI note to convert.
  * @returns The converted Score object.
  */
-export function scoreFromNote(meiNote: string, dynamic: string | undefined = undefined): Score {
+export function scoreFromNote(meiNote: string,instrument:string, dynamic: string | undefined = undefined): Score {
     let scoreNote;
     const note = meiNote[0];
     const octave = meiNote[1];
-    scoreNote = note + '/' + (Number(octave) + 2);
+    if(instrument==="clarinet"){
+        scoreNote = note + '/' + (Number(octave) );
+    }else{
+        scoreNote = note + '/' + (Number(octave) +2);
+    }
+
     if (meiNote.length == 3) {
         const accidental = meiNote[2] == 's' ? '#' : 'b';
-        scoreNote = note + accidental + '/' + (Number(octave) + 2);
+        if(instrument==="clarinet"){
+        scoreNote = note + accidental + '/' + (Number(octave));
+        }else{
+            scoreNote = note + accidental + '/' + (Number(octave)+2);
+        }
     }
 
     const score = {
