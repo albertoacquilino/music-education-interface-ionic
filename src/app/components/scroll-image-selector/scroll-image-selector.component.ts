@@ -28,7 +28,8 @@ const TICK_SOUND = new Howl({ src: ['assets/sounds/tick_weak.wav'] });
 
       <div class="scrollable" 
             #scrollContainer 
-            (scroll)="onScroll()">
+            (scroll)="onScroll()"
+            (click)="onClick($event)">
             <div *ngFor="let image of images;" class="scroll-element" [style.height]="scrollElementHeight + 'px'">
                 
             </div>
@@ -163,5 +164,29 @@ export class ScrollImageComponent implements AfterViewInit, OnChanges{
             this.snapTimeout = null;
         }, 100);
     }
-
+    onClick(event: MouseEvent) {
+        const element = this.scrollContainer.nativeElement;
+        const containerHeight = element.clientHeight; // Height of the scrollable container
+        const clickPosition = event.clientY - element.getBoundingClientRect().top; // Y-position relative to container
+        
+        // Invert the index calculation
+        const idx = Math.round((1 - clickPosition / containerHeight) * (this.images.length -1));
+    
+        // Ensure the index stays within valid bounds
+        const boundedIndex = Math.max(0, Math.min(this.images.length - 1, idx));
+    
+        if (boundedIndex !== this.index) {
+            Haptics.selectionChanged();
+        }
+    
+        this.index = boundedIndex;
+        this.image = this.images[this.index];
+        this.indexChange.emit(this.index);
+    
+        // Scroll smoothly to the selected image position
+        const snapTo = boundedIndex * this.scrollElementHeight;
+        element.scrollTo({ top: snapTo, behavior: 'smooth' });
+    }
+    
 }
+
