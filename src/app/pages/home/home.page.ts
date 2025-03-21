@@ -55,14 +55,14 @@ export class HomePage implements OnInit {
   /**
   * Indicates the mode - tuner or trumpet
   */
-
+  
   mode = 'trumpet';
 
   /**
    * Indicates whether the mute alert has been triggered.
    */
   muteAlert = false;
-
+  selectedInstrument: string | null = null;
 
   /**
    * Indicates whether to use flats and sharps.
@@ -143,7 +143,11 @@ export class HomePage implements OnInit {
    * The note images.
    */
   noteImages = NOTES.map(note => `assets/images/trumpet_notes_images/_${note[0]}.svg`);
+  isActive: boolean = false;
 
+  toggleOpacity() {
+    this.isActive = !this.isActive;
+  }
   /**
    * The observable for the beat.
    */
@@ -209,6 +213,10 @@ export class HomePage implements OnInit {
 
   ionViewDidEnter(): void {
 
+  }
+  selectInstrument(event: any) {
+    this.selectedInstrument = event.detail.value; // Store the selected instrument
+    console.log('Selected Instrument:', this.selectedInstrument);
   }
 
   ionViewWillLeave(): void {
@@ -453,7 +461,26 @@ export class HomePage implements OnInit {
       this.useFlatsAndSharps,
       this.useDynamics);
   }
+  isDisabled() {
+    // Logic to determine if tabs should be disabled
+    return false; // Example return value
+  }
 
+  checkTab() {
+    // Logic to check the current tab
+    return false; // Example return value
+  }
+
+  openMenu() {
+    // Logic to open the options menu
+  }
+
+  onChange(event: any) {
+    // Logic to handle tab change
+    if (event.tab === 'options') {
+      // Logic to display options
+    }
+  }
   /**
    * Stops the tempo and all audio playback, and saves the stop event to Firebase.
    * @returns void
@@ -614,5 +641,5 @@ export class HomePage implements OnInit {
     // 
     setTimeout(() => this.scaleContent(), 250);
   }
-
 }
+
