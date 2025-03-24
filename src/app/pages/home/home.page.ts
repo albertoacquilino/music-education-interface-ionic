@@ -522,34 +522,137 @@ export class HomePage implements OnInit {
 
     selectedIndex = options.findIndex(option => option.value === selectedValue);
 
-    const picker = await this._picker.create({
-      columns: [
-        {
-          name: type,
-          options: options,
-          selectedIndex: selectedIndex
-        },
-      ],
+const picker = await this._picker.create({
+  columns: [
+    {
+      name: type,
+      options: options,
+      selectedIndex: selectedIndex
+    },
+  ],
+  buttons: [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+    },
+    {
+      text: 'Confirm',
+      handler: (value) => {
+        if (type === 'frequency') {
+          this.refFrequencyValue$ = value[type].value;
+          this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
+          this.mode = 'trumpet';
+        } else if (type === 'tempo') {
+          this._tempo.setTempo(value[type].value);
+        }
+      }
+    },
+  ],
+  cssClass: 'scrollable-picker'
+});
 
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
-        {
-          text: 'Confirm',
-          handler: (value) => {
-            if (type === 'frequency') {
-              this.refFrequencyValue$ = value[type].value;
-              this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
-              this.mode = 'trumpet';
-            } else if (type === 'tempo') {
-              this._tempo.setTempo(value[type].value);
-            }
+await picker.present();
+
+// Get access to the picker's internal elements after a short delay to ensure they're rendered
+setTimeout(() => {
+  // Target the column wrapper elements
+  const pickerWrappers = document.querySelectorAll('.picker-wrapper');
+  
+  pickerWrappers.forEach(wrapper => {
+    // Handle wheel events for mouse wheel/touchpad
+    wrapper.addEventListener('wheel', (event: Event) => {
+      event.preventDefault();
+      
+      // Type assertion for wheel event
+      const wheelEvent = event as WheelEvent;
+      // Determine direction
+      let delta = 0;
+      
+      // Access properties with type safety
+      if ('deltaY' in wheelEvent) {
+        delta = wheelEvent.deltaY;
+      } else if ('detail' in wheelEvent) {
+        delta = (wheelEvent as any).detail;
+      } else if ('wheelDelta' in wheelEvent) {
+        delta = -(wheelEvent as any).wheelDelta;
+      }
+      
+      const direction = delta > 0 ? 1 : -1;
+      
+      // Find active option
+      const column = wrapper.querySelector('.picker-col');
+      if (column) {
+        // Get current selected option
+        const currentSelected = column.querySelector('.picker-opt-selected');
+        if (currentSelected) {
+          // Find next/previous option
+          const targetOption = direction > 0 
+            ? currentSelected.nextElementSibling
+            : currentSelected.previousElementSibling;
+            
+          // If there's a valid option, simulate a tap on it
+          if (targetOption && targetOption.classList.contains('picker-opt')) {
+            // Create and dispatch touch events to simulate native picker behavior
+            const touchStartEvent = new TouchEvent('touchstart', {
+              bubbles: true,
+              cancelable: true,
+              view: window
+            });
+            
+            const touchEndEvent = new TouchEvent('touchend', {
+              bubbles: true,
+              cancelable: true,
+              view: window
+            });
+            
+            targetOption.dispatchEvent(touchStartEvent);
+            targetOption.dispatchEvent(touchEndEvent);
           }
-        },
-      ],
+        }
+      }
+    }, { passive: false });
+    
+    // Handle keyboard navigation
+    wrapper.setAttribute('tabindex', '0');
+    wrapper.addEventListener('keydown', (event: Event) => {
+      // Type assertion for keyboard event
+      const keyEvent = event as KeyboardEvent;
+      const column = wrapper.querySelector('.picker-col');
+      if (!column) return;
+      
+      const currentSelected = column.querySelector('.picker-opt-selected');
+      if (!currentSelected) return;
+      
+      let targetOption = null;
+      
+      if (keyEvent.key === 'ArrowDown') {
+        event.preventDefault();
+        targetOption = currentSelected.nextElementSibling;
+      } else if (keyEvent.key === 'ArrowUp') {
+        event.preventDefault();
+        targetOption = currentSelected.previousElementSibling;
+      }
+      
+      if (targetOption && targetOption.classList.contains('picker-opt')) {
+        // Create and dispatch touch events
+        const touchStartEvent = new TouchEvent('touchstart', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        
+        const touchEndEvent = new TouchEvent('touchend', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        
+        targetOption.dispatchEvent(touchStartEvent);
+        targetOption.dispatchEvent(touchEndEvent);
+      }
     });
+  });
+}, 150); // Short delay to ensure picker is fully rendered
 
     await picker.present();
 
