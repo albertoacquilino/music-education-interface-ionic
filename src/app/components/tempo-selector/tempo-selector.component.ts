@@ -8,9 +8,10 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IonicModule, PickerController } from '@ionic/angular';
+import { IonicModule, PickerController, PickerOptions } from '@ionic/angular';
 import { range } from 'lodash';
 import { MAXTEMPO, MINTEMPO } from 'src/app/constants';
+import { BeatService } from 'src/app/services/beat.service';
 
 
 /**
@@ -79,6 +80,7 @@ export class TempoSelectorComponent implements OnInit {
 
   constructor(
     private _picker: PickerController,
+    private _tempo: BeatService
   ) { }
 
   ngOnInit() { }
@@ -88,50 +90,119 @@ export class TempoSelectorComponent implements OnInit {
   * Opens the picker to select a new tempo value.
   */
   async openPicker() {
-    // create list of options to be selected
-    let options: { value: number, text: string }[];
-    let selectedIndex = 0;
-    let selectedValue: number;
-    let rangeValues: number[] = [];
-    let unit: string;
-
-    selectedValue = this.tempo;
-    rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
-    unit = 'bpm';
-
-    options = rangeValues.map(value => ({
-      value: value,
-      text: `${value} ${unit}`
-    }));
-
-    selectedIndex = options.findIndex(option => option.value === selectedValue);
-
-    const picker = await this._picker.create({
+    const pickerOptions: PickerOptions = {
       columns: [
         {
           name: 'tempo',
-          options: options,
-          selectedIndex: selectedIndex
-        },
+          options: range(MINTEMPO, MAXTEMPO + 1, 1).map(tempo => ({
+            text: `${tempo} BPM`,
+            value: tempo
+          })),
+          selectedIndex: range(MINTEMPO, MAXTEMPO + 1, 1).findIndex(tempo => tempo === this.tempo)
+        }
       ],
-
+      cssClass: 'simple-picker',
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel',
+          role: 'cancel'
         },
         {
           text: 'Confirm',
           handler: (value) => {
-            this.tempo = value['tempo'].value;
+            this.tempo = value.tempo.value;
             this.change.emit(this.tempo);
           }
-        },
-      ],
-    });
+        }
+      ]
+    };
 
+    const picker = await this._picker.create(pickerOptions);
     await picker.present();
 
+    // After picker is presented, add simple navigation
+    setTimeout(() => {
+      const pickerEl = document.querySelector('.simple-picker ion-picker-internal') as HTMLElement;
+      if (!pickerEl) return;
+
+      const pickerCol = pickerEl.querySelector('ion-picker-column') as any;
+      if (!pickerCol) return;
+
+      // Create nav controls
+      const navControls = document.createElement('div');
+      navControls.className = 'picker-nav-controls';
+      navControls.innerHTML = `
+        <button class="nav-btn up-btn">▲</button>
+        <button class="nav-btn down-btn">▼</button>
+      `;
+      
+      // Add to picker
+      pickerEl.appendChild(navControls);
+      
+      // Get column and buttons
+      const upBtn = pickerEl.querySelector('.up-btn') as HTMLButtonElement;
+      const downBtn = pickerEl.querySelector('.down-btn') as HTMLButtonElement;
+      
+      if (pickerCol && upBtn && downBtn) {
+        // Helper function to enable scroll into view
+        const scrollToSelectedOption = (index: number) => {
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (opts && opts[index]) {
+            opts[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        };
+        
+        // Ensure selected option is visible on open
+        const currentIndex = pickerCol.selectedIndex || 0;
+        scrollToSelectedOption(currentIndex);
+        
+        // Up button - decrease value
+        upBtn.addEventListener('click', () => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          if (currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          }
+        });
+        
+        // Down button - increase value
+        downBtn.addEventListener('click', () => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (currentIndex < opts.length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+
+        // Add mouse wheel support
+        pickerEl.addEventListener('wheel', (e: WheelEvent) => {
+          e.preventDefault();
+          const currentIndex = pickerCol.selectedIndex || 0;
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (e.deltaY < 0 && currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          } else if (e.deltaY > 0 && currentIndex < opts.length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (e.key === 'ArrowUp' && currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          } else if (e.key === 'ArrowDown' && currentIndex < opts.length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+      }
+    }, 100);
   }
 
 }
