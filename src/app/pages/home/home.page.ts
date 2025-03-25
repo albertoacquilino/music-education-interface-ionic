@@ -513,12 +513,10 @@ export class HomePage implements OnInit {
   }
 
   async openPicker(type: 'frequency' | 'tempo') {
-    // Check if the picker should be opened
     if (this.isPlaying()) {
       return;
     }
 
-    // create list of options to be selected
     let options: { value: number; text: string }[];
     let selectedIndex = 0;
     let selectedValue: number;
@@ -529,17 +527,13 @@ export class HomePage implements OnInit {
       selectedValue = this.refFrequencyValue$;
       rangeValues = range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1);
       unit = 'Hz';
-    } else if (type === 'tempo') {
+    } else {
       selectedValue = this.tempo$.value;
       rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
       unit = 'bpm';
     }
 
-    options = rangeValues.map((value) => ({
-      value: value,
-      text: `${value} ${unit}`,
-    }));
-
+    options = rangeValues.map((value) => ({ value, text: `${value} ${unit}` }));
     selectedIndex = options.findIndex(
       (option) => option.value === selectedValue
     );
@@ -548,26 +542,15 @@ export class HomePage implements OnInit {
       columns: [
         {
           name: type,
-          options: options,
-          selectedIndex: selectedIndex,
+          options,
+          selectedIndex,
         },
       ],
       buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
+        { text: 'Cancel', role: 'cancel' },
         {
           text: 'Confirm',
-          handler: (value) => {
-            if (type === 'frequency') {
-              this.refFrequencyValue$ = value[type].value;
-              this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
-              this.mode = 'trumpet';
-            } else if (type === 'tempo') {
-              this._tempo.setTempo(value[type].value);
-            }
-          },
+          handler: (value) => this.applySelectedValue(type, value[type].value),
         },
       ],
       cssClass: 'scrollable-picker',
@@ -575,42 +558,23 @@ export class HomePage implements OnInit {
 
     await picker.present();
 
-    // Get access to the picker's internal elements after a short delay to ensure they're rendered
     setTimeout(() => {
-      // Target the column wrapper elements
       const pickerWrappers = document.querySelectorAll('.picker-wrapper');
-
       pickerWrappers.forEach((wrapper) => {
-        // Type-safe way to set focus
         if (wrapper instanceof HTMLElement) {
-          wrapper.tabIndex = 0; // Ensure it can receive focus
+          wrapper.tabIndex = 0;
           wrapper.setAttribute('tabindex', '0');
         }
 
-        // Improved wheel event handling for touchpad and mouse wheel
         let accumulatedDelta = 0;
-        const SCROLL_THRESHOLD = 50; // Adjust this value to control scroll sensitivity
+        const SCROLL_THRESHOLD = 50;
 
         wrapper.addEventListener(
           'wheel',
-          (event: Event) => {
+          (event) => {
             event.preventDefault();
-
-            const wheelEvent = event as WheelEvent;
-            let delta = 0;
-
-            if ('deltaY' in wheelEvent) {
-              delta = wheelEvent.deltaY;
-            } else if ('detail' in wheelEvent) {
-              delta = (wheelEvent as any).detail;
-            } else if ('wheelDelta' in wheelEvent) {
-              delta = -(wheelEvent as any).wheelDelta;
-            }
-
-            // Accumulate delta for smoother scrolling
+            const delta = (event as WheelEvent).deltaY || 0;
             accumulatedDelta += delta;
-
-            // Only trigger selection when delta threshold is reached
             if (Math.abs(accumulatedDelta) >= SCROLL_THRESHOLD) {
               const column = wrapper.querySelector('.picker-col');
               if (column) {
@@ -622,60 +586,43 @@ export class HomePage implements OnInit {
                     accumulatedDelta > 0
                       ? currentSelected.nextElementSibling
                       : currentSelected.previousElementSibling;
-
                   if (
                     targetOption &&
                     targetOption.classList.contains('picker-opt')
                   ) {
-                    // Create and dispatch touch events
-                    const touchStartEvent = new TouchEvent('touchstart', {
-                      bubbles: true,
-                      cancelable: true,
-                      view: window,
-                    });
-
-                    const touchEndEvent = new TouchEvent('touchend', {
-                      bubbles: true,
-                      cancelable: true,
-                      view: window,
-                    });
-
-                    targetOption.dispatchEvent(touchStartEvent);
-                    targetOption.dispatchEvent(touchEndEvent);
-
-                    // Only dispatch events after user explicitly selects an option
-                    const confirmButton = document.querySelector(
-                      '.picker-button-confirm'
+                    targetOption.dispatchEvent(
+                      new TouchEvent('touchstart', {
+                        bubbles: true,
+                        cancelable: true,
+                      })
                     );
-                    if (confirmButton) {
-                      confirmButton.classList.add('highlight');
-                    }
+                    targetOption.dispatchEvent(
+                      new TouchEvent('touchend', {
+                        bubbles: true,
+                        cancelable: true,
+                      })
+                    );
+                    document
+                      .querySelector('.picker-button-confirm')
+                      ?.classList.add('highlight');
                   }
                 }
               }
-
-              // Reset accumulated delta
               accumulatedDelta = 0;
             }
           },
           { passive: false }
         );
 
-        // Improve keyboard navigation
-        wrapper.addEventListener('keydown', (event: Event) => {
+        wrapper.addEventListener('keydown', (event) => {
           const keyEvent = event as KeyboardEvent;
           const column = wrapper.querySelector('.picker-col');
-
           if (!column) return;
-
           let currentSelected = column.querySelector('.picker-opt-selected');
-          if (!currentSelected) {
-            // If no option is selected, start with the initial selected index
+          if (!currentSelected)
             currentSelected = column.children[selectedIndex];
-          }
 
           let targetOption = null;
-
           if (keyEvent.key === 'ArrowDown') {
             event.preventDefault();
             targetOption = currentSelected.nextElementSibling;
@@ -684,50 +631,53 @@ export class HomePage implements OnInit {
             targetOption = currentSelected.previousElementSibling;
           } else if (keyEvent.key === 'Enter') {
             event.preventDefault();
-            // Simulate confirm button click
-            const confirmButton = document.querySelector(
-              '.picker-button-confirm'
-            ) as HTMLButtonElement;
-            if (confirmButton) {
-              confirmButton.click();
+            const selectedOption = column.querySelector('.picker-opt-selected');
+            if (selectedOption) {
+              const selectedValue = parseInt(
+                selectedOption.textContent || '0',
+                10
+              );
+              this.applySelectedValue(type, selectedValue);
+              picker.dismiss();
             }
             return;
           }
 
           if (targetOption && targetOption.classList.contains('picker-opt')) {
-            const confirmButton = document.querySelector(
-              '.picker-button-confirm'
+            document
+              .querySelector('.picker-button-confirm')
+              ?.classList.add('highlight');
+            targetOption.dispatchEvent(
+              new TouchEvent('touchstart', { bubbles: true, cancelable: true })
             );
-            if (confirmButton) {
-              confirmButton.classList.add('highlight');
-            }
-
-            // Create and dispatch touch events
-            const touchStartEvent = new TouchEvent('touchstart', {
-              bubbles: true,
-              cancelable: true,
-              view: window,
-            });
-
-            const touchEndEvent = new TouchEvent('touchend', {
-              bubbles: true,
-              cancelable: true,
-              view: window,
-            });
-
-            targetOption.dispatchEvent(touchStartEvent);
-            targetOption.dispatchEvent(touchEndEvent);
+            targetOption.dispatchEvent(
+              new TouchEvent('touchend', { bubbles: true, cancelable: true })
+            );
           }
         });
 
-        // Try to focus the wrapper if it's an HTMLElement
-        if (wrapper instanceof HTMLElement) {
-          wrapper.focus();
-        }
-      });
-    }, 150); // Short delay to ensure picker is fully rendered
+        wrapper.addEventListener('click', (event) => {
+          const target = event.target as HTMLElement;
+          if (target && target.classList.contains('picker-opt')) {
+            const selectedValue = parseInt(target.textContent || '0', 10);
+            this.applySelectedValue(type, selectedValue);
+            picker.dismiss();
+          }
+        });
 
-    await picker.present();
+        if (wrapper instanceof HTMLElement) wrapper.focus();
+      });
+    }, 150);
+  }
+
+  applySelectedValue(type: 'frequency' | 'tempo', value: number) {
+    if (type === 'frequency') {
+      this.refFrequencyValue$ = value;
+      this.refFrequencyService.setRefFrequency(value);
+      this.mode = 'trumpet';
+    } else if (type === 'tempo') {
+      this._tempo.setTempo(value);
+    }
   }
 
   changeTempo(tempo: number) {
