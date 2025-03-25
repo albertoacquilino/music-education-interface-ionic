@@ -25,6 +25,7 @@ export class RegisterPage implements OnInit {
   email: string = '';
   userId: string = '';
   age!: number;
+  ageError: string = '';
   progressionSpeed: string = '20 min/day';
   role: string = '';
   learningMode: string = '';
@@ -100,11 +101,22 @@ export class RegisterPage implements OnInit {
     return (
       this.age !== null &&
       !isNaN(Number(this.age)) &&
+      this.age >= 0 &&
       this.progressionSpeed !== '' &&
       this.role !== '' &&
       (this.role !== 'Learner' && this.role !== 'Both' || this.learningMode !== '') &&
       this.termsAccepted
     );
+  }
+
+  validateAge(event: any) {
+    const value = event.target.value;
+    if (value < 0) {
+      this.ageError = 'Age cannot be negative';
+      this.age = null!;
+    } else {
+      this.ageError = '';
+    }
   }
 
   private async showToast(message: string, color: string) {

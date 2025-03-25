@@ -18,7 +18,7 @@
             <ion-input label="User ID" labelPlacement="floating" [(ngModel)]="userId" [disabled]="true"></ion-input>
           </ion-item>
           <ion-item class="custom-item">
-            <ion-input type="number" label="Age" labelPlacement="floating" [(ngModel)]="age"></ion-input>
+            <ion-input type="number" label="Age" labelPlacement="floating" [(ngModel)]="age" min="0" [errorText]="ageError" (ionInput)="validateAge($event)"></ion-input>
           </ion-item>
           <ion-item class="custom-item">
             <ion-select label="Progression Speed" interface="action-sheet" [(ngModel)]="progressionSpeed">
@@ -104,7 +104,7 @@
             <strong>Third-Party Services</strong><br>
             We use Firebase to store and manage your data. Firebase is a service provided by Google, and your data may
             be
-            subject to Google's data security and privacy practices. You can review Firebase’s Privacy Policy at the
+            subject to Google's data security and privacy practices. You can review Firebase's Privacy Policy at the
             following
             link: <a href="https://firebase.google.com/support/privacy" target="_blank"
               style="color: blue; text-decoration: underline;">Firebase Privacy Policy</a>.<br><br>
