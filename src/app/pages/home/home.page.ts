@@ -40,21 +40,27 @@ import { BeatService } from '../../services/beat.service';
   styleUrls: ['home.page.scss'],
   standalone: true,
   imports: [
-    IonicModule, FontAwesomeModule,
+    IonicModule,
+    FontAwesomeModule,
     ScoreViewComponent,
-    CommonModule, SemaphoreLightComponent,
-    TrumpetDiagramComponent, TempoSelectorComponent, NoteSelectorComponent,
-    ChromaticTunerComponent],
+    CommonModule,
+    SemaphoreLightComponent,
+    TrumpetDiagramComponent,
+    TempoSelectorComponent,
+    NoteSelectorComponent,
+    ChromaticTunerComponent,
+  ],
 })
 /**
  * HomePage class represents the home page of the music education interface.
  */
 export class HomePage implements OnInit {
-  @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
+  @ViewChild(ChromaticTunerComponent)
+  private chromaticTuner!: ChromaticTunerComponent;
 
   /**
-  * Indicates the mode - tuner or trumpet
-  */
+   * Indicates the mode - tuner or trumpet
+   */
 
   mode = 'trumpet';
 
@@ -62,7 +68,6 @@ export class HomePage implements OnInit {
    * Indicates whether the mute alert has been triggered.
    */
   muteAlert = false;
-
 
   /**
    * Indicates whether to use flats and sharps.
@@ -127,12 +132,12 @@ export class HomePage implements OnInit {
   /**
    * The trumpet position.
    */
-  trumpetPosition = "assets/images/trumpet_positions/pos_1.png"
+  trumpetPosition = 'assets/images/trumpet_positions/pos_1.png';
 
   /**
    * The score image.
    */
-  scoreImage = "assets/images/score_images/G2.svg";
+  scoreImage = 'assets/images/score_images/G2.svg';
 
   /**
    * The trumpet buttons. For each note, the buttons that should be highlighted.
@@ -142,7 +147,9 @@ export class HomePage implements OnInit {
   /**
    * The note images.
    */
-  noteImages = NOTES.map(note => `assets/images/trumpet_notes_images/_${note[0]}.svg`);
+  noteImages = NOTES.map(
+    (note) => `assets/images/trumpet_notes_images/_${note[0]}.svg`
+  );
 
   /**
    * The observable for the beat.
@@ -166,8 +173,6 @@ export class HomePage implements OnInit {
 
   collectedMeansObject: { [key: string]: number[] } = {};
 
-
-
   /**
    * Creates an instance of HomePage.
    * @param _picker - The picker controller.
@@ -186,7 +191,7 @@ export class HomePage implements OnInit {
     private refFrequencyService: RefFreqService,
     private tabsService: TabsService,
     private pitchService: PitchService,
-    private router: Router,
+    private router: Router
   ) {
     this.beat$ = this._tempo.tick$.pipe(
       tap((tempo: AppBeat) => this.intervalHandler(tempo))
@@ -198,22 +203,32 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     console.log(localStorage.getItem('LoggedInUser'));
-    this.refFrequencyService.getRefFrequency().subscribe(value => {
+    this.refFrequencyService.getRefFrequency().subscribe((value) => {
       this.refFrequencyValue$ = value;
     });
-    this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
-    this.useDynamics = this.retrieveAndParseFromLocalStorage('useDynamics', false);
-    this.lowNote = this.retrieveAndParseFromLocalStorage('lowNote', INITIAL_NOTE);
-    this.highNote = this.retrieveAndParseFromLocalStorage('highNote', INITIAL_NOTE);
+    this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage(
+      'useFlatsAndSharps',
+      false
+    );
+    this.useDynamics = this.retrieveAndParseFromLocalStorage(
+      'useDynamics',
+      false
+    );
+    this.lowNote = this.retrieveAndParseFromLocalStorage(
+      'lowNote',
+      INITIAL_NOTE
+    );
+    this.highNote = this.retrieveAndParseFromLocalStorage(
+      'highNote',
+      INITIAL_NOTE
+    );
   }
 
-  ionViewDidEnter(): void {
-
-  }
+  ionViewDidEnter(): void {}
 
   ionViewWillLeave(): void {
     this._tempo.stop();
-    if (this.mode == "tuner") this.chromaticTuner.stop();
+    if (this.mode == 'tuner') this.chromaticTuner.stop();
   }
 
   retrieveAndParseFromLocalStorage(key: string, defaultValue: any): any {
@@ -235,13 +250,12 @@ export class HomePage implements OnInit {
       this.muteAlert = true;
       const alert = await this.alertController.create({
         header: 'Mute Alert',
-        message: 'Your device is currently muted. Please unmute to hear the trumpet sounds.',
+        message:
+          'Your device is currently muted. Please unmute to hear the trumpet sounds.',
         buttons: ['OK'],
       });
       alert.present();
-    } catch (e) {
-    }
-
+    } catch (e) {}
   }
 
   /**
@@ -265,7 +279,10 @@ export class HomePage implements OnInit {
    */
   switchUseFlatsAndSharps(event: any) {
     this.useFlatsAndSharps = event.detail.checked;
-    localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
+    localStorage.setItem(
+      'useFlatsAndSharps',
+      JSON.stringify(this.useFlatsAndSharps)
+    );
     console.log(event);
     if (!this.useFlatsAndSharps) {
       // check that low and high notes are not on accidentals
@@ -345,9 +362,9 @@ export class HomePage implements OnInit {
    */
   updateScore(noteNumber: number) {
     const _notes = NOTES[noteNumber];
-    const scoreImage = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
-    this.scoreImage = `assets/images/score_images/${scoreImage}.svg`
-
+    const scoreImage =
+      _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
+    this.scoreImage = `assets/images/score_images/${scoreImage}.svg`;
 
     if (this.useDynamics) {
       const dynamic = DYNAMICS[Math.floor(Math.random() * DYNAMICS.length)];
@@ -363,7 +380,8 @@ export class HomePage implements OnInit {
    * @returns {number} The generated note.
    */
   nextNote() {
-    const next = Math.round(Math.random() * (this.highNote - this.lowNote)) + this.lowNote;
+    const next =
+      Math.round(Math.random() * (this.highNote - this.lowNote)) + this.lowNote;
     if (!this.useFlatsAndSharps) {
       if (NOTES[next].length == 2) {
         return next + 1;
@@ -388,20 +406,20 @@ export class HomePage implements OnInit {
 
       switch (tempo.measure) {
         case 0:
-          this.currentAction = "Rest";
+          this.currentAction = 'Rest';
           if (this.mode == 'tuner') {
             const meansArray = this.chromaticTuner.stop();
             this.collectedMeansObject = {
               ...this.collectedMeansObject,
-              [Object.keys(this.collectedMeansObject).length + 1]: meansArray
+              [Object.keys(this.collectedMeansObject).length + 1]: meansArray,
             };
           }
           break;
         case 1:
-          this.currentAction = "Listen";
+          this.currentAction = 'Listen';
           break;
         case 2:
-          this.currentAction = "Play";
+          this.currentAction = 'Play';
           if (this.mode == 'tuner') {
             this.chromaticTuner.start();
           }
@@ -409,9 +427,11 @@ export class HomePage implements OnInit {
       }
 
       if (this.mode == 'trumpet') {
-        switch (tempo.measure) {
+        switch (
+          tempo.measure
           // case 0: this.pitchService.disconnect(); break;
           // case 2: this.pitchService.connect();
+        ) {
         }
       }
     }
@@ -451,7 +471,8 @@ export class HomePage implements OnInit {
       this.lowNote,
       this.highNote,
       this.useFlatsAndSharps,
-      this.useDynamics);
+      this.useDynamics
+    );
   }
 
   /**
@@ -464,11 +485,10 @@ export class HomePage implements OnInit {
       const meansArray = this.chromaticTuner.stop();
       this.collectedMeansObject = {
         ...this.collectedMeansObject,
-        [Object.keys(this.collectedMeansObject).length + 1]: meansArray
+        [Object.keys(this.collectedMeansObject).length + 1]: meansArray,
       };
       console.log('Collected Means', this.collectedMeansObject);
-    }
-    else if (this.mode == 'trumpet') {
+    } else if (this.mode == 'trumpet') {
       // this.pitchService.disconnect();
     }
     Howler.stop();
@@ -493,13 +513,11 @@ export class HomePage implements OnInit {
   }
 
   async openPicker(type: 'frequency' | 'tempo') {
-    // Check if the picker should be opened
     if (this.isPlaying()) {
       return;
     }
 
-    // create list of options to be selected
-    let options: { value: number, text: string }[];
+    let options: { value: number; text: string }[];
     let selectedIndex = 0;
     let selectedValue: number;
     let rangeValues: number[] = [];
@@ -509,56 +527,162 @@ export class HomePage implements OnInit {
       selectedValue = this.refFrequencyValue$;
       rangeValues = range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1);
       unit = 'Hz';
-    } else if (type === 'tempo') {
+    } else {
       selectedValue = this.tempo$.value;
       rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
       unit = 'bpm';
     }
 
-    options = rangeValues.map(value => ({
-      value: value,
-      text: `${value} ${unit}`
-    }));
-
-    selectedIndex = options.findIndex(option => option.value === selectedValue);
+    options = rangeValues.map((value) => ({ value, text: `${value} ${unit}` }));
+    selectedIndex = options.findIndex(
+      (option) => option.value === selectedValue
+    );
 
     const picker = await this._picker.create({
       columns: [
         {
           name: type,
-          options: options,
-          selectedIndex: selectedIndex
+          options,
+          selectedIndex,
         },
       ],
-
       buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
+        { text: 'Cancel', role: 'cancel' },
         {
           text: 'Confirm',
-          handler: (value) => {
-            if (type === 'frequency') {
-              this.refFrequencyValue$ = value[type].value;
-              this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
-              this.mode = 'trumpet';
-            } else if (type === 'tempo') {
-              this._tempo.setTempo(value[type].value);
-            }
-          }
+          handler: (value) => this.applySelectedValue(type, value[type].value),
         },
       ],
+      cssClass: 'scrollable-picker',
     });
 
     await picker.present();
 
+    setTimeout(() => {
+      const pickerWrappers = document.querySelectorAll('.picker-wrapper');
+      pickerWrappers.forEach((wrapper) => {
+        if (wrapper instanceof HTMLElement) {
+          wrapper.tabIndex = 0;
+          wrapper.setAttribute('tabindex', '0');
+        }
+
+        let accumulatedDelta = 0;
+        const SCROLL_THRESHOLD = 50;
+
+        wrapper.addEventListener(
+          'wheel',
+          (event) => {
+            event.preventDefault();
+            const delta = (event as WheelEvent).deltaY || 0;
+            accumulatedDelta += delta;
+            if (Math.abs(accumulatedDelta) >= SCROLL_THRESHOLD) {
+              const column = wrapper.querySelector('.picker-col');
+              if (column) {
+                const currentSelected = column.querySelector(
+                  '.picker-opt-selected'
+                );
+                if (currentSelected) {
+                  const targetOption =
+                    accumulatedDelta > 0
+                      ? currentSelected.nextElementSibling
+                      : currentSelected.previousElementSibling;
+                  if (
+                    targetOption &&
+                    targetOption.classList.contains('picker-opt')
+                  ) {
+                    targetOption.dispatchEvent(
+                      new TouchEvent('touchstart', {
+                        bubbles: true,
+                        cancelable: true,
+                      })
+                    );
+                    targetOption.dispatchEvent(
+                      new TouchEvent('touchend', {
+                        bubbles: true,
+                        cancelable: true,
+                      })
+                    );
+                    document
+                      .querySelector('.picker-button-confirm')
+                      ?.classList.add('highlight');
+                  }
+                }
+              }
+              accumulatedDelta = 0;
+            }
+          },
+          { passive: false }
+        );
+
+        wrapper.addEventListener('keydown', (event) => {
+          const keyEvent = event as KeyboardEvent;
+          const column = wrapper.querySelector('.picker-col');
+          if (!column) return;
+          let currentSelected = column.querySelector('.picker-opt-selected');
+          if (!currentSelected)
+            currentSelected = column.children[selectedIndex];
+
+          let targetOption = null;
+          if (keyEvent.key === 'ArrowDown') {
+            event.preventDefault();
+            targetOption = currentSelected.nextElementSibling;
+          } else if (keyEvent.key === 'ArrowUp') {
+            event.preventDefault();
+            targetOption = currentSelected.previousElementSibling;
+          } else if (keyEvent.key === 'Enter') {
+            event.preventDefault();
+            const selectedOption = column.querySelector('.picker-opt-selected');
+            if (selectedOption) {
+              const selectedValue = parseInt(
+                selectedOption.textContent || '0',
+                10
+              );
+              this.applySelectedValue(type, selectedValue);
+              picker.dismiss();
+            }
+            return;
+          }
+
+          if (targetOption && targetOption.classList.contains('picker-opt')) {
+            document
+              .querySelector('.picker-button-confirm')
+              ?.classList.add('highlight');
+            targetOption.dispatchEvent(
+              new TouchEvent('touchstart', { bubbles: true, cancelable: true })
+            );
+            targetOption.dispatchEvent(
+              new TouchEvent('touchend', { bubbles: true, cancelable: true })
+            );
+          }
+        });
+
+        wrapper.addEventListener('click', (event) => {
+          const target = event.target as HTMLElement;
+          if (target && target.classList.contains('picker-opt')) {
+            const selectedValue = parseInt(target.textContent || '0', 10);
+            this.applySelectedValue(type, selectedValue);
+            picker.dismiss();
+          }
+        });
+
+        if (wrapper instanceof HTMLElement) wrapper.focus();
+      });
+    }, 150);
+  }
+
+  applySelectedValue(type: 'frequency' | 'tempo', value: number) {
+    if (type === 'frequency') {
+      this.refFrequencyValue$ = value;
+      this.refFrequencyService.setRefFrequency(value);
+      this.mode = 'trumpet';
+    } else if (type === 'tempo') {
+      this._tempo.setTempo(value);
+    }
   }
 
   changeTempo(tempo: number) {
     this._tempo.setTempo(tempo);
   }
-
 
   /**
    * Determines whether the modal can be dismissed or not.
@@ -587,7 +711,7 @@ export class HomePage implements OnInit {
 
     // Calcola il fattore di scala per adattare sia larghezza che altezza
     const scaleX = viewportWidth / baseWidth;
-    const scaleY = viewportHeight / baseHeight * 0.8;
+    const scaleY = (viewportHeight / baseHeight) * 0.8;
 
     // Prendi il fattore di scala minimo tra larghezza e altezza
     let scale = Math.min(scaleX, scaleY);
@@ -600,10 +724,9 @@ export class HomePage implements OnInit {
 
     // Posizionamento centrale del contenitore
     container!.style.position = 'absolute';
-    container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
-    container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
+    container!.style.left = `calc(50% - ${(baseWidth * scale) / 2}px)`;
+    container!.style.top = `calc(50% - ${(baseHeight * scale) / 2}px)`;
   }
-
 
   //on component load, scale the content
   ngAfterViewInit() {
@@ -611,8 +734,7 @@ export class HomePage implements OnInit {
     window.addEventListener('resize', () => this.scaleContent());
     window.addEventListener('load', () => this.scaleContent());
 
-    // 
+    //
     setTimeout(() => this.scaleContent(), 250);
   }
-
 }
