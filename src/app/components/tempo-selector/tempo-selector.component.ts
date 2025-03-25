@@ -8,7 +8,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IonicModule, PickerController } from '@ionic/angular';
+import { IonicModule, PickerController, PickerOptions } from '@ionic/angular';
 import { range } from 'lodash';
 import { MAXTEMPO, MINTEMPO } from 'src/app/constants';
 import { BeatService } from 'src/app/services/beat.service';
@@ -90,40 +90,36 @@ export class TempoSelectorComponent implements OnInit {
   * Opens the picker to select a new tempo value.
   */
   async openPicker() {
-    const tempoRange = range(MINTEMPO, MAXTEMPO + 1, 5);
-    const options = tempoRange.map((tempo: number) => ({
-      text: `${tempo} bpm`,
-      value: tempo
-    }));
-
-    const picker = await this._picker.create({
+    const pickerOptions: PickerOptions = {
       columns: [
         {
           name: 'tempo',
-          options: options,
-          selectedIndex: options.findIndex((option: any) => option.value === this.tempo)
-        },
+          options: range(MINTEMPO, MAXTEMPO + 1, 1).map(tempo => ({
+            text: `${tempo} BPM`,
+            value: tempo
+          })),
+          selectedIndex: range(MINTEMPO, MAXTEMPO + 1, 1).findIndex(tempo => tempo === this.tempo)
+        }
       ],
       cssClass: 'simple-picker',
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel',
+          role: 'cancel'
         },
         {
           text: 'Confirm',
-          handler: (value: any) => {
-            const newTempo = value.tempo.value;
-            this._tempo.setTempo(newTempo);
-            this.tempo = newTempo;
-            this.change.emit(newTempo);
+          handler: (value) => {
+            this.tempo = value.tempo.value;
+            this.change.emit(this.tempo);
           }
-        },
-      ],
-    });
-    
+        }
+      ]
+    };
+
+    const picker = await this._picker.create(pickerOptions);
     await picker.present();
-    
+
     // After picker is presented, add simple navigation
     setTimeout(() => {
       const pickerEl = document.querySelector('.simple-picker ion-picker-internal') as HTMLElement;
@@ -156,6 +152,10 @@ export class TempoSelectorComponent implements OnInit {
           }
         };
         
+        // Ensure selected option is visible on open
+        const currentIndex = pickerCol.selectedIndex || 0;
+        scrollToSelectedOption(currentIndex);
+        
         // Up button - decrease value
         upBtn.addEventListener('click', () => {
           const currentIndex = pickerCol.selectedIndex || 0;
@@ -168,7 +168,35 @@ export class TempoSelectorComponent implements OnInit {
         // Down button - increase value
         downBtn.addEventListener('click', () => {
           const currentIndex = pickerCol.selectedIndex || 0;
-          if (currentIndex < options.length - 1) {
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (currentIndex < opts.length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+
+        // Add mouse wheel support
+        pickerEl.addEventListener('wheel', (e: WheelEvent) => {
+          e.preventDefault();
+          const currentIndex = pickerCol.selectedIndex || 0;
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (e.deltaY < 0 && currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          } else if (e.deltaY > 0 && currentIndex < opts.length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (e.key === 'ArrowUp' && currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          } else if (e.key === 'ArrowDown' && currentIndex < opts.length - 1) {
             pickerCol.setSelected(currentIndex + 1, 150);
             scrollToSelectedOption(currentIndex + 1);
           }

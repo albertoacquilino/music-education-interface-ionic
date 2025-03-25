@@ -560,6 +560,10 @@ export class HomePage implements OnInit {
           }
         };
         
+        // Ensure selected option is visible on open
+        const currentIndex = pickerCol.selectedIndex || 0;
+        scrollToSelectedOption(currentIndex);
+        
         // Up button - decrease value
         upBtn.addEventListener('click', () => {
           const currentIndex = pickerCol.selectedIndex || 0;
@@ -572,7 +576,35 @@ export class HomePage implements OnInit {
         // Down button - increase value
         downBtn.addEventListener('click', () => {
           const currentIndex = pickerCol.selectedIndex || 0;
-          if (currentIndex < range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1).length - 1) {
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (currentIndex < opts.length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+
+        // Add mouse wheel support
+        pickerEl.addEventListener('wheel', (e: WheelEvent) => {
+          e.preventDefault();
+          const currentIndex = pickerCol.selectedIndex || 0;
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (e.deltaY < 0 && currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          } else if (e.deltaY > 0 && currentIndex < opts.length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (e.key === 'ArrowUp' && currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          } else if (e.key === 'ArrowDown' && currentIndex < opts.length - 1) {
             pickerCol.setSelected(currentIndex + 1, 150);
             scrollToSelectedOption(currentIndex + 1);
           }
