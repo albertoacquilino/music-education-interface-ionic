@@ -11,6 +11,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IonicModule, PickerController } from '@ionic/angular';
 import { range } from 'lodash';
 import { MAXTEMPO, MINTEMPO } from 'src/app/constants';
+import { BeatService } from 'src/app/services/beat.service';
 
 
 /**
@@ -79,6 +80,7 @@ export class TempoSelectorComponent implements OnInit {
 
   constructor(
     private _picker: PickerController,
+    private _tempo: BeatService
   ) { }
 
   ngOnInit() { }
@@ -88,33 +90,21 @@ export class TempoSelectorComponent implements OnInit {
   * Opens the picker to select a new tempo value.
   */
   async openPicker() {
-    // create list of options to be selected
-    let options: { value: number, text: string }[];
-    let selectedIndex = 0;
-    let selectedValue: number;
-    let rangeValues: number[] = [];
-    let unit: string;
-
-    selectedValue = this.tempo;
-    rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
-    unit = 'bpm';
-
-    options = rangeValues.map(value => ({
-      value: value,
-      text: `${value} ${unit}`
+    const tempoRange = range(MINTEMPO, MAXTEMPO + 1, 5);
+    const options = tempoRange.map((tempo: number) => ({
+      text: `${tempo} bpm`,
+      value: tempo
     }));
-
-    selectedIndex = options.findIndex(option => option.value === selectedValue);
 
     const picker = await this._picker.create({
       columns: [
         {
           name: 'tempo',
           options: options,
-          selectedIndex: selectedIndex
+          selectedIndex: options.findIndex((option: any) => option.value === this.tempo)
         },
       ],
-
+      cssClass: 'simple-picker',
       buttons: [
         {
           text: 'Cancel',
@@ -122,16 +112,69 @@ export class TempoSelectorComponent implements OnInit {
         },
         {
           text: 'Confirm',
-          handler: (value) => {
-            this.tempo = value['tempo'].value;
-            this.change.emit(this.tempo);
+          handler: (value: any) => {
+            const newTempo = value.tempo.value;
+            this._tempo.setTempo(newTempo);
+            this.tempo = newTempo;
+            this.change.emit(newTempo);
           }
         },
       ],
     });
-
+    
     await picker.present();
+    
+    // After picker is presented, add simple navigation
+    setTimeout(() => {
+      const pickerEl = document.querySelector('.simple-picker ion-picker-internal') as HTMLElement;
+      if (!pickerEl) return;
 
+      const pickerCol = pickerEl.querySelector('ion-picker-column') as any;
+      if (!pickerCol) return;
+
+      // Create nav controls
+      const navControls = document.createElement('div');
+      navControls.className = 'picker-nav-controls';
+      navControls.innerHTML = `
+        <button class="nav-btn up-btn">▲</button>
+        <button class="nav-btn down-btn">▼</button>
+      `;
+      
+      // Add to picker
+      pickerEl.appendChild(navControls);
+      
+      // Get column and buttons
+      const upBtn = pickerEl.querySelector('.up-btn') as HTMLButtonElement;
+      const downBtn = pickerEl.querySelector('.down-btn') as HTMLButtonElement;
+      
+      if (pickerCol && upBtn && downBtn) {
+        // Helper function to enable scroll into view
+        const scrollToSelectedOption = (index: number) => {
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (opts && opts[index]) {
+            opts[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        };
+        
+        // Up button - decrease value
+        upBtn.addEventListener('click', () => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          if (currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          }
+        });
+        
+        // Down button - increase value
+        downBtn.addEventListener('click', () => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          if (currentIndex < options.length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+      }
+    }, 100);
   }
 
 }

@@ -7,7 +7,7 @@
  */
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonicModule, PickerController } from '@ionic/angular';
+import { AlertController, IonicModule, PickerController, PickerOptions } from '@ionic/angular';
 
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -208,7 +208,7 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter(): void {
-
+    // Frequency reset is now handled directly in the openPicker method
   }
 
   ionViewWillLeave(): void {
@@ -485,74 +485,100 @@ export class HomePage implements OnInit {
   }
 
   /**
-   * Returns a boolean indicating whether the tempo is currently playing or not.
-   * @returns {boolean} A boolean indicating whether the tempo is currently playing or not.
+   * Checks if the app is currently in playing mode.
+   * @returns A boolean indicating whether the app is in playing mode.
    */
   isPlaying(): boolean {
     return this._tempo.playing$.value;
   }
 
-  async openPicker(type: 'frequency' | 'tempo') {
-    // Check if the picker should be opened
-    if (this.isPlaying()) {
-      return;
-    }
-
-    // create list of options to be selected
-    let options: { value: number, text: string }[];
-    let selectedIndex = 0;
-    let selectedValue: number;
-    let rangeValues: number[] = [];
-    let unit: string;
-
-    if (type === 'frequency') {
-      selectedValue = this.refFrequencyValue$;
-      rangeValues = range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1);
-      unit = 'Hz';
-    } else if (type === 'tempo') {
-      selectedValue = this.tempo$.value;
-      rangeValues = range(MINTEMPO, MAXTEMPO + 1, 5);
-      unit = 'bpm';
-    }
-
-    options = rangeValues.map(value => ({
-      value: value,
-      text: `${value} ${unit}`
-    }));
-
-    selectedIndex = options.findIndex(option => option.value === selectedValue);
-
-    const picker = await this._picker.create({
+  // Display picker for frequency selection
+  async openPicker(type: 'frequency' | 'tempo' = 'frequency') {
+    // We only handle frequency picker in this method
+    let freqVal = this.refFrequencyValue$;
+    
+    const pickerOptions: PickerOptions = {
       columns: [
         {
-          name: type,
-          options: options,
-          selectedIndex: selectedIndex
-        },
+          name: 'frequency',
+          options: range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1).map(freq => ({
+            text: `${freq} Hz`,
+            value: freq
+          })),
+          selectedIndex: range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1).findIndex(freq => freq === freqVal)
+        }
       ],
-
+      cssClass: 'simple-picker',
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel',
+          role: 'cancel'
         },
         {
           text: 'Confirm',
           handler: (value) => {
-            if (type === 'frequency') {
-              this.refFrequencyValue$ = value[type].value;
-              this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
-              this.mode = 'trumpet';
-            } else if (type === 'tempo') {
-              this._tempo.setTempo(value[type].value);
-            }
+            this.refFrequencyValue$ = value.frequency.value;
+            this.refFrequencyService.setRefFrequency(this.refFrequencyValue$);
+            this.mode = 'trumpet';
           }
-        },
-      ],
-    });
+        }
+      ]
+    };
 
+    const picker = await this._picker.create(pickerOptions);
     await picker.present();
 
+    // After picker is presented, add simple navigation
+    setTimeout(() => {
+      const pickerEl = document.querySelector('.simple-picker ion-picker-internal') as HTMLElement;
+      if (!pickerEl) return;
+
+      const pickerCol = pickerEl.querySelector('ion-picker-column') as any;
+      if (!pickerCol) return;
+
+      // Create nav controls
+      const navControls = document.createElement('div');
+      navControls.className = 'picker-nav-controls';
+      navControls.innerHTML = `
+        <button class="nav-btn up-btn">▲</button>
+        <button class="nav-btn down-btn">▼</button>
+      `;
+      
+      // Add to picker
+      pickerEl.appendChild(navControls);
+      
+      // Get column and buttons
+      const upBtn = pickerEl.querySelector('.up-btn') as HTMLButtonElement;
+      const downBtn = pickerEl.querySelector('.down-btn') as HTMLButtonElement;
+      
+      if (pickerCol && upBtn && downBtn) {
+        // Helper function to enable scroll into view
+        const scrollToSelectedOption = (index: number) => {
+          const opts = pickerEl.querySelectorAll('.picker-opt');
+          if (opts && opts[index]) {
+            opts[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        };
+        
+        // Up button - decrease value
+        upBtn.addEventListener('click', () => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          if (currentIndex > 0) {
+            pickerCol.setSelected(currentIndex - 1, 150);
+            scrollToSelectedOption(currentIndex - 1);
+          }
+        });
+        
+        // Down button - increase value
+        downBtn.addEventListener('click', () => {
+          const currentIndex = pickerCol.selectedIndex || 0;
+          if (currentIndex < range(MINREFFREQUENCY, MAXREFFREQUENCY + 1, 1).length - 1) {
+            pickerCol.setSelected(currentIndex + 1, 150);
+            scrollToSelectedOption(currentIndex + 1);
+          }
+        });
+      }
+    }, 100);
   }
 
   changeTempo(tempo: number) {

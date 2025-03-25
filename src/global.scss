@@ -3,7 +3,7 @@
  * ----------------------------------------------------------------------------
  * Put style rules here that you want to apply globally. These styles are for
  * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
+ * used as an entry point to import other CSS files to be included in the
  * output CSS.
  * For more information on global stylesheets, visit the documentation:
  * https://ionicframework.com/docs/layout/global-stylesheets
@@ -24,3 +24,83 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+/* Simple picker styles */
+.simple-picker {
+  --height: 240px;
+  position: relative;
+  
+  /* Make sure the picker's scrolling is smooth */
+  .picker-opts {
+    overflow-y: auto !important;
+    scroll-behavior: smooth;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    will-change: scroll-position;
+    contain: content;
+    
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--ion-color-medium);
+      border-radius: 10px;
+    }
+    
+    .picker-opt {
+      height: 40px;
+      text-shadow: none;
+      
+      &.picker-opt-selected {
+        color: var(--ion-color-primary);
+        font-weight: 600;
+      }
+      
+      &::before {
+        display: none;
+      }
+    }
+  }
+  
+  /* Navigation controls */
+  .picker-nav-controls {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+    
+    .nav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background-color: var(--ion-color-primary);
+      color: white;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      
+      &:active {
+        background-color: var(--ion-color-primary-shade);
+      }
+    }
+  }
+}
+
+/* General picker improvements for scrolling */
+ion-picker-column {
+  overflow: auto !important;
+}
+
+ion-picker-internal {
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+}

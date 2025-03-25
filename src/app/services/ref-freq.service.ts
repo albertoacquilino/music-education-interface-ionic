@@ -37,6 +37,11 @@ export class RefFreqService {
   getCurrentRefFrequency(): number {
     return this.refFrequency$.getValue();
   }
+  
+  resetToDefault(): void {
+    localStorage.removeItem(this.storageKey);
+    this.refFrequency$.next(DEFAULT_FREQUENCY);
+  }
 }
 
 
