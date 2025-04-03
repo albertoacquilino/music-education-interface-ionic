@@ -9,7 +9,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { NOTES } from 'src/app/constants';
+import { TRUMPET_NOTES, CLARINET_NOTES } from 'src/app/constants';
 import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
 
 /**
@@ -17,7 +17,7 @@ import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-sele
  * It allows users to select musical notes and emits changes when a note is selected.
  * 
  * @example
- * <note-selector [label]="Note" [note]="1" (change)="onNoteChange($event)"></note-selector>
+ * <note-selector [label]="Note" [note]="1" [selectedInstrument]="selectedInstrument" (change)="onNoteChange($event)"></note-selector>
  */
 @Component({
   selector: 'note-selector',
@@ -42,7 +42,6 @@ import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-sele
           </ng-template>
         </ion-modal>
       </div>
-
   `,
   styles: [`
     #note-image-id {
@@ -53,7 +52,7 @@ import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-sele
       background-color: #ececec;
       border: 1px solid lightgrey;
       border-radius: 6px;
-      padding: 10px 10px;
+      padding:1px 15px;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
@@ -64,37 +63,48 @@ import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-sele
     }
 
   `],
+  
   standalone: true,
   imports: [
     ScrollImageComponent, CommonModule, IonicModule
   ]
 })
 export class NoteSelectorComponent implements OnInit {
-
+  private _selectedInstrument: string = 'trumpet'; // Default instrument
   _id = `note-selector-${Math.round(Math.random() * 100)}`;
   @Input() label: string = '';
   @Input() note!: number;
   @Input() useFlatsAndSharps: boolean = true;
+  @Input() set selectedInstrument(value: string) {
+    this._selectedInstrument = value;
+    this.updateNoteImages(); // Update note images when the instrument changes
+  }
   @Output() change: EventEmitter<number> = new EventEmitter<number>();
 
-  noteImages = NOTES.map(note => `assets/images/trumpet_notes_images/_${note[0]}.svg`);
+  noteImages: string[] = []; // Initialize as an empty array
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.updateNoteImages(); // Initialize note images based on the default instrument
+  }
+
+  private updateNoteImages() {
+    const notes = this._selectedInstrument === 'trumpet' ? TRUMPET_NOTES : CLARINET_NOTES;
+    this.noteImages = notes.map(note => `assets/images/${this._selectedInstrument}_notes_images/_${note[0]}.svg`);
+  }
 
   getNoteImg(note: number): string {
-    return note ? this.noteImages[note] : '';
+    return note >= 0 && note < this.noteImages.length ? this.noteImages[note] : '';
   }
 
   /**
- * Determines whether the modal can be dismissed or not.
- * @param data Optional data passed to the modal.
- * @param role Optional role of the modal.
- * @returns A Promise that resolves to a boolean indicating whether the modal can be dismissed or not.
- */
+   * Determines whether the modal can be dismissed or not.
+   * @param data Optional data passed to the modal.
+   * @param role Optional role of the modal.
+   * @returns A Promise that resolves to a boolean indicating whether the modal can be dismissed or not.
+   */
   async canDismiss(data?: any, role?: string) {
     return role !== 'gesture';
   }
-
 }
