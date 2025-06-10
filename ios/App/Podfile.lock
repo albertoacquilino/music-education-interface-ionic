@@ -54,17 +54,17 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@mozartec/capacitor-microphone"
 
 SPEC CHECKSUMS:
-  Capacitor: 559d073c4ca6c27f8e7002c807eea94c3ba435a9
-  CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
-  CapacitorCommunityKeepAwake: e2ddd50812e3407f8dc3a2c28e97d66e9b59b2f5
+  Capacitor: c527d208447590a004f0a4a2c42a5f361848fa8a
+  CapacitorApp: f51c08c64df914fc934239fd1b3fc809d62a02f6
+  CapacitorCommunityKeepAwake: 6ca8e4c8db46f0cf99e33f1ca1162fbc97c8611e
   CapacitorCordova: 8c4bfdf69368512e85b1d8b724dd7546abeb30af
-  CapacitorDevice: 7097a1deb4224b77fd13a6e60a355d0062a5d772
-  CapacitorHaptics: fe689ade56ef20ec9b041a753c6da70c5d8ec9a9
-  CapacitorKeyboard: 2700f9b18687be021e28b5a09b59eb151a46d5e0
-  CapacitorStatusBar: b81d4fb5d4e0064c712018071b3ab4b810b39a63
-  CapgoCapacitorMute: 6cf5b54cb19afe8f0cf9b20c0040ec65d9ecf0a0
-  MozartecCapacitorMicrophone: 43dd3a517756bbf909a5c47623b862fc518d92c4
+  CapacitorDevice: da1884f895e17992648b27f6c8ee2be72cd0ce2e
+  CapacitorHaptics: 05d33e20e394b1977dfd2a00a2621e04098164c1
+  CapacitorKeyboard: 5bf4458dd989b56a60ea15c92cbca5fbfae6e9f9
+  CapacitorStatusBar: 9ed7f06318fd436917072a9bf60fda56d12c8bdb
+  CapgoCapacitorMute: 4e2e26eda9cf7c8d723b6633ba2240a914ab217e
+  MozartecCapacitorMicrophone: c229536df8ab3d1fcf7c850011d2729f6d4865d1
 
 PODFILE CHECKSUM: 5daa95e44f153f3c7310690252f636ecb36b2405
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.16.2

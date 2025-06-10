@@ -10,7 +10,11 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s",
+    "generate-docs": "npx @compodoc/compodoc -p tsconfig.json -e json -d docs",
+    "extract-api": "node scripts/extract-public-api.js",
+    "public-docs": "npm run generate-docs && npm run extract-api"
+
   },
   "private": true,
   "dependencies": {
