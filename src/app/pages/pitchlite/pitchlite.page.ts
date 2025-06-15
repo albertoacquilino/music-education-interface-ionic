@@ -5,7 +5,6 @@
  * Licensed under the GNU Affero General Public License v3.0.
  * See the LICENSE file for more details.
  */
-
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonicModule, ViewDidEnter, ViewDidLeave } from '@ionic/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -16,7 +15,6 @@ import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { TabsService } from 'src/app/services/tabs.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-pitchlite',
   templateUrl: 'pitchlite.page.html',
@@ -25,37 +23,74 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonicModule, FontAwesomeModule, ScrollImageComponent, CommonModule, ChromaticTunerComponent],
 })
+/**
+ * PitchComponent class represents the pitch detection interface of the music education application.
+ */
 export class PitchComponent implements OnInit, ViewDidEnter, ViewDidLeave {
   @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
 
+  /**
+   * The reference frequency value for tuning.
+   */
   refFrequencyValue$!: number;
 
+  /**
+   * Indicates whether pitch detection is currently active.
+   * @default false
+   */
   detecting = false;
 
+  /**
+   * Creates an instance of PitchComponent.
+   * @param refFreqService - The service for managing reference frequency.
+   * @param tabsService - The service for managing tab states.
+   * @param router - The router for navigation.
+   */
   constructor(
     private refFreqService: RefFreqService,
     private tabsService: TabsService,
     private router: Router
   ) { }
 
+  /**
+   * Lifecycle hook that is called after the component has been initialized.
+   * Retrieves the reference frequency from the service.
+   * @returns void
+   */
   ngOnInit(): void {
     this.refFreqService.getRefFrequency().subscribe(value => {
       this.refFrequencyValue$ = value;
     });
   }
 
-  ionViewDidEnter(){
+  /**
+   * Lifecycle hook that is called when the view has entered.
+   * Starts the chromatic tuner and sets detecting to true.
+   * @returns void
+   */
+  ionViewDidEnter() {
     this.detecting = true;
     this.chromaticTuner.start();
+    // Optionally disable tabs while detecting
     // this.tabsService.setDisabled(true);
   }
 
+  /**
+   * Lifecycle hook that is called when the view is about to leave.
+   * Stops the chromatic tuner and sets detecting to false.
+   * @returns void
+   */
   ionViewDidLeave() {
-      this.detecting = false;
-      this.chromaticTuner.stop();
-      // this.tabsService.setDisabled(false);
+    this.detecting = false;
+    this.chromaticTuner.stop();
+    // Optionally enable tabs after detecting
+    // this.tabsService.setDisabled(false);
   }
 
+  /**
+   * Navigates to the user profile page.
+   * @returns void
+   */
   goToProfile() {
     this.router.navigate(['/profile']);
   }

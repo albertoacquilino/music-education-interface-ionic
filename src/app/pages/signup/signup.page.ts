@@ -24,15 +24,36 @@ declare var google: any;
   standalone: true,
   imports: [IonicModule, FormsModule],
 })
-
+/**
+ * SignupPage class represents the user sign-up interface of the music education application.
+ */
 export class SignupPage implements AfterViewInit {
   @ViewChild('googleBtn', { static: true }) googleBtn!: ElementRef;
+
+  /**
+   * The email address of the user.
+   */
   email: string = '';
+
+  /**
+   * The password of the user.
+   */
   password: string = '';
 
+  /**
+   * Creates an instance of SignupPage.
+   * @param authService - The service for managing authentication.
+   * @param router - The router for navigation.
+   * @param toastController - The controller for displaying toast messages.
+   * @param ngZone - The Angular zone for change detection.
+   */
   constructor(private authService: AuthService, private router: Router, private toastController: ToastController, private ngZone: NgZone) { }
 
-
+  /**
+   * Lifecycle hook that is called after the view has been initialized.
+   * Initializes Google Sign-In and sets up the sign-in button.
+   * @returns void
+   */
   ngAfterViewInit(): void {
     initializeApp(environment.firebaseConfig);
 
@@ -49,10 +70,20 @@ export class SignupPage implements AfterViewInit {
     });
   }
 
+  /**
+   * Decodes the JWT token to extract user information.
+   * @param token - The JWT token to decode.
+   * @returns The decoded token payload.
+   */
   private decodeToken(token: string) {
     return JSON.parse(atob(token.split(".")[1]));
   }
 
+  /**
+   * Handles the Google Sign-In response.
+   * @param response - The response object from Google Sign-In.
+   * @returns void
+   */
   async handleLogin(response: any) {
     if (response) {
       const credential = GoogleAuthProvider.credential(response.credential);
@@ -64,7 +95,7 @@ export class SignupPage implements AfterViewInit {
         localStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
         console.log("User Info", JSON.stringify(payLoad));
         this.ngZone.run(() => {
-          if (additionalUserInfo?.isNewUser) {
+          if (additionalUserInfo?.isNewUser ) {
             this.router.navigate(['register'], { state: { email: userCredential.user.email } });
           } else {
             this.router.navigate(['home']);
@@ -77,6 +108,10 @@ export class SignupPage implements AfterViewInit {
     }
   }
 
+  /**
+   * Signs up a new user with the provided email and password.
+   * @returns void
+   */
   async signUp() {
     try {
       await this.authService.register(this.email, this.password);
@@ -85,7 +120,7 @@ export class SignupPage implements AfterViewInit {
       this.clearForm();
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
-        this.showToast('User credentials already exist. Please login.', 'danger');
+        this.showToast('User  credentials already exist. Please login.', 'danger');
       } else {
         this.showToast(error.message || 'Registration failed. Please try again.', 'danger');
       }
@@ -94,6 +129,12 @@ export class SignupPage implements AfterViewInit {
     }
   }
 
+  /**
+   * Displays a toast message.
+   * @param message - The message to display.
+   * @param color - The color of the toast (e.g., 'success', 'danger').
+   * @returns void
+   */
   private async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
       color: color,
@@ -103,12 +144,22 @@ export class SignupPage implements AfterViewInit {
     });
     toast.present();
   }
+
+  /**
+   * Clears the email and password fields.
+   * @returns void
+   */
   private clearForm() {
     this.email = '';
     this.password = '';
   }
+
+  /**
+   * Navigates to the sign-in page.
+   * @returns void
+   */
   navigateToSignin() {
     this.router.navigate(['/']);
   }
-
 }
+

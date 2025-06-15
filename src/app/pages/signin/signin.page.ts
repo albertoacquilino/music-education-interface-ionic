@@ -16,7 +16,6 @@ import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
 import { getAdditionalUserInfo, getAuth, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 
-
 declare var google: any;
 
 @Component({
@@ -26,14 +25,38 @@ declare var google: any;
   standalone: true,
   imports: [IonicModule, FormsModule],
 })
+/**
+ * SigninPage class represents the user sign-in interface of the music education application.
+ */
 export class SigninPage implements AfterViewInit {
   @ViewChild('googleBtn', { static: true }) googleBtn!: ElementRef;
+
+  /**
+   * The email address of the user.
+   */
   email: string = '';
+
+  /**
+   * The password of the user.
+   */
   password: string = '';
 
+  /**
+   * Creates an instance of SigninPage.
+   * @param authService - The service for managing authentication.
+   * @param router - The router for navigation.
+   * @param toastController - The controller for displaying toast messages.
+   * @param ngZone - The Angular zone for change detection.
+   */
   constructor(private authService: AuthService, private router: Router, private toastController: ToastController, private ngZone: NgZone) { }
+
+  /**
+   * Lifecycle hook that is called after the view has been initialized.
+   * Initializes Google Sign-In and checks if the user is already logged in.
+   * @returns void
+   */
   ngAfterViewInit(): void {
-    const userInfo = localStorage.getItem('LoggedInUser');
+    const userInfo = localStorage.getItem('LoggedInUser ');
     if (userInfo) {
       this.router.navigate(['/home']);
     }
@@ -59,10 +82,20 @@ export class SigninPage implements AfterViewInit {
     }, 1000);
   }
 
+  /**
+   * Decodes the JWT token to extract user information.
+   * @param token - The JWT token to decode.
+   * @returns The decoded token payload.
+   */
   private decodeToken(token: string) {
     return JSON.parse(atob(token.split(".")[1]));
   }
 
+  /**
+   * Handles the Google Sign-In response.
+   * @param response - The response object from Google Sign-In.
+   * @returns void
+   */
   async handleLogin(response: any) {
     if (response) {
       const credential = GoogleAuthProvider.credential(response.credential);
@@ -74,7 +107,7 @@ export class SigninPage implements AfterViewInit {
         localStorage.setItem("LoggedInUser", JSON.stringify(payLoad));
         console.log("User Info", JSON.stringify(payLoad));
         this.ngZone.run(() => {
-          if (additionalUserInfo?.isNewUser) {
+          if (additionalUserInfo?.isNewUser ) {
             this.router.navigate(['register'], { state: { email: userCredential.user.email } });
           } else {
             this.router.navigate(['home']);
@@ -87,6 +120,10 @@ export class SigninPage implements AfterViewInit {
     }
   }
 
+  /**
+   * Logs in the user with email and password.
+   * @returns void
+   */
   async login() {
     try {
       await this.authService.signIn(this.email, this.password);
@@ -99,6 +136,12 @@ export class SigninPage implements AfterViewInit {
     }
   }
 
+  /**
+   * Displays a toast message.
+   * @param message - The message to display.
+   * @param color - The color of the toast (e.g., 'success', 'danger').
+   * @returns void
+   */
   private async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
       color,
@@ -109,15 +152,28 @@ export class SigninPage implements AfterViewInit {
     await toast.present();
   }
 
+  /**
+   * Clears the email and password fields.
+   * @returns void
+   */
   private clearForm() {
     this.email = '';
     this.password = '';
   }
+
+  /**
+   * Navigates to the signup page.
+   * @returns void
+   */
   goToSignup() {
     this.router.navigate(['/signup']);
   }
 
-  continueAsGuest() {
+  /**
+   * Continues to the home page as a guest.
+   * @returns void
+   */
+  continueAsGuest(){
     this.router.navigate(['/home']);
   }
 }

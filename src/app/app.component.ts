@@ -20,23 +20,38 @@ import { KeepAwake } from '@capacitor-community/keep-awake';
   standalone: true,
   imports: [IonicModule],
 })
+/**
+ * Main application component that initializes the app and manages microphone permissions.
+ */
 export class AppComponent implements AfterViewInit {
+  /**
+   * Creates an instance of AppComponent.
+   * @param {Platform} platform - The platform service to check the current platform.
+   * @param {PitchService} pitchService - The service for pitch detection.
+   */
   constructor(private platform: Platform, private pitchService: PitchService) {
-    StatusBar.show();
+    StatusBar.show(); // Show the status bar
   }
 
-  async ngAfterViewInit() {
-
-    // keep the screen awake using plugin
+  /**
+   * Lifecycle hook that is called after the component's view has been fully initialized.
+   * This method checks for microphone permissions and starts the pitch monitoring service.
+   * @returns {Promise<void>} A promise that resolves when the initialization is complete.
+   * @example
+   * await appComponent.ngAfterViewInit();
+   */
+  async ngAfterViewInit(): Promise<void> {
+    // Keep the screen awake using the KeepAwake plugin
     await KeepAwake.keepAwake();
 
+    // Check and request microphone permissions on Android and iOS platforms
     if (this.platform.is('android') || this.platform.is('ios')) {
       const checkPermissionsResult = await Microphone.checkPermissions();
       if (checkPermissionsResult.microphone === 'denied') {
         const requestPermissionsResult = await Microphone.requestPermissions();
         if (requestPermissionsResult.microphone === 'denied') {
           alert('Microphone permissions denied: Some features may not work as expected');
-          return;
+          return; // Exit if permissions are denied
         }
       }
     }

@@ -7,18 +7,23 @@
  */
 
 import { Routes } from '@angular/router';
-// import { authGuard } from './guards/auth.guards';
+
+/**
+ * Defines the application routes for the Music Education Interface.
+ * This configuration sets up the navigation paths and loading of components.
+ */
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
+    redirectTo: 'home', // Redirects to the home route
+    pathMatch: 'full', // Ensures the entire URL path matches
   },
 
+  // Uncomment and configure the following routes as needed
   // {
   //   path: '',
   //   loadComponent: () => import('./pages/signin/signin.page').then(m => m.SigninPage),
-  //   canActivate: [authGuard]
+  //   canActivate: [authGuard] // Protects the route with an authentication guard
   // },
   // {
   //   path: 'signup',
@@ -28,7 +33,6 @@ export const routes: Routes = [
   //   path: 'register',
   //   loadComponent: () => import('./pages/register/register.page').then(m => m.RegisterPage),
   // },
-
   // {
   //   path: 'profile',
   //   loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage),
@@ -36,25 +40,25 @@ export const routes: Routes = [
 
   {
     path: 'home',
-    loadComponent: () => import('./pages/tabs/tabs.page').then(m => m.TabsComponent),
+    loadComponent: () => import('./pages/tabs/tabs.page').then(m => m.TabsComponent), // Loads the TabsComponent for the home route
     children: [
       {
         path: 'exercise',
-        loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage),
+        loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage), // Loads the HomePage for the exercise route
       },
       {
         path: 'tuner',
-        loadComponent: () => import('./pages/pitchlite/pitchlite.page').then(m => m.PitchComponent),
+        loadComponent: () => import('./pages/pitchlite/pitchlite.page').then(m => m.PitchComponent), // Loads the PitchComponent for the tuner route
       },
-
       {
         path: '',
-        redirectTo: 'exercise',
+        redirectTo: 'exercise', // Redirects to the exercise route by default
         pathMatch: 'full',
       }
     ]
   },
 
+  // Uncomment and configure the following routes as needed
   // {
   //   path: 'scroll-image-page',
   //   loadComponent: () => import('./components/scroll-image-selector/scroll-image-test-page').then(m => m.ScrollImagePage),

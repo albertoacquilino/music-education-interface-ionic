@@ -13,9 +13,12 @@ import { Score } from '../models/score.types';
 
 /**
  * Generates a StaveNote object based on the provided notes and duration.
- * @param notes - An array of strings representing the notes.
- * @param duration - A string representing the duration of the notes.
- * @returns A StaveNote object.
+ * 
+ * @param {string[]} notes - An array of strings representing the notes (e.g., ['c/4', 'd/4']).
+ * @param {string} duration - A string representing the duration of the notes (e.g., 'q' for quarter note).
+ * @returns {StaveNote} A StaveNote object representing the musical notes.
+ * @example
+ * const staveNote = generateNotes(['c/4', 'd/4'], 'q');
  */
 export function generateNotes(notes: string[], duration: string): StaveNote {
     const accidentals = notes.map((note) => {
@@ -38,29 +41,32 @@ export function generateNotes(notes: string[], duration: string): StaveNote {
     return staveNotes;
 }
 
-
 /**
  * Converts a MEI note to a Score object.
  * 
- * @param meiNote - The MEI note to convert.
- * @returns The converted Score object.
+ * @param {string} meiNote - The MEI note to convert (e.g., 'c4', 'd#5').
+ * @param {string} instrument - The instrument for which the note is being converted (e.g., 'clarinet').
+ * @param {string | undefined} dynamic - The dynamic marking for the note (optional).
+ * @returns {Score} The converted Score object representing the musical note.
+ * @example
+ * const score = scoreFromNote('c4', 'trumpet', 'mf');
  */
-export function scoreFromNote(meiNote: string,instrument:string, dynamic: string | undefined = undefined): Score {
+export function scoreFromNote(meiNote: string, instrument: string, dynamic: string | undefined = undefined): Score {
     let scoreNote;
     const note = meiNote[0];
     const octave = meiNote[1];
-    if(instrument==="clarinet"){
-        scoreNote = note + '/' + (Number(octave) );
-    }else{
-        scoreNote = note + '/' + (Number(octave) +2);
+    if (instrument === "clarinet") {
+        scoreNote = note + '/' + (Number(octave));
+    } else {
+        scoreNote = note + '/' + (Number(octave) + 2);
     }
     
     if (meiNote.length == 3) {
         const accidental = meiNote[2] == 's' ? '#' : 'b';
-        if(instrument==="clarinet"){
-        scoreNote = note + accidental + '/' + (Number(octave));
-        }else{
-            scoreNote = note + accidental + '/' + (Number(octave)+2);
+        if (instrument === "clarinet") {
+            scoreNote = note + accidental + '/' + (Number(octave));
+        } else {
+            scoreNote = note + accidental + '/' + (Number(octave) + 2);
         }
     }
 
