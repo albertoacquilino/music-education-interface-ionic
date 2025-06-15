@@ -66,8 +66,8 @@ export class ScoreViewComponent implements AfterViewInit {
    */
   setSize() {
     const size = {
-      width: this.hostElement.nativeElement.getBoundingClientRect().width,
-      height: this.hostElement.nativeElement.getBoundingClientRect().height
+      width: this.hostElement.nativeElement.getBoundingClientRect().width+120,
+      height: this.hostElement.nativeElement.getBoundingClientRect().height+53
     };
 
     this.size$.next(size);
