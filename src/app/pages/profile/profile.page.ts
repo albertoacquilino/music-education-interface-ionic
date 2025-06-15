@@ -19,17 +19,45 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [IonicModule, CommonModule]
 })
+/**
+ * ProfilePage class represents the user profile interface of the music education application.
+ */
 export class ProfilePage {
 
+  /**
+   * The display name of the user.
+   */
   displayName!: string;
+
+  /**
+   * The email address of the user.
+   */
   emailAddress!: string;
+
+  /**
+   * The profile image URL of the user.
+   */
   ProfileImg!: string;
+
+  /**
+   * The user ID derived from the email address.
+   */
   UserID!: string;
 
+  /**
+   * Creates an instance of ProfilePage.
+   * @param authService - The service for managing authentication.
+   * @param router - The router for navigation.
+   */
   constructor(private authService: AuthService, private router: Router) { }
 
+  /**
+   * Lifecycle hook that is called when the view is about to enter.
+   * Retrieves user information from local storage and updates the profile fields.
+   * @returns void
+   */
   ionViewWillEnter() {
-    const user = JSON.parse(localStorage.getItem("LoggedInUser")!);
+    const user = JSON.parse(localStorage.getItem("LoggedInUser ")!);
 
     if (user) {
       this.emailAddress = user.email;
@@ -44,14 +72,21 @@ export class ProfilePage {
     }
   }
 
+  /**
+   * Navigates back to the home page.
+   * @returns void
+   */
   goBack() {
     this.router.navigate(['/home']);
   }
 
+  /**
+   * Signs out the user and removes their information from local storage.
+   * @returns void
+   */
   signOut() {
-    localStorage.removeItem('LoggedInUser');
+    localStorage.removeItem('LoggedInUser ');
     this.authService.signOut();
   }
 }
-
 

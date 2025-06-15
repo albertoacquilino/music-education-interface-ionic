@@ -12,7 +12,6 @@ import { interval, take } from 'rxjs';
 import { MAXTEMPO, MAXCYCLES, MINTEMPO } from '../constants';
 import { AppBeat } from '../models/appbeat.types';
 
-
 const DEFAULT_TEMPO = 80;
 
 @Injectable({
@@ -23,12 +22,12 @@ const DEFAULT_TEMPO = 80;
  */
 export class BeatService {
   /**
-   * The tempo of the beat.
+   * The tempo of the beat as an observable.
    */
   public tempo$ = new BehaviorSubject<number>(this.storedTempo());
 
   /**
-   * Whether the beat is currently playing.
+   * Whether the beat is currently playing as an observable.
    */
   public playing$ = new BehaviorSubject<boolean>(false);
 
@@ -53,6 +52,10 @@ export class BeatService {
 
   constructor() { }
 
+  /**
+   * Retrieves the stored tempo from local storage or returns the default tempo.
+   * @returns {number} The stored tempo or the default tempo.
+   */
   private storedTempo(): number {
     const tempo = localStorage.getItem('tempo');
     return tempo ? parseInt(tempo) : DEFAULT_TEMPO;
@@ -60,7 +63,11 @@ export class BeatService {
 
   /**
    * Sets the tempo of the beat.
-   * @param value The new tempo value.
+   * @param value - The new tempo value.
+   * @returns void
+   * @throws Will not set the tempo if the beat is currently playing or if the value is out of bounds.
+   * @example
+   * beatService.setTempo(120);
    */
   public setTempo(value: number) {
     if (this._playing) return;
@@ -73,6 +80,10 @@ export class BeatService {
 
   /**
    * Starts the beat.
+   * @returns void
+   * @throws Will not start the beat if it is already playing.
+   * @example
+   * beatService.start();
    */
   public start() {
     if (this._playing) return;
@@ -109,6 +120,10 @@ export class BeatService {
 
   /**
    * Stops the beat.
+   * @returns void
+   * @throws Will not stop the beat if it is not currently playing.
+   * @example
+   * beatService.stop();
    */
   public stop() {
     if (!this._playing) return;
@@ -125,5 +140,4 @@ export class BeatService {
       cycle: this._cycle
     }))
   }
-
 }

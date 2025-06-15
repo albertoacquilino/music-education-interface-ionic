@@ -16,7 +16,6 @@ import { Injectable } from "@angular/core";
 import { User, Activity } from "../models/firebase.types";
 import { query, where } from "@angular/fire/firestore";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyDSpKBGWsrGNkocpyN_ledyIomcGJ14Pto",
   authDomain: "mei-trumpet.firebaseapp.com",
@@ -30,13 +29,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Service for managing user activities and interactions with Firebase.
+ */
 export class FirebaseService {
   currentActivity!: Activity;
 
@@ -44,28 +45,29 @@ export class FirebaseService {
     this.uploadSavedActivities();
   }
 
-
   /**
    * Saves the current activity to local storage.
    * @param tempo - The tempo of the activity.
    * @param lowNote - The lowest note of the activity.
    * @param highNote - The highest note of the activity.
-   * @param refFrequencyValue,
+   * @param refFrequencyValue - The reference frequency value for the activity.
    * @param useFlatsAndSharps - Whether to use flats and sharps in the activity.
-   * @param showTrumpetHints - Whether to show trumpet hints in the activity.
+   * @param useDynamics - Whether to use dynamics in the activity.
+   * @returns void
+   * @example
+   * firebaseService.saveStart(120, 60, 80, 440, true, false);
    */
   public async saveStart(
     tempo: number,
     lowNote: number,
     highNote: number,
-    refFrequencyValue:number,
+    refFrequencyValue: number,
     useFlatsAndSharps: boolean,
     useDynamics: boolean
   ) {
     const startTime = new Date();
     const deviceInfo = await Device.getInfo();
     const deviceId = await Device.getId();
-
 
     this.currentActivity = {
       tempo,
@@ -89,6 +91,10 @@ export class FirebaseService {
   /**
    * Saves the current activity and uploads it to Firebase.
    * @param action - The action performed on the activity ('finished' or 'interrupted').
+   * @param collectedMeansObject - An object containing collected data during the activity.
+   * @returns void
+   * @example
+   * firebaseService.saveStop('finished', { notes: [1, 2, 3] });
    */
   public async saveStop(action: 'finished' | 'interrupted', collectedMeansObject: { [key: string]: number[] }) {
     const endTime = new Date();
@@ -116,15 +122,21 @@ export class FirebaseService {
   public async registerUser(user: User): Promise<DocumentReference> {
     try {
       const userDocRef = await addDoc(collection(db, 'user_info'), user);
-      console.log('User registered with ID:', userDocRef.id);
+      console.log('User  registered with ID:', userDocRef.id);
       return userDocRef;
-
     } catch (e) {
       console.log('Error', e);
       throw e;
     }
   }
 
+  /**
+   * Checks if a user exists in the Firestore database.
+   * @param userId - The ID of the user to check.
+   * @returns {Promise<boolean>} A promise that resolves to true if the user exists, otherwise false.
+   * @example
+   * const exists = await firebaseService.checkUser Exists('123');
+   */
   public async checkUserExists(userId: string): Promise<boolean> {
     try {
       const q = query(collection(db, 'user_info'), where('userId', '==', userId));
@@ -136,11 +148,10 @@ export class FirebaseService {
     }
   }
 
-
   /**
    * Saves an activity to the Firestore database.
-   * @param activity The activity to be saved.
-   * @returns A promise that resolves to the document reference of the saved activity.
+   * @param activity - The activity to be saved.
+   * @returns {Promise<DocumentReference>} A promise that resolves to the document reference of the saved activity.
    */
   private async saveActivity(activity: Activity): Promise<DocumentReference> {
     const docId = await addDoc(collection(db, "activities"), activity);
@@ -149,7 +160,8 @@ export class FirebaseService {
 
   /**
    * Saves the given activity to local storage.
-   * @param activity The activity to be saved.
+   * @param activity - The activity to be saved.
+   * @returns void
    */
   private saveToLocalStorage(activity: Activity) {
     const activities = this.loadActivitiesFromLocalStorage();
@@ -161,13 +173,13 @@ export class FirebaseService {
    * Uploads saved activities to Firebase.
    * Retrieves activities from local storage and saves them to Firebase.
    * Removes saved activities from local storage after they have been successfully saved to Firebase.
+   * @returns void
    */
   private async uploadSavedActivities() {
     let activities = this.loadActivitiesFromLocalStorage();
     for (let activity of activities) {
       try {
         await this.saveActivity(activity);
-
         // remove from local storage
         this.removeFromLocalStorage(activity);
       } catch (e) {
@@ -179,6 +191,7 @@ export class FirebaseService {
   /**
    * Removes the given activity from local storage.
    * @param activity - The activity to be removed.
+   * @returns void
    */
   private removeFromLocalStorage(activity: Activity): void {
     let activities = this.loadActivitiesFromLocalStorage();
@@ -189,6 +202,7 @@ export class FirebaseService {
   /**
    * Updates the activity in the local storage.
    * @param activity - The activity to update.
+   * @returns void
    */
   private updateInLocalStorage(activity: Activity): void {
     let activities = this.loadActivitiesFromLocalStorage();
@@ -197,6 +211,10 @@ export class FirebaseService {
     localStorage.setItem('activities', JSON.stringify(activities));
   }
 
+  /**
+   * Loads activities from local storage.
+   * @returns {Activity[]} An array of activities loaded from local storage.
+   */
   private loadActivitiesFromLocalStorage(): Activity[] {
     const activitiesJSON = JSON.parse(localStorage.getItem('activities') || '[]');
     const activities = activitiesJSON.map((a: any) => {

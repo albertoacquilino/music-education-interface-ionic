@@ -13,7 +13,6 @@ import { IonicModule } from '@ionic/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ScrollImageComponent } from '../scroll-image-selector/scroll-image-selector.component';
 import { CommonModule } from '@angular/common';
-
 const baseNotes: { [note: string]: { freq: number, key: number } } = {
     "A0": { "freq": 27.5, "key": 1 }, "A#0/Bb0": { "freq": 29.14, "key": 2 }, "B0": { "freq": 30.87, "key": 3 },
     "C1": { "freq": 32.7, "key": 4 }, "C#1/Db1": { "freq": 34.65, "key": 5 }, "D1": { "freq": 36.71, "key": 6 },
@@ -49,12 +48,13 @@ const baseNotes: { [note: string]: { freq: number, key: number } } = {
     "F#8/Gb8": { "freq": 5919.91, "key": 94 }, "G8": { "freq": 6271.93, "key": 95 }, "G#8/Ab8": { "freq": 6644.88, "key": 96 },
     "A8": { "freq": 7040, "key": 97 }, "A#8/Bb8": { "freq": 7458.62, "key": 98 }, "B8": { "freq": 7902.13, "key": 99 }
 };
+
 const minCents = -40;
 const maxCents = 40;
 
 /**
  * ChromaticTunerComponent is responsible for displaying a chromatic tuner interface.
- * It displays the detected pitch and note, and provides visual feedback to the user.
+ * It displays the detected pitch and note, and provides visual feedback to the user through emojis.
  * 
  * @example
  * <chromatic-tuner [refFrequencyValue$]="440"></chromatic-tuner>
@@ -67,8 +67,22 @@ const maxCents = 40;
     imports: [IonicModule, FontAwesomeModule, CommonModule]
 })
 export class ChromaticTunerComponent implements OnInit {
+    /**
+     * Reference frequency value in Hz for tuning.
+     * @type {number}
+     */
     @Input() refFrequencyValue$!: number;
+
+    /**
+     * Observable that emits the detected pitch.
+     * @type {Observable<number>}
+     */
     pitch$: Observable<number>;
+
+    /**
+     * Observable that emits the detected note and cents deviation.
+     * @type {Observable<{ note: string, cents: number }>}
+     */
     note$: Observable<{ note: string, cents: number }>;
 
     private pitchSubject = new Subject<number>();
@@ -147,6 +161,9 @@ export class ChromaticTunerComponent implements OnInit {
         );
     }
 
+    /**
+     * Initializes the component and subscribes to the note observable.
+     */
     ngOnInit() {
         this.updateNotes();
         this.note$.subscribe((note) => {
@@ -156,6 +173,9 @@ export class ChromaticTunerComponent implements OnInit {
         });
     }
 
+    /**
+     * Updates the note frequencies based on the reference frequency.
+     */
     updateNotes() {
         this.NOTES = Object.keys(baseNotes).reduce((acc, note) => {
             acc[note] = {
@@ -166,6 +186,10 @@ export class ChromaticTunerComponent implements OnInit {
         }, {} as { [note: string]: { freq: number, key: number } });
     }
 
+    /**
+     * Rotates the pointer based on the cents deviation.
+     * @param {number} cents - The cents deviation from the target pitch.
+     */
     rotatePointer(cents: number) {
         if (cents < minCents) cents = minCents;
         else if (cents > maxCents) cents = maxCents;
@@ -173,6 +197,10 @@ export class ChromaticTunerComponent implements OnInit {
         this.pointerTransform = `rotate(${angle}deg)`;
     }
 
+    /**
+     * Displays an emoji based on the cents deviation.
+     * @param {number} cents - The cents deviation from the target pitch.
+     */
     showEmoji(cents: number) {
         if (cents == 0) this.currentEmoji = '';
         else if (cents >= -10 && cents <= 10) {
@@ -184,6 +212,10 @@ export class ChromaticTunerComponent implements OnInit {
         }
     }
 
+    /**
+     * Starts the pitch detection process.
+     * Clears the means array and subscribes to the pitch service.
+     */
     start() {
         this.meansArray = [];  // Clear the array when starting
         // this.pitchService.connect();
@@ -192,6 +224,10 @@ export class ChromaticTunerComponent implements OnInit {
         });
     }
 
+    /**
+     * Stops the pitch detection process and returns the array of means.
+     * @returns {number[]} The array of means calculated during the pitch detection.
+     */
     stop(): number[] {
         // this.pitchService.disconnect();
 
@@ -210,40 +246,43 @@ export class ChromaticTunerComponent implements OnInit {
         return this.meansArray;  // Return the array of means
     }
 
+    /**
+     * Scales the content of the tuner based on the viewport size.
+     */
     scaleContent() {
         const container = document.getElementById('tuner');
 
-        // Dimensioni di base del contenitore
+        // Base dimensions of the container
         const baseWidth = container!.offsetWidth;
         const baseHeight = container!.offsetHeight;
 
-        // Dimensioni della finestra (viewport)
+        // Dimensions of the viewport
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
 
-        // Calcola il fattore di scala per adattare sia larghezza che altezza
+        // Calculate the scaling factor to fit both width and height
         const scaleX = viewportWidth / baseWidth;
         const scaleY = viewportHeight / baseHeight;
 
-        // Prendi il fattore di scala minimo tra larghezza e altezza
+        // Take the minimum scaling factor between width and height
         let scale = Math.min(scaleX, scaleY);
 
-        //lascia un margine di almeno 20%
+        // Leave a margin of at least 20%
         scale = scale * 0.8;
 
-        // Applica il fattore di scala al contenitore
+        // Apply the scaling factor to the container
         // container!.style.transform = `scale(${scale})`;
-
     }
 
-
-    //on component load, scale the content
+    /**
+     * Lifecycle hook that is called after the component's view has been fully initialized.
+     * It sets up event listeners for resizing and scaling the content.
+     */
     ngAfterViewInit() {
-        //on event resize, scale the content
+        // On event resize, scale the content
         window.addEventListener('resize', (event) => this.scaleContent());
         window.addEventListener('load', (event) => this.scaleContent());
         this.scaleContent();
     }
 }
-
 

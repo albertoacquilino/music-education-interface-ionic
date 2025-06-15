@@ -5,10 +5,8 @@
  * Licensed under the GNU Affero General Public License v3.0.
  * See the LICENSE file for more details.
  */
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonicModule, PickerController } from '@ionic/angular';
-
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Mute } from '@capgo/capacitor-mute';
@@ -30,9 +28,8 @@ import { RefFreqService } from 'src/app/services/ref-freq.service';
 import { SoundsService } from 'src/app/services/sounds.service';
 import { TabsService } from 'src/app/services/tabs.service';
 import { scoreFromNote } from 'src/app/utils/score.utils';
-import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, TRUMPET_NOTES, CLARINET_NOTES, POSITIONS, TRUMPET_BTN,CLARINET_POSITIONS } from '../../constants';
+import { DYNAMICS, INITIAL_NOTE, MAXCYCLES, MAXREFFREQUENCY, MAXTEMPO, MINREFFREQUENCY, MINTEMPO, TRUMPET_NOTES, CLARINET_NOTES, POSITIONS, TRUMPET_BTN, CLARINET_POSITIONS } from '../../constants';
 import { BeatService } from '../../services/beat.service';
-
 
 @Component({
   selector: 'app-home',
@@ -51,12 +48,22 @@ import { BeatService } from '../../services/beat.service';
  */
 export class HomePage implements OnInit {
   @ViewChild(ChromaticTunerComponent) private chromaticTuner!: ChromaticTunerComponent;
-  /**
-  * Indicates the mode - tuner or trumpet
-  */
-  selectedInstrument='trumpet';
-  NOTES: string[][]= TRUMPET_NOTES;
 
+  /**
+   * Indicates the mode - tuner or trumpet.
+   * @default 'trumpet'
+   */
+  selectedInstrument = 'trumpet';
+
+  /**
+   * Array of notes corresponding to the selected instrument.
+   */
+  NOTES: string[][] = TRUMPET_NOTES;
+
+  /**
+   * Current mode of the application.
+   * @default 'trumpet'
+   */
   mode = 'trumpet';
 
   /**
@@ -64,14 +71,13 @@ export class HomePage implements OnInit {
    */
   muteAlert = false;
 
-  
   /**
    * Indicates whether to use flats and sharps.
    */
   useFlatsAndSharps = false;
 
   /**
-   * Indicats wheter or not dynamics are enabled.
+   * Indicates whether dynamics are enabled.
    */
   useDynamics = false;
 
@@ -113,7 +119,7 @@ export class HomePage implements OnInit {
   /**
    * The score.
    */
-  score: Score = scoreFromNote(this.NOTES[this.currentNote][0],this.selectedInstrument);
+  score: Score = scoreFromNote(this.NOTES[this.currentNote][0], this.selectedInstrument);
 
   /**
    * The audio nodes.
@@ -126,26 +132,29 @@ export class HomePage implements OnInit {
   currentAction = '';
 
   /**
-   * The trumpet position.
+   * The trumpet position image path.
    */
   trumpetPosition ="assets/images/trumpet_positions/pos_1.png";
-  clarinetPosition="assets/images/clarinet_positions/A3.svg";
-
 
   /**
-   * The score image.
+   * The clarinet position image path.
+   */
+  clarinetPosition = "assets/images/clarinet_positions/A3.svg";
+
+  /**
+   * The score image path.
    */
   scoreImage = "assets/images/score_images/G2.svg";
 
   /**
-   * The trumpet buttons. For each note, the buttons that should be highlighted.
+   * The trumpet buttons to highlight for each note.
    */
   trumpetBtns: number[] = [];
 
   /**
    * The note images.
    */
-  noteImages: string[]=this.getNoteImages(); 
+  noteImages: string[] = this.getNoteImages();
 
   /**
    * The observable for the beat.
@@ -153,23 +162,19 @@ export class HomePage implements OnInit {
   beat$!: Observable<AppBeat>;
 
   /**
-   * The observable for playing.
+   * The observable for playing state.
    */
   playing$!: Observable<boolean>;
 
   /**
-   * The observable for the reference Frequency.
+   * The observable for the reference frequency.
    */
-
   refFrequencyValue$!: number;
 
   /**
-   * An array to get all the notes played.
+   * An object to collect all the notes played.
    */
-
   collectedMeansObject: { [key: string]: number[] } = {};
-
-
 
   /**
    * Creates an instance of HomePage.
@@ -178,7 +183,7 @@ export class HomePage implements OnInit {
    * @param _sounds - The sounds service.
    * @param firebase - The Firebase service.
    * @param alertController - The alert controller.
-   * @param refFrequencyService : The Reference Frequency Service
+   * @param refFrequencyService - The Reference Frequency Service.
    */
   constructor(
     private soundsService: SoundsService,
@@ -201,6 +206,12 @@ export class HomePage implements OnInit {
 
     interval(1000).subscribe(async () => this.checkMuted());
   }
+
+  /**
+   * Retrieves the notes for the selected instrument.
+   * @param instrument - The instrument to get notes for.
+   * @returns An array of notes for the specified instrument.
+   */
   private getNotesForInstrument(instrument: string | null): string[][] {
     if (instrument === 'trumpet') {
       return TRUMPET_NOTES; // Use trumpet notes
@@ -209,34 +220,46 @@ export class HomePage implements OnInit {
     }
     return []; // Return an empty array if no valid instrument is selected
   }
+
+  /**
+   * Retrieves the note images for the selected instrument.
+   * @returns An array of paths to note images.
+   */
   private getNoteImages(): string[] {
     return this.NOTES.map(note => `assets/images/${this.selectedInstrument}_notes_images/_${note[0]}.svg`);
   }
 
+  /**
+   * Lifecycle hook that is called after the component has been initialized.
+   */
   ngOnInit(): void {
-    console.log(localStorage.getItem('LoggedInUser  '));
+    console.log(localStorage.getItem('LoggedInUser '));
     this.refFrequencyService.getRefFrequency().subscribe(value => {
-        this.refFrequencyValue$ = value;
+      this.refFrequencyValue$ = value;
     });
     this.loadStateFromLocalStorage();
-}
+  }
 
-private loadStateFromLocalStorage() {
+  /**
+   * Loads the state from local storage.
+   * @returns void
+   */
+  private loadStateFromLocalStorage() {
     const savedMode = localStorage.getItem('mode');
     const savedInstrument = localStorage.getItem('selectedInstrument');
 
     // Load the selected instrument and its settings
     if (savedInstrument) {
-        this.selectedInstrument = savedInstrument;
-        this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
-        this.noteImages = this.getNoteImages();
-        this.soundsService.setInstrument(this.selectedInstrument);
+      this.selectedInstrument = savedInstrument;
+      this.NOTES = this.getNotesForInstrument(this.selectedInstrument);
+      this.noteImages = this.getNoteImages();
+      this.soundsService.setInstrument(this.selectedInstrument);
     }
     // Load the mode
     if (savedMode) {
-        this.mode = savedMode;
+      this.mode = savedMode;
     } else {
-        this.mode = this.selectedInstrument; // Default to the selected instrument if no saved mode
+      this.mode = this.selectedInstrument; // Default to the selected instrument if no saved mode
     }
 
     // Load settings based on the selected instrument
@@ -245,33 +268,55 @@ private loadStateFromLocalStorage() {
     // Load common settings
     this.useFlatsAndSharps = this.retrieveAndParseFromLocalStorage('useFlatsAndSharps', false);
     this.useDynamics = this.retrieveAndParseFromLocalStorage('useDynamics', false);
-}
+  }
 
-private loadInstrumentSettings(instrument: string) {
+  /**
+   * Loads instrument-specific settings.
+   * @param instrument - The instrument to load settings for.
+   * @returns void
+   */
+  private loadInstrumentSettings(instrument: string) {
     // Load low and high notes specific to the instrument
     this.lowNote = this.retrieveAndParseFromLocalStorage(`${instrument}_lowNote`, INITIAL_NOTE);
     this.highNote = this.retrieveAndParseFromLocalStorage(`${instrument}_highNote`, INITIAL_NOTE);
-    //tempo is common for both the instruments
+    // Tempo is common for both instruments
     const tempoSaved = this.retrieveAndParseFromLocalStorage('tempo', MINTEMPO);
     if (tempoSaved !== MINTEMPO) {
-        this._tempo.setTempo(tempoSaved);
+      this._tempo.setTempo(tempoSaved);
     }
-}
-
-
-  ionViewDidEnter(): void {
-
   }
 
+  /**
+   * Lifecycle hook that is called when the view has entered.
+   * @returns void
+   */
+  ionViewDidEnter(): void {}
+
+  /**
+   * Lifecycle hook that is called when the view is about to leave.
+   * @returns void
+   */
   ionViewWillLeave(): void {
     this._tempo.stop();
     if (this.mode == "tuner") this.chromaticTuner.stop();
   }
 
+  /**
+   * Retrieves and parses a value from local storage.
+   * @param key - The key to retrieve the value for.
+   * @param defaultValue - The default value to return if the key does not exist.
+   * @returns The parsed value from local storage or the default value.
+   */
   retrieveAndParseFromLocalStorage(key: string, defaultValue: any): any {
     const storedValue = localStorage.getItem(key);
     return storedValue ? JSON.parse(storedValue) : defaultValue;
   }
+
+  /**
+   * Selects an instrument based on user input.
+   * @param event - The event containing the selected instrument.
+   * @returns void
+   */
   selectInstrument(event: any) {
     this.selectedInstrument = event.detail.value; // Store the selected instrument
     this.mode = this.selectedInstrument; // Set mode to the same value as selected instrument
@@ -285,9 +330,13 @@ private loadInstrumentSettings(instrument: string) {
 
     // Save the current state to local storage
     this.saveCurrentStateToLocalStorage();
-}
+  }
 
-private saveCurrentStateToLocalStorage() {
+  /**
+   * Saves the current state to local storage.
+   * @returns void
+   */
+  private saveCurrentStateToLocalStorage() {
     localStorage.setItem('selectedInstrument', this.selectedInstrument);
     localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
     localStorage.setItem('useDynamics', JSON.stringify(this.useDynamics));
@@ -296,8 +345,8 @@ private saveCurrentStateToLocalStorage() {
     localStorage.setItem('tempo', this._tempo.tempo$.value.toString()); // Save tempo for the selected instrument
     localStorage.setItem('mode', this.mode);
     localStorage.setItem('refFrequencyValue', this.refFrequencyValue$.toString());
-     // Save the current mode
-}
+  }
+
   /**
    * Checks if the device is muted and displays an alert if it is.
    * @returns void
@@ -316,31 +365,26 @@ private saveCurrentStateToLocalStorage() {
         buttons: ['OK'],
       });
       alert.present();
-    } catch (e) {
-    }
-
+    } catch (e) {}
   }
 
   /**
-   * Switches the mode.
-   * @param event - The event.
+   * Switches the mode of the application.
+   * @param event - The event containing the new mode.
    * @returns void
    */
-
   switchMode(event: any) {
     if (this.mode == 'tuner') {
       this.chromaticTuner.stop();
     }
     this.mode = event.detail.value;
-    // Save tuner settings to local storage if the mode is tuner
-
-      this.saveCurrentStateToLocalStorage();
+    this.saveCurrentStateToLocalStorage();
     console.log(event);
   }
 
   /**
-   * Switches the use of flats and sharps.
-   * @param event - The event.
+   * Toggles the use of flats and sharps.
+   * @param event - The event containing the checked state.
    * @returns void
    */
   switchUseFlatsAndSharps(event: any) {
@@ -348,8 +392,8 @@ private saveCurrentStateToLocalStorage() {
     localStorage.setItem('useFlatsAndSharps', JSON.stringify(this.useFlatsAndSharps));
     console.log(event);
     if (!this.useFlatsAndSharps) {
-      // check that low and high notes are not on accidentals
-      // if they are, move them up by a half step
+      // Check that low and high notes are not on accidentals
+      // If they are, move them up by a half step
       if (this.NOTES[this.lowNote].length == 2) {
         this.lowNote++;
       }
@@ -359,17 +403,23 @@ private saveCurrentStateToLocalStorage() {
     }
   }
 
+  /**
+   * Toggles the use of dynamics.
+   * @param event - The event containing the checked state.
+   * @returns void
+   */
   switchUseDynamics(event: any) {
     this.useDynamics = event.detail.checked;
     localStorage.setItem('useDynamics', JSON.stringify(this.useDynamics));
     if (!this.useDynamics) {
-      this.score = scoreFromNote(this.NOTES[this.currentNote][0],this.selectedInstrument);
+      this.score = scoreFromNote(this.NOTES[this.currentNote][0], this.selectedInstrument);
       this._sounds.setVolume(1.0);
     }
   }
+
   /**
-   * Changes the low note.
-   * @param index - The index.
+   * Changes the low note to the specified index.
+   * @param index - The new index for the low note.
    * @returns void
    */
   changeLowNote(index: number) {
@@ -386,8 +436,8 @@ private saveCurrentStateToLocalStorage() {
   }
 
   /**
-   * Changes the high note.
-   * @param index - The index.
+   * Changes the high note to the specified index.
+   * @param index - The new index for the high note.
    * @returns void
    */
   changeHighNote(index: number) {
@@ -403,10 +453,16 @@ private saveCurrentStateToLocalStorage() {
     }
     this.saveNotes();
   }
+
+  /**
+   * Saves the current low and high notes to local storage.
+   * @returns void
+   */
   saveNotes() {
     localStorage.setItem(`${this.selectedInstrument}_lowNote`, this.lowNote.toString());
     localStorage.setItem(`${this.selectedInstrument}_highNote`, this.highNote.toString());
   }
+
   /**
    * Updates the position of the trumpet image based on the given note.
    * @param note - The note to update the trumpet position to.
@@ -417,10 +473,17 @@ private saveCurrentStateToLocalStorage() {
     this.trumpetBtns = TRUMPET_BTN[note];
     this.trumpetPosition = `assets/images/trumpet_positions/${trumpetImg}.png`;
   }
+
+  /**
+   * Updates the position of the clarinet image based on the given note.
+   * @param note - The note to update the clarinet position to.
+   * @returns void
+   */
   updateClarinetPosition(note: number) {
     const clarinetImg = CLARINET_POSITIONS[note];
     this.clarinetPosition = `assets/images/clarinet_positions/${clarinetImg}.svg`;
   }
+
   /**
    * Updates the score image based on the given note.
    * @param noteNumber - The index of the note to use for updating the score image.
@@ -429,21 +492,20 @@ private saveCurrentStateToLocalStorage() {
   updateScore(noteNumber: number) {
     const _notes = this.NOTES[noteNumber];
     const scoreImage = _notes.length == 1 ? _notes[0] : _notes[Math.floor(Math.random() * 2)];
-    this.scoreImage = `assets/images/score_images/${scoreImage}.svg`
-
+    this.scoreImage = `assets/images/score_images/${scoreImage}.svg`;
 
     if (this.useDynamics) {
       const dynamic = DYNAMICS[Math.floor(Math.random() * DYNAMICS.length)];
       this._sounds.setVolume(dynamic.volume);
       this.score = scoreFromNote(scoreImage, dynamic.label);
     } else {
-      this.score = scoreFromNote(scoreImage,this.selectedInstrument);
+      this.score = scoreFromNote(scoreImage, this.selectedInstrument);
     }
   }
 
   /**
    * Generates a random note within the range of lowNote and highNote.
-   * @returns {number} The generated note.
+   * @returns {number} The generated note index.
    */
   nextNote() {
     const next = Math.round(Math.random() * (this.highNote - this.lowNote)) + this.lowNote;
@@ -466,9 +528,9 @@ private saveCurrentStateToLocalStorage() {
         this.currentNote = this.nextNote();
         this._sounds.currentNote = this.currentNote;
         this.updateScore(this.currentNote);
-        if(this.selectedInstrument==="trumpet"){
-        this.updateTrumpetPosition(this.currentNote);
-        }else if(this.selectedInstrument==="clarinet"){
+        if (this.selectedInstrument === "trumpet") {
+          this.updateTrumpetPosition(this.currentNote);
+        } else if (this.selectedInstrument === "clarinet") {
           this.updateClarinetPosition(this.currentNote);
         }
       }
@@ -496,10 +558,7 @@ private saveCurrentStateToLocalStorage() {
       }
 
       if (this.mode == this.selectedInstrument) {
-        switch (tempo.measure) {
-          // case 0: this.pitchService.disconnect(); break;
-          // case 2: this.pitchService.connect();
-        }
+        // Additional logic can be added here if needed
       }
     }
 
@@ -510,6 +569,7 @@ private saveCurrentStateToLocalStorage() {
       this.tabsService.setDisabled(false);
     }
   }
+
   /**
    * Toggles between starting and stopping the tempo.
    * If the tempo is currently playing, it will stop it.
@@ -539,7 +599,8 @@ private saveCurrentStateToLocalStorage() {
       this.highNote,
       this.refFrequencyValue$,
       this.useFlatsAndSharps,
-      this.useDynamics);
+      this.useDynamics
+    );
   }
 
   /**
@@ -564,15 +625,8 @@ private saveCurrentStateToLocalStorage() {
   }
 
   /**
-   * Returns the path to the image file for the given note.
-   * @param note - The note to get the image for.
-   * @returns The path to the image file.
-   */
-
-
-  /**
    * Returns a boolean indicating whether the tempo is currently playing or not.
-   * @returns {boolean} A boolean indicating whether the tempo is currently playing or not.
+   * @returns {boolean} A boolean indicating whether the tempo is currently playing.
    */
   isPlaying(): boolean {
     return this._tempo.playing$.value;
@@ -594,13 +648,17 @@ private saveCurrentStateToLocalStorage() {
     this.switchMode(event);
     this.saveCurrentStateToLocalStorage();
   }
+
+  /**
+   * Opens a picker for selecting frequency or tempo.
+   * @param type - The type of picker to open ('frequency' or 'tempo').
+   * @returns void
+   */
   async openPicker(type: 'frequency' | 'tempo') {
-    // Check if the picker should be opened
     if (this.isPlaying()) {
       return;
     }
 
-    // create list of options to be selected
     let options: { value: number, text: string }[];
     let selectedIndex = 0;
     let selectedValue: number;
@@ -632,7 +690,6 @@ private saveCurrentStateToLocalStorage() {
           selectedIndex: selectedIndex
         },
       ],
-
       buttons: [
         {
           text: 'Cancel',
@@ -659,67 +716,68 @@ private saveCurrentStateToLocalStorage() {
     });
 
     await picker.present();
-
   }
 
+  /**
+   * Changes the tempo to the specified value.
+   * @param tempo - The new tempo value.
+   * @returns void
+   */
   changeTempo(tempo: number) {
     this._tempo.setTempo(tempo);
   }
 
-
   /**
    * Determines whether the modal can be dismissed or not.
-   * @param data Optional data passed to the modal.
-   * @param role Optional role of the modal.
-   * @returns A Promise that resolves to a boolean indicating whether the modal can be dismissed or not.
+   * @param data - Optional data passed to the modal.
+   * @param role - Optional role of the modal.
+   * @returns A Promise that resolves to a boolean indicating whether the modal can be dismissed.
    */
   async canDismiss(data?: any, role?: string) {
     return role !== 'gesture';
   }
 
+  /**
+   * Navigates to the user profile page.
+   * @returns void
+   */
   goToProfile() {
     this.router.navigate(['/profile']);
   }
 
+  /**
+   * Scales the content of the page based on the viewport size.
+   * @returns void
+   */
   scaleContent() {
     const container = document.getElementById('wrapper');
 
-    // Dimensioni di base del contenitore
     const baseWidth = container!.offsetWidth;
     const baseHeight = container!.offsetHeight;
 
-    // Dimensioni della finestra (viewport)
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // Calcola il fattore di scala per adattare sia larghezza che altezza
     const scaleX = viewportWidth / baseWidth;
     const scaleY = viewportHeight / baseHeight * 0.8;
 
-    // Prendi il fattore di scala minimo tra larghezza e altezza
     let scale = Math.min(scaleX, scaleY);
 
-    //lascia un margine di almeno 20%
-    //scale = scale * 0.95;
-
-    // Applica il fattore di scala al contenitore
     container!.style.transform = `scale(${scale})`;
-
-    // Posizionamento centrale del contenitore
     container!.style.position = 'absolute';
     container!.style.left = `calc(50% - ${baseWidth * scale / 2}px)`;
     container!.style.top = `calc(50% - ${baseHeight * scale / 2}px)`;
   }
 
-
-  //on component load, scale the content
+  /**
+   * Lifecycle hook that is called after the view has been initialized.
+   * @returns void
+   */
   ngAfterViewInit() {
-    //on event resize, scale the content
     window.addEventListener('resize', () => this.scaleContent());
     window.addEventListener('load', () => this.scaleContent());
 
-    // 
     setTimeout(() => this.scaleContent(), 250);
   }
-
 }
+

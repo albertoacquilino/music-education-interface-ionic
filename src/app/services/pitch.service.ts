@@ -5,7 +5,6 @@
  * Licensed under the GNU Affero General Public License v3.0.
  * See the LICENSE file for more details.
  */
-
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as pitchlite from 'src/app/services/pitchlite';
@@ -16,6 +15,11 @@ const smallWindow = 512;
 const minPitch = 140; // lower pitch of mpm, 140 hz is close to trumpet
 const useYin = false; // use MPM by default
 
+/**
+ * Scales an array of Float32 values to the range of -1 to 1.
+ * @param array - The Float32Array to scale.
+ * @returns A new Float32Array scaled to the range of -1 to 1.
+ */
 function scaleArrayToMinusOneToOne(array: Float32Array) {
     const maxAbsValue = Math.max(...array.map(Math.abs));
     return array.map((value) => value / maxAbsValue);
@@ -24,6 +28,9 @@ function scaleArrayToMinusOneToOne(array: Float32Array) {
 @Injectable({
     providedIn: 'root'
 })
+/**
+ * Service for pitch detection using Web Audio API and WebAssembly.
+ */
 export class PitchService {
     private isStopped = false;
     private accumNode!: AudioWorkletNode;
@@ -36,9 +43,17 @@ export class PitchService {
     private n_pitches!: number;
     private audioContext: AudioContext | null = null;
 
+    /**
+     * Observable that emits the detected pitch.
+     */
     pitch$ = new BehaviorSubject<number>(0);
 
-
+    /**
+     * Connects to the audio input and initializes the pitch detection.
+     * @returns {Promise<void>} A promise that resolves when the connection is established.
+     * @example
+     * await pitchService.connect();
+     */
     constructor(
 
     ) { }
@@ -92,7 +107,7 @@ export class PitchService {
             // scale event.data.data up to [-1, 1]
             const scaledData = scaleArrayToMinusOneToOne(event.data.data);
 
-            // Calculate the offset in bytes based on naccumulated
+            // Calculate the offset in bytes based on nAccumulated
             const offset = (this.nAccumulated * workletChunkSize) * Float32Array.BYTES_PER_ELEMENT;
 
             // store latest 128 samples into the WASM buffer
@@ -115,9 +130,13 @@ export class PitchService {
                 this.wasmModule._memset(this.ptr, 0, bigWindow * Float32Array.BYTES_PER_ELEMENT);
             }
         };
-
     }
-
+    /**
+     * Disconnects the audio input and cleans up resources.
+     * @returns void
+     * @example
+     * pitchService.disconnect();
+     */
     disconnect() {
         console.log("Stopping and disconnecting and cleaning up");
         this.isStopped = true;
